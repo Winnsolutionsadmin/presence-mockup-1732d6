@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Presence · Design mockup · Growing Mindfully</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PRESENCE MOCKUP · design artifact, not production code
+   Brand tokens verbatim from the live growingmindfully.org site.
+   ============================================================ */
+:root {
+  --paper: #FBF7EE;
+  --paper-deep: #F0E9D8;
+  --card: #FFFDF8;
+  --ink: #1F2A2E;
+  --ink-soft: #3F5359;
+  --ink-mute: #6F7F84;
+  --teal: #5FAEB6;
+  --teal-deep: #3D8189;
+  --sage: #9BB99E;
+  --sage-deep: #6F8F70;
+  --dusty: #7AA8C4;
+  --dusty-deep: #4F7A99;
+  --gold: #C9A86A;
+  --blush: #E8C9B5;
+  --earth: #BF6A4A;
+  --radius: 6px;
+  --shadow-soft: 0 1px 2px rgba(31,42,46,.04), 0 8px 24px rgba(31,42,46,.06);
+  --shadow-lift: 0 4px 16px rgba(31,42,46,.08), 0 24px 48px rgba(31,42,46,.12);
+  --serif: "Newsreader", Georgia, serif;
+  --sans: "Manrope", system-ui, -apple-system, sans-serif;
+  --hand: "Caveat", cursive;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --spring: cubic-bezier(.22,.8,.22,1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--sans); background: var(--paper); color: var(--ink);
+  font-size: 16px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--teal); color: var(--paper); }
+button { font-family: var(--sans); cursor: pointer; }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* ---------- app column ---------- */
+.phone {
+  max-width: 430px; margin: 0 auto; min-height: 100dvh;
+  background: var(--paper); position: relative;
+  box-shadow: 0 0 0 1px rgba(31,42,46,.05);
+}
+
+/* ---------- shared screen skeleton ---------- */
+.screen { display: none; min-height: 100dvh; padding-bottom: 168px; }
+.screen.active { display: block; }
+/* step-in: the shipped waitlist entrance (240ms fade + 10px rise) */
+.screen.active .step-in { animation: stepIn .24s var(--ease) both; }
+.screen.active .step-in.d1 { animation-delay: .05s; }
+.screen.active .step-in.d2 { animation-delay: .10s; }
+.screen.active .step-in.d3 { animation-delay: .16s; }
+.screen.active .step-in.d4 { animation-delay: .22s; }
+@keyframes stepIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px 10px; min-height: 54px;
+  border-bottom: 1px solid rgba(31,42,46,.07);
+  position: sticky; top: 0; background: rgba(251,247,238,.92);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 20;
+}
+.top .back {
+  background: none; border: 0; color: var(--ink-soft); font-size: 14px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 8px 8px 0;
+}
+.top .brandmark { font-family: var(--serif); font-size: 15px; letter-spacing: .01em; color: var(--ink-soft); }
+.body { padding: 24px 20px 8px; }
+
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--ink-soft); margin-bottom: 12px;
+}
+.kicker::before { content: ""; width: 22px; height: 1px; background: var(--sage-deep); }
+h1.title {
+  font-family: var(--serif); font-variation-settings: "opsz" 36;
+  font-weight: 450; font-size: 32px; line-height: 1.12; letter-spacing: -.015em;
+  margin-bottom: 12px;
+}
+p.lede { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 8px; }
+.hand { font-family: var(--hand); }
+
+/* ---------- sticky action bar ---------- */
+.actionbar {
+  position: fixed; bottom: 58px; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px; padding: 26px 20px 14px; z-index: 30;
+  background: linear-gradient(to top, var(--paper) 55%, rgba(251,247,238,0));
+  pointer-events: none;
+}
+.actionbar > * { pointer-events: auto; }
+.cta {
+  display: block; width: 100%; border: 0; border-radius: var(--radius);
+  background: var(--teal-deep); color: #FFFDF8;
+  font-size: 15px; font-weight: 600; letter-spacing: .01em;
+  padding: 15px 18px; text-align: center;
+  box-shadow: 0 3px 14px rgba(61,129,137,.28), 0 1px 3px rgba(61,129,137,.16);
+  transition: transform .2s var(--spring), box-shadow .2s var(--ease), background .2s;
+}
+.cta:active { transform: scale(.985); }
+.quietlink {
+  display: block; text-align: center; margin-bottom: 10px;
+  background: none; border: 0; color: var(--ink-mute); font-size: 13px; font-weight: 600;
+}
+
+/* ============================================================
+   THE ENROLLMENT GARDEN (signature element)
+   ============================================================ */
+.garden-wrap { display: flex; justify-content: center; padding: 6px 0 2px; }
+.garden { width: 216px; height: 252px; overflow: visible; }
+.garden .stem {
+  fill: none; stroke: var(--sage-deep); stroke-width: 2.4; stroke-linecap: round;
+  stroke-dasharray: 260; stroke-dashoffset: 260;
+}
+.play .garden .stem { animation: stemDraw 1.6s var(--ease) .2s forwards; }
+@keyframes stemDraw { to { stroke-dashoffset: 56; } } /* stops below the dormant tip */
+.garden .mound { fill: var(--paper-deep); }
+.garden .leaf { fill: var(--sage); }
+.garden .leaf .vein { stroke: var(--sage-deep); stroke-width: 1; fill: none; opacity: .7; }
+/* unfurl: scale from the base pivot with a settle, 600ms spring */
+.garden .leafG { transform-box: fill-box; opacity: 0; transform: scale(0) rotate(-14deg); }
+.garden .leafG.left  { transform-origin: 100% 100%; }
+.garden .leafG.right { transform-origin: 0% 100%; }
+.play .garden .leafG.grown { animation: unfurl .6s var(--spring) forwards; }
+.play .garden .leafG.grown.g1 { animation-delay: .55s; }
+.play .garden .leafG.grown.g2 { animation-delay: .95s; }
+@keyframes unfurl { from { opacity: 0; transform: scale(0) rotate(-14deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
+/* buds */
+.garden .bud { fill: var(--paper-deep); stroke: var(--sage); stroke-width: 1.2; opacity: 0; }
+.play .garden .bud { animation: budIn .4s var(--ease) 1.45s forwards; }
+@keyframes budIn { to { opacity: 1; } }
+.garden .bud.activebud {
+  fill: var(--sage); stroke: var(--sage-deep);
+  transform-box: fill-box; transform-origin: center;
+}
+.play .garden .bud.activebud { animation: budIn .4s var(--ease) 1.3s forwards, breathe 5.5s ease-in-out 1.9s infinite; }
+@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+.garden .chlabel { font-family: var(--hand); font-size: 15px; fill: var(--ink-mute); opacity: 0; }
+.garden .chlabel.done { fill: var(--sage-deep); }
+.garden .chlabel.now { fill: var(--ink-soft); font-weight: 600; }
+.play .garden .chlabel { animation: budIn .5s var(--ease) 1.6s forwards; }
+
+/* bloom (generate / celebration state) */
+.garden .bloom { transform-box: fill-box; transform-origin: center; opacity: 0; transform: scale(0); }
+.play .garden .bloom.open { animation: bloomIn .9s var(--spring) 1.5s forwards; }
+@keyframes bloomIn { to { opacity: 1; transform: scale(1); } }
+.garden .petal { fill: var(--sage); opacity: .9; }
+.garden .bloomcore { fill: var(--gold); }
+
+/* compact garden (header sprig) */
+.sprig { width: 132px; height: 26px; overflow: visible; }
+.sprig .rail { stroke: var(--paper-deep); stroke-width: 2.4; stroke-linecap: round; }
+.sprig .fill { stroke: var(--sage-deep); stroke-width: 2.4; stroke-linecap: round;
+  stroke-dasharray: 120; stroke-dashoffset: 120; }
+.screen.active .sprig .fill { animation: sprigFill .8s var(--ease) .2s forwards; }
+@keyframes sprigFill { to { stroke-dashoffset: 78; } } /* 2 of 5 grown -> fill reaches node 2 */
+.sprig .minileaf { fill: var(--sage); }
+.sprig .n { fill: var(--paper-deep); stroke: var(--sage); stroke-width: 1; }
+.sprig .n.now { fill: var(--sage); stroke: var(--sage-deep);
+  transform-box: fill-box; transform-origin: center; animation: breathe 5.5s ease-in-out infinite; }
+
+/* ============================================================
+   SCREEN B · chapter intake
+   ============================================================ */
+.confirm-intro { font-size: 14px; color: var(--ink-soft); margin: 2px 0 14px; }
+.confirm-card {
+  background: var(--card); border: 1px solid rgba(31,42,46,.08);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft); overflow: hidden;
+  margin-bottom: 26px;
+}
+.crow { padding: 13px 16px; display: flex; align-items: flex-start; gap: 10px; }
+.crow + .crow { border-top: 1px solid rgba(31,42,46,.06); }
+.crow .cmain { flex: 1; min-width: 0; }
+.crow .clabel {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ink-mute); margin-bottom: 2px;
+}
+.crow .cvalue { font-size: 16px; color: var(--ink); line-height: 1.35; }
+.crow .cnote { font-family: var(--hand); font-size: 15px; color: var(--sage-deep); margin-top: 1px; }
+.crow .editbtn {
+  background: none; border: 0; color: var(--teal-deep); font-size: 13px; font-weight: 700;
+  padding: 10px 4px; margin: -6px -2px 0 0; flex-shrink: 0;
+}
+.crow .cinput { display: none; margin-top: 6px; }
+.crow.editing .cvalue, .crow.editing .cnote { display: none; }
+.crow.editing .cinput { display: block; }
+.crow.editing .editbtn { color: var(--sage-deep); }
+
+.divider {
+  display: flex; align-items: center; gap: 12px; margin: 4px 0 18px;
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-soft); white-space: nowrap;
+}
+.divider::before, .divider::after { content: ""; height: 1px; background: var(--paper-deep); flex: 1; }
+
+.field { margin-bottom: 18px; position: relative; }
+.field label {
+  display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 7px;
+}
+.field input[type=text], .field textarea, .field select, .cinput input {
+  width: 100%; padding: 13px 14px; font-size: 16px; font-family: var(--sans); color: var(--ink);
+  background: #fff; border: 1.5px solid var(--paper-deep); border-radius: var(--radius);
+  transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
+  -webkit-appearance: none;
+}
+.field textarea { min-height: 84px; resize: vertical; line-height: 1.5; }
+.field input:focus, .field textarea:focus, .cinput input:focus {
+  outline: none; border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(95,174,182,.14);
+}
+.field .assist { font-size: 12.5px; color: var(--ink-mute); margin-top: 6px; }
+.whisper {
+  position: absolute; right: 2px; top: 0; font-size: 12px; color: var(--ink-mute);
+  opacity: 0; display: inline-flex; align-items: center; gap: 4px;
+}
+.whisper.show { animation: whisper 1.7s var(--ease) forwards; }
+@keyframes whisper { 0% { opacity: 0; } 10%,75% { opacity: 1; } 100% { opacity: 0; } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 10px 18px; border: 1.5px solid var(--paper-deep); border-radius: 999px;
+  background: #fff; font-size: 14px; font-weight: 600; color: var(--ink);
+  transition: all .18s var(--ease), transform .15s var(--spring);
+}
+.chip.sel { background: var(--teal-deep); border-color: var(--teal-deep); color: #FFFDF8;
+  box-shadow: 0 3px 10px rgba(61,129,137,.24); }
+.chip:active { transform: scale(.96); }
+
+/* ============================================================
+   SCREEN C · sign ceremony
+   ============================================================ */
+.remainline { font-size: 12.5px; color: var(--ink-mute); margin: -6px 0 16px; }
+.doccard {
+  position: relative;
+  background: var(--card); border: 1px solid rgba(31,42,46,.09);
+  border-radius: var(--radius); box-shadow: var(--shadow-lift);
+  overflow: hidden; margin-bottom: 20px;
+}
+/* faint paper grain: documents read as paper artifacts */
+.doccard::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(201,168,106,.05), transparent 60%),
+    radial-gradient(100% 70% at 90% 100%, rgba(155,185,158,.05), transparent 60%);
+}
+.dochead { padding: 18px 18px 12px; border-bottom: 1px solid rgba(31,42,46,.07); position: relative; }
+.doctitle { font-family: var(--serif); font-variation-settings: "opsz" 24; font-weight: 500;
+  font-size: 21px; letter-spacing: -.01em; }
+.docsub { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-top: 2px; }
+.docmeta { display: flex; gap: 6px; margin-top: 10px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  padding: 4px 10px; border-radius: 999px;
+}
+.pill.mute { background: var(--paper-deep); color: var(--ink-soft); }
+.pill.sage { background: rgba(155,185,158,.28); color: #48664B; }
+.pill.dustyp { background: rgba(122,168,196,.22); color: var(--dusty-deep); }
+.pill.goldp { background: rgba(201,168,106,.2); color: #8A6E38; }
+.docview {
+  max-height: 260px; overflow-y: auto; padding: 16px 18px;
+  font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); position: relative;
+}
+.docview h4 { font-family: var(--serif); font-size: 15px; color: var(--ink); margin: 0 0 8px; font-weight: 600; }
+.docview p { margin-bottom: 10px; }
+.filled {
+  color: var(--ink); font-weight: 600;
+  background: linear-gradient(transparent 62%, rgba(155,185,158,.35) 62%);
+  border-radius: 2px; padding: 0 1px;
+}
+.scrollgate {
+  padding: 9px 18px; font-size: 12.5px; color: var(--ink-mute);
+  border-top: 1px solid rgba(31,42,46,.07);
+  display: flex; align-items: center; gap: 7px; background: rgba(240,233,216,.4);
+}
+/* gold seal that stamps on sign */
+.seal {
+  position: absolute; top: 12px; right: 14px; width: 52px; height: 52px;
+  opacity: 0; transform: scale(.35) rotate(-10deg); pointer-events: none; z-index: 2;
+}
+.seal.stamped { animation: stamp .4s var(--spring) forwards; }
+@keyframes stamp {
+  0% { opacity: 0; transform: scale(.35) rotate(-10deg); }
+  70% { opacity: 1; transform: scale(1.08) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.sigblock { margin-bottom: 18px; }
+.sigtabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.sigtab {
+  border: 1.5px solid var(--paper-deep); background: #fff; border-radius: 999px;
+  font-size: 13px; font-weight: 700; color: var(--ink-soft); padding: 7px 18px;
+}
+.sigtab.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.sigpad {
+  position: relative; background: #fff; border: 1.5px solid var(--paper-deep);
+  border-radius: var(--radius); height: 148px; overflow: hidden;
+}
+.sigpad .baseline {
+  position: absolute; left: 18px; right: 18px; bottom: 34px;
+  border-bottom: 1.5px dashed rgba(111,127,132,.45);
+}
+.sigpad .xmark { position: absolute; left: 18px; bottom: 38px; font-size: 14px; color: var(--ink-mute); }
+.sigpad .hint {
+  position: absolute; left: 0; right: 0; bottom: 10px; text-align: center;
+  font-size: 12px; color: var(--ink-mute);
+}
+.sigpad .clear {
+  position: absolute; top: 8px; right: 8px; background: none; border: 0;
+  font-size: 12px; font-weight: 700; color: var(--ink-mute); padding: 8px;
+}
+.sigpad .drawn { position: absolute; left: 30px; right: 30px; bottom: 30px; height: 74px; }
+.sigpad .drawn path {
+  fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round;
+  stroke-dasharray: 420; stroke-dashoffset: 420;
+}
+.screen.active .sigpad .drawn path { animation: signdraw 1.4s var(--ease) .6s forwards; }
+@keyframes signdraw { to { stroke-dashoffset: 0; } }
+.sigpad.typed .drawn, .sigpad.typed .xmark { display: none; }
+.sigpad .typeinput {
+  display: none; position: absolute; left: 18px; right: 18px; bottom: 40px;
+  border: 0; background: none; font-family: var(--hand); font-size: 30px; font-weight: 600;
+  color: var(--ink); text-align: center;
+}
+.sigpad.typed .typeinput { display: block; }
+.sigpad .typeinput:focus { outline: none; }
+.legal { font-size: 12px; color: var(--ink-mute); margin-top: 8px; }
+.legal a { color: var(--teal-deep); font-weight: 600; text-decoration: none; }
+
+.ackrow {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--card); border: 1px solid rgba(31,42,46,.08); border-radius: var(--radius);
+  padding: 14px 16px; margin-bottom: 8px; box-shadow: var(--shadow-soft);
+}
+.ackcheck {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;
+  border: 2px solid var(--sage); background: #fff; display: grid; place-items: center;
+  transition: background .2s var(--ease), border-color .2s;
+  padding: 0;
+}
+.ackcheck svg { width: 14px; height: 14px; }
+.ackcheck svg path {
+  fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 20; stroke-dashoffset: 20;
+}
+.ackrow.on .ackcheck { background: var(--sage-deep); border-color: var(--sage-deep); }
+.ackrow.on .ackcheck svg path { animation: tick .24s var(--ease) forwards; }
+@keyframes tick { to { stroke-dashoffset: 0; } }
+.acktext { font-size: 14px; color: var(--ink); line-height: 1.45; }
+.acktext .readfull { display: block; font-size: 12.5px; font-weight: 700; color: var(--teal-deep);
+  background: none; border: 0; padding: 4px 0 0; text-align: left; }
+
+/* ============================================================
+   SCREEN D · generate moment + documents home
+   ============================================================ */
+.countline { font-size: 15px; color: var(--ink-soft); margin-bottom: 20px; }
+.countline strong { color: var(--ink); font-weight: 700; }
+.stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.gendoc {
+  position: relative; overflow: hidden;
+  background: var(--card); border: 1px solid rgba(31,42,46,.08);
+  border-radius: var(--radius); box-shadow: var(--shadow-soft);
+  padding: 13px 16px; display: flex; align-items: center; gap: 12px;
+  opacity: 0; transform: translateY(14px) scale(.98);
+}
+.screen.active .gendoc { animation: docland .5s var(--spring) forwards; }
+.screen.active .gendoc:nth-child(1) { animation-delay: .35s; }
+.screen.active .gendoc:nth-child(2) { animation-delay: .47s; }
+.screen.active .gendoc:nth-child(3) { animation-delay: .59s; }
+.screen.active .gendoc:nth-child(4) { animation-delay: .71s; }
+.screen.active .gendoc:nth-child(5) { animation-delay: .83s; }
+@keyframes docland { to { opacity: 1; transform: translateY(0) scale(1); } }
+/* shimmer sweep: "the fields just landed" */
+.gendoc::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.75) 50%, transparent 70%);
+  transform: translateX(-110%);
+}
+.screen.active .gendoc::after { animation: shimmer 1.1s var(--ease) forwards; }
+.screen.active .gendoc:nth-child(1)::after { animation-delay: .7s; }
+.screen.active .gendoc:nth-child(2)::after { animation-delay: .82s; }
+.screen.active .gendoc:nth-child(3)::after { animation-delay: .94s; }
+.screen.active .gendoc:nth-child(4)::after { animation-delay: 1.06s; }
+.screen.active .gendoc:nth-child(5)::after { animation-delay: 1.18s; }
+@keyframes shimmer { to { transform: translateX(110%); } }
+.gendoc .dicon { width: 30px; height: 38px; flex-shrink: 0; }
+.gendoc .dname { font-family: var(--serif); font-size: 16px; font-weight: 500; }
+.gendoc .dsub { font-size: 12px; color: var(--ink-mute); }
+.gendoc .dright { margin-left: auto; }
+
+.homedivider { margin: 30px 0 18px; }
+.homehead { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+.homehead h2 { font-family: var(--serif); font-variation-settings: "opsz" 28; font-weight: 500;
+  font-size: 24px; letter-spacing: -.01em; }
+.childchip { font-size: 12px; font-weight: 700; color: var(--ink-soft);
+  background: var(--paper-deep); border-radius: 999px; padding: 4px 12px; }
+.grouplabel {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-mute); margin: 18px 0 8px;
+}
+.docrow {
+  background: var(--card); border: 1px solid rgba(31,42,46,.08); border-radius: var(--radius);
+  box-shadow: var(--shadow-soft); padding: 13px 16px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.docrow .rmain { flex: 1; min-width: 0; }
+.docrow .rname { font-family: var(--serif); font-size: 16.5px; font-weight: 500; }
+.docrow .rmeta { font-size: 12px; color: var(--ink-mute); margin-top: 1px; }
+.docrow .ract { display: flex; gap: 2px; }
+.iconbtn {
+  background: none; border: 0; color: var(--teal-deep); padding: 9px;
+  display: grid; place-items: center; border-radius: var(--radius);
+}
+.iconbtn svg { width: 18px; height: 18px; }
+.minileafseal { width: 20px; height: 20px; flex-shrink: 0; }
+.docrow.doctor { border-left: 3px solid var(--blush); }
+.certrow { border-left: 3px solid var(--gold); }
+
+/* ---------- welcome extras ---------- */
+.trust { display: flex; gap: 8px; align-items: flex-start; margin-top: 14px;
+  font-size: 13px; color: var(--ink-mute); }
+.trust svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+
+/* ---------- doctor tint demo chip on home ---------- */
+
+/* ---------- mock switcher (review control, not product UI) ---------- */
+.switcher {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px; z-index: 50;
+  background: var(--ink); display: flex;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  gap: 4px;
+}
+.switcher button {
+  flex: 1; background: none; border: 0; color: rgba(251,247,238,.55);
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  padding: 9px 2px 7px; border-radius: var(--radius);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.switcher button .dot { width: 5px; height: 5px; border-radius: 50%; background: transparent; }
+.switcher button.on { color: var(--paper); }
+.switcher button.on .dot { background: var(--gold); }
+
+/* ============================================================
+   REDUCED MOTION: end states, opacity only, no ambient loops
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .screen.active .step-in { animation: none; opacity: 1; transform: none; }
+  .play .garden .stem, .garden .stem { animation: none; stroke-dashoffset: 56; }
+  .garden .leafG.grown { animation: none !important; opacity: 1; transform: none; }
+  .garden .bud, .garden .chlabel { animation: none !important; opacity: 1; }
+  .garden .bud.activebud { animation: none !important; opacity: 1; transform: none; }
+  .garden .bloom.open { animation: none !important; opacity: 1; transform: none; }
+  .sprig .fill { animation: none !important; stroke-dashoffset: 78; }
+  .sprig .n.now { animation: none !important; }
+  .screen.active .gendoc { animation: none; opacity: 1; transform: none; }
+  .gendoc::after { display: none; }
+  .screen.active .sigpad .drawn path { animation: none; stroke-dashoffset: 0; }
+  .seal.stamped { animation: none; opacity: 1; transform: none; }
+  .whisper.show { animation: none; opacity: 1; }
+}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ================================================================
+     SCREEN A · WELCOME + GARDEN PROGRESS
+     ================================================================ -->
+<section class="screen active" id="s-welcome" aria-label="Welcome">
+  <div class="top">
+    <span class="brandmark">Growing Mindfully</span>
+    <span style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ink-mute);text-transform:uppercase">Presence</span>
+  </div>
+  <div class="body">
+    <div class="garden-wrap step-in play" id="gardenWrap" role="img" aria-label="Enrollment progress: 2 of 5 chapters complete">
+      <svg class="garden" viewBox="0 0 216 252">
+        <!-- ground -->
+        <ellipse class="mound" cx="108" cy="236" rx="44" ry="8"/>
+        <!-- stem: bottom to tip -->
+        <path class="stem" d="M108 234 C 105 208 112 190 108 168 C 104 148 113 128 108 108 C 104 90 111 74 108 58 C 106 46 109 38 108 30"/>
+        <!-- chapter 1 · grown, left, y=196 -->
+        <g class="leafG grown left g1" >
+          <path class="leaf" d="M106 197 Q 84 194 74 176 Q 72 170 76 165 Q 94 168 103 184 Q 106 191 106 197 Z"/>
+          <path class="vein" d="M104 195 Q 90 186 79 170" stroke="#6F8F70" stroke-width="1" fill="none" opacity=".65"/>
+        </g>
+        <text class="chlabel done" x="64" y="212" text-anchor="middle">your family</text>
+        <!-- chapter 2 · grown, right, y=158 -->
+        <g class="leafG grown right g2">
+          <path class="leaf" d="M110 159 Q 132 156 142 138 Q 144 132 140 127 Q 122 130 113 146 Q 110 153 110 159 Z"/>
+          <path class="vein" d="M112 157 Q 126 148 137 132" stroke="#6F8F70" stroke-width="1" fill="none" opacity=".65"/>
+        </g>
+        <text class="chlabel done" x="156" y="174" text-anchor="middle">Theo</text>
+        <!-- chapter 3 · active bud, left, y=118 -->
+        <circle class="bud activebud" cx="103" cy="116" r="6"/>
+        <text class="chlabel now" x="72" y="112" text-anchor="middle">emergency circle</text>
+        <!-- chapter 4 · dormant, right -->
+        <circle class="bud" cx="112" cy="82" r="4.4"/>
+        <text class="chlabel" x="152" y="80" text-anchor="middle">health + routines</text>
+        <!-- chapter 5 · dormant, left -->
+        <circle class="bud" cx="105" cy="52" r="4.4"/>
+        <text class="chlabel" x="66" y="50" text-anchor="middle">permissions</text>
+        <!-- dormant bloom tip -->
+        <circle class="bud" cx="108" cy="30" r="3.4"/>
+      </svg>
+    </div>
+    <div class="step-in d1" style="text-align:center">
+      <span class="kicker" style="justify-content:center">Getting ready for August 3</span>
+    </div>
+    <h1 class="title step-in d2" style="text-align:center">Let's get Theo ready<br>for his first day.</h1>
+    <p class="lede step-in d3" style="text-align:center">
+      We already filled in most of your paperwork from your application.
+      Five short chapters cover what's new, then everything is ready to sign.
+      Most families finish in about 15 minutes.
+    </p>
+    <div class="trust step-in d4" style="justify-content:center">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Autosaves as you go. Stop anytime and pick up where you left off.
+    </div>
+  </div>
+  <div class="actionbar">
+    <button class="cta" onclick="go('s-chapter')">Continue: emergency circle</button>
+  </div>
+</section>
+
+<!-- ================================================================
+     SCREEN B · INTAKE CHAPTER (pre-filled confirm + new questions)
+     ================================================================ -->
+<section class="screen" id="s-chapter" aria-label="Chapter intake">
+  <div class="top">
+    <button class="back" onclick="go('s-welcome')" aria-label="Back">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <svg class="sprig" viewBox="0 0 132 26" role="img" aria-label="Chapter 3 of 5, 2 complete">
+      <line class="rail" x1="6" y1="16" x2="126" y2="16"/>
+      <line class="fill" x1="6" y1="16" x2="126" y2="16"/>
+      <path class="minileaf" d="M18 15 Q 14 8 18 3 Q 24 7 21 15 Z"/>
+      <path class="minileaf" d="M44 15 Q 40 8 44 3 Q 50 7 47 15 Z"/>
+      <circle class="n now" cx="72" cy="16" r="4.6"/>
+      <circle class="n" cx="98" cy="16" r="3.6"/>
+      <circle class="n" cx="122" cy="16" r="3.6"/>
+    </svg>
+  </div>
+  <div class="body">
+    <span class="kicker step-in">Chapter three · Your emergency circle</span>
+    <h1 class="title step-in d1" style="font-size:28px">Who can we call,<br>and who can pick up?</h1>
+    <p class="confirm-intro step-in d2">Check what we have. Tap edit if anything changed.</p>
+
+    <div class="confirm-card step-in d2">
+      <div class="crow" id="crow1">
+        <div class="cmain">
+          <div class="clabel">Emergency contact 1</div>
+          <div class="cvalue">Denise Alvarez · Grandmother<br><span style="color:var(--ink-soft)">(916) 555-0173</span></div>
+          <div class="cnote">from your application</div>
+          <div class="cinput"><input type="text" value="Denise Alvarez · Grandmother · (916) 555-0173" aria-label="Emergency contact 1"></div>
+        </div>
+        <button class="editbtn" onclick="toggleEdit('crow1', this)">Edit</button>
+      </div>
+      <div class="crow" id="crow2">
+        <div class="cmain">
+          <div class="clabel">Emergency contact 2</div>
+          <div class="cvalue">Sam Okafor · Family friend<br><span style="color:var(--ink-soft)">(916) 555-0148</span></div>
+          <div class="cnote">from your application</div>
+          <div class="cinput"><input type="text" value="Sam Okafor · Family friend · (916) 555-0148" aria-label="Emergency contact 2"></div>
+        </div>
+        <button class="editbtn" onclick="toggleEdit('crow2', this)">Edit</button>
+      </div>
+      <div class="crow" id="crow3">
+        <div class="cmain">
+          <div class="clabel">Theo's physician</div>
+          <div class="cvalue">Dr. Priya Nair · Capitol Pediatrics</div>
+          <div class="cnote">from your application</div>
+          <div class="cinput"><input type="text" value="Dr. Priya Nair · Capitol Pediatrics" aria-label="Physician"></div>
+        </div>
+        <button class="editbtn" onclick="toggleEdit('crow3', this)">Edit</button>
+      </div>
+    </div>
+
+    <div class="divider step-in d3">A few things only you know</div>
+
+    <div class="field step-in d3">
+      <span class="whisper" id="whisper1">
+        <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12 13 4.5" stroke="#6F7F84" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Saved
+      </span>
+      <label for="pickup1">Who else may pick Theo up?</label>
+      <input type="text" id="pickup1" placeholder="Full name" onblur="if(this.value)showWhisper()">
+      <div class="assist">Anyone here will show ID at the door the first time.</div>
+    </div>
+
+    <div class="field step-in d4">
+      <label>Does anyone need to NOT have contact with Theo?</label>
+      <div class="chips" role="group" aria-label="Contact restriction">
+        <button class="chip" onclick="pick(this)">No</button>
+        <button class="chip" onclick="pick(this)">Yes, I'll explain</button>
+      </div>
+      <div class="assist">If yes, a director will follow up privately.</div>
+    </div>
+  </div>
+  <div class="actionbar">
+    <button class="cta" onclick="go('s-sign')">Finish chapter: health + routines next</button>
+  </div>
+</section>
+
+<!-- ================================================================
+     SCREEN C · SIGN CEREMONY
+     ================================================================ -->
+<section class="screen" id="s-sign" aria-label="Review and sign">
+  <div class="top">
+    <button class="back" onclick="go('s-chapter')" aria-label="Back">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <span class="brandmark">Review and sign</span>
+  </div>
+  <div class="body">
+    <span class="kicker step-in">Signing · 2 of 6</span>
+    <h1 class="title step-in d1" style="font-size:26px">Admission agreement</h1>
+    <p class="remainline step-in d1">4 remaining after this one.</p>
+
+    <div class="doccard step-in d2">
+      <!-- gold seal stamps here on sign -->
+      <svg class="seal" id="seal" viewBox="0 0 60 60" aria-hidden="true">
+        <circle cx="30" cy="30" r="27" fill="none" stroke="#C9A86A" stroke-width="1.6"/>
+        <circle cx="30" cy="30" r="22.5" fill="none" stroke="#C9A86A" stroke-width=".8" opacity=".7"/>
+        <path d="M30 40 Q 22 30 30 18 Q 38 30 30 40 Z" fill="#C9A86A" opacity=".9"/>
+        <path d="M30 38 Q 30 28 30 21" stroke="#FFFDF8" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="dochead">
+        <div class="doctitle">Admission agreement</div>
+        <div class="docsub">between Growing Mindfully and the family of Theo Alvarez</div>
+        <div class="docmeta">
+          <span class="pill mute">3 pages</span>
+          <span class="pill sage">Filled in for you</span>
+        </div>
+      </div>
+      <div class="docview" tabindex="0" aria-label="Document preview, scrolls">
+        <h4>1. Enrollment</h4>
+        <p>This agreement admits <span class="filled">Theo Alvarez</span> (born <span class="filled">March 14, 2024</span>) to the <span class="filled">Toddler</span> program at Growing Mindfully, 750 N Street, Sacramento, beginning <span class="filled">Monday, August 3, 2026</span> on a <span class="filled">full-time</span> schedule.</p>
+        <h4>2. Tuition</h4>
+        <p>Monthly tuition is <span class="filled">$2,140</span> at the <span class="filled">State employee</span> rate, billed on the first of each month through Brightwheel. The one-time enrollment fee of <span class="filled">$45</span> has been received.</p>
+        <h4>3. Hours and care</h4>
+        <p>Growing Mindfully is open Monday through Friday, 7:30 am to 5:30 pm. Our mindfulness-based program includes daily outdoor time, rest, and family updates through the day.</p>
+        <h4>4. Withdrawal</h4>
+        <p>Either party may end this agreement with 30 days written notice. Tuition is prorated to the final day of care.</p>
+      </div>
+      <div class="scrollgate">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 3v9m0 0l-4-4m4 4l4-4" stroke="#6F7F84" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Read to the end to sign
+      </div>
+    </div>
+
+    <div class="sigblock step-in d3">
+      <div class="sigtabs" role="tablist" aria-label="Signature mode">
+        <button class="sigtab on" id="tabDraw" onclick="sigmode('draw')" role="tab" aria-selected="true">Draw</button>
+        <button class="sigtab" id="tabType" onclick="sigmode('type')" role="tab" aria-selected="false">Type</button>
+      </div>
+      <div class="sigpad" id="sigpad">
+        <button class="clear">Clear</button>
+        <span class="xmark">x</span>
+        <div class="baseline"></div>
+        <!-- demo drawn signature -->
+        <svg class="drawn" viewBox="0 0 300 74" aria-hidden="true">
+          <path d="M18 52 C 26 20 38 14 40 26 C 42 38 30 56 24 58 C 40 54 52 40 62 44 C 70 47 64 56 74 54 C 84 52 92 40 102 46 C 108 50 104 56 114 52 C 128 46 140 28 148 34 C 154 39 148 52 158 50 C 172 47 186 36 200 42 C 210 46 218 40 230 38 C 244 35 260 44 278 40"/>
+        </svg>
+        <input class="typeinput" type="text" value="Maria Alvarez" aria-label="Typed signature">
+        <div class="hint">Sign with your finger</div>
+      </div>
+      <p class="legal">By signing you agree this counts as your handwritten signature. <a href="#">How signing works</a></p>
+    </div>
+
+    <div class="step-in d4">
+      <div class="ackrow" id="ack1">
+        <button class="ackcheck" onclick="ack('ack1')" aria-label="Acknowledge photo permission">
+          <svg viewBox="0 0 16 16"><path d="M3 8.5L6.5 12 13 4.5"/></svg>
+        </button>
+        <div class="acktext">
+          Theo may appear in classroom photos shared privately with enrolled families.
+          <button class="readfull">Read full text</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actionbar">
+    <button class="cta" id="signbtn" onclick="signDemo()">Sign and continue</button>
+  </div>
+</section>
+
+<!-- ================================================================
+     SCREEN D · GENERATE MOMENT + DOCUMENTS HOME
+     ================================================================ -->
+<section class="screen" id="s-docs" aria-label="Your paperwork and documents">
+  <div class="top">
+    <span class="brandmark">Growing Mindfully</span>
+    <span class="childchip">Theo · starts Aug 3</span>
+  </div>
+  <div class="body">
+    <!-- the generate moment -->
+    <div class="garden-wrap step-in play" style="padding-bottom:0">
+      <svg class="garden" viewBox="0 0 216 252" style="width:140px;height:164px" role="img" aria-label="All five chapters complete">
+        <ellipse class="mound" cx="108" cy="236" rx="44" ry="8"/>
+        <path class="stem" d="M108 234 C 105 208 112 190 108 168 C 104 148 113 128 108 108 C 104 90 111 74 108 58 C 106 46 109 38 108 30"/>
+        <g class="leafG grown left g1">
+          <path class="leaf" d="M106 197 Q 84 194 74 176 Q 72 170 76 165 Q 94 168 103 184 Q 106 191 106 197 Z"/>
+        </g>
+        <g class="leafG grown right g1">
+          <path class="leaf" d="M110 159 Q 132 156 142 138 Q 144 132 140 127 Q 122 130 113 146 Q 110 153 110 159 Z"/>
+        </g>
+        <g class="leafG grown left g2">
+          <path class="leaf" d="M106 119 Q 86 116 77 100 Q 75 94 79 90 Q 96 93 104 107 Q 106 114 106 119 Z"/>
+        </g>
+        <g class="leafG grown right g2">
+          <path class="leaf" d="M110 85 Q 130 82 139 66 Q 141 60 137 56 Q 120 59 112 73 Q 110 80 110 85 Z"/>
+        </g>
+        <g class="leafG grown left g2">
+          <path class="leaf" d="M106 55 Q 90 52 83 39 Q 81 34 85 31 Q 99 34 105 45 Q 106 51 106 55 Z"/>
+        </g>
+        <!-- the bloom -->
+        <g class="bloom open">
+          <circle class="petal" cx="108" cy="18" r="5"/>
+          <circle class="petal" cx="116" cy="22" r="5"/>
+          <circle class="petal" cx="118" cy="31" r="5"/>
+          <circle class="petal" cx="112" cy="38" r="5"/>
+          <circle class="petal" cx="103" cy="38" r="5"/>
+          <circle class="petal" cx="98" cy="31" r="5"/>
+          <circle class="petal" cx="100" cy="22" r="5"/>
+          <circle class="bloomcore" cx="108" cy="28" r="4.5"/>
+        </g>
+      </svg>
+    </div>
+    <h1 class="title step-in" style="text-align:center;font-size:30px">We filled out<br>your paperwork.</h1>
+    <p class="countline step-in d1" style="text-align:center"><strong>63 answers</strong> filled in from what you've already told us. You sign, we file.</p>
+
+    <div class="stack">
+      <div class="gendoc">
+        <svg class="dicon" viewBox="0 0 30 38"><rect x="1" y="1" width="28" height="36" rx="3" fill="#fff" stroke="#F0E9D8" stroke-width="1.5"/><line x1="7" y1="10" x2="23" y2="10" stroke="#9BB99E" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="16" x2="23" y2="16" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="22" x2="18" y2="22" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/></svg>
+        <div><div class="dname">Admission agreement</div><div class="dsub">18 answers filled in</div></div>
+        <span class="pill sage dright">Ready</span>
+      </div>
+      <div class="gendoc">
+        <svg class="dicon" viewBox="0 0 30 38"><rect x="1" y="1" width="28" height="36" rx="3" fill="#fff" stroke="#F0E9D8" stroke-width="1.5"/><line x1="7" y1="10" x2="23" y2="10" stroke="#9BB99E" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="16" x2="23" y2="16" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="22" x2="18" y2="22" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/></svg>
+        <div><div class="dname">Identification and emergency</div><div class="dsub">21 answers filled in</div></div>
+        <span class="pill sage dright">Ready</span>
+      </div>
+      <div class="gendoc">
+        <svg class="dicon" viewBox="0 0 30 38"><rect x="1" y="1" width="28" height="36" rx="3" fill="#fff" stroke="#F0E9D8" stroke-width="1.5"/><line x1="7" y1="10" x2="23" y2="10" stroke="#9BB99E" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="16" x2="23" y2="16" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="22" x2="18" y2="22" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/></svg>
+        <div><div class="dname">Health history</div><div class="dsub">14 answers filled in</div></div>
+        <span class="pill sage dright">Ready</span>
+      </div>
+      <div class="gendoc">
+        <svg class="dicon" viewBox="0 0 30 38"><rect x="1" y="1" width="28" height="36" rx="3" fill="#fff" stroke="#E8C9B5" stroke-width="1.5"/><line x1="7" y1="10" x2="23" y2="10" stroke="#E8C9B5" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="16" x2="23" y2="16" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/><line x1="7" y1="22" x2="18" y2="22" stroke="#F0E9D8" stroke-width="2" stroke-linecap="round"/></svg>
+        <div><div class="dname">Doctor's health report</div><div class="dsub">Header filled in for your doctor</div></div>
+        <span class="pill dustyp dright">For your doctor</span>
+      </div>
+    </div>
+
+    <!-- quiet documents home -->
+    <div class="divider homedivider">Later: your documents, at rest</div>
+    <div class="homehead step-in d3">
+      <h2>Your documents</h2>
+    </div>
+    <p style="font-size:13px;color:var(--ink-mute);margin-bottom:4px">Everything you've signed lives here.</p>
+
+    <div class="grouplabel">Signed</div>
+    <div class="docrow">
+      <svg class="minileafseal" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="#C9A86A" stroke-width="2.4"/><path d="M30 42 Q 20 30 30 15 Q 40 30 30 42 Z" fill="#C9A86A"/></svg>
+      <div class="rmain">
+        <div class="rname">Admission agreement</div>
+        <div class="rmeta">Signed July 12</div>
+      </div>
+      <div class="ract">
+        <button class="iconbtn" aria-label="View"><svg viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <button class="iconbtn" aria-label="Download"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+    <div class="docrow">
+      <svg class="minileafseal" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="#C9A86A" stroke-width="2.4"/><path d="M30 42 Q 20 30 30 15 Q 40 30 30 42 Z" fill="#C9A86A"/></svg>
+      <div class="rmain">
+        <div class="rname">Identification and emergency</div>
+        <div class="rmeta">Signed July 12</div>
+      </div>
+      <div class="ract">
+        <button class="iconbtn" aria-label="View"><svg viewBox="0 0 20 20" fill="none"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <button class="iconbtn" aria-label="Download"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+
+    <div class="grouplabel">With your doctor</div>
+    <div class="docrow doctor">
+      <div class="rmain">
+        <div class="rname">Doctor's health report</div>
+        <div class="rmeta">Emailed to you July 12 · due by September 2</div>
+      </div>
+      <span class="pill dustyp">Waiting on your doctor</span>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink-mute);margin:2px 0 0 4px">Nothing else is blocked while you wait.</p>
+
+    <div class="grouplabel">Your record</div>
+    <div class="docrow certrow">
+      <svg class="minileafseal" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="#C9A86A" stroke-width="2.4"/><circle cx="30" cy="30" r="21" fill="none" stroke="#C9A86A" stroke-width="1" opacity=".6"/><path d="M30 42 Q 20 30 30 15 Q 40 30 30 42 Z" fill="#C9A86A"/></svg>
+      <div class="rmain">
+        <div class="rname">Signature certificate</div>
+        <div class="rmeta">Every signature, timestamped</div>
+      </div>
+      <div class="ract">
+        <button class="iconbtn" aria-label="Download certificate"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="actionbar">
+    <button class="cta" onclick="go('s-sign')">Review and sign</button>
+  </div>
+</section>
+
+</div><!-- /phone -->
+
+<!-- mock switcher: review control for this artifact, not product UI -->
+<nav class="switcher" aria-label="Mockup screen switcher">
+  <button class="on" data-s="s-welcome" onclick="go('s-welcome', this)"><span class="dot"></span>Welcome</button>
+  <button data-s="s-chapter" onclick="go('s-chapter', this)"><span class="dot"></span>Chapter</button>
+  <button data-s="s-sign" onclick="go('s-sign', this)"><span class="dot"></span>Sign</button>
+  <button data-s="s-docs" onclick="go('s-docs', this)"><span class="dot"></span>Documents</button>
+</nav>
+
+<script>
+/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md. */
+function go(id, btn) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.getElementById(id);
+  /* replay entrance + garden sequences */
+  target.querySelectorAll('.play').forEach(function(p) {
+    p.classList.remove('play'); void p.offsetWidth; p.classList.add('play');
+  });
+  void target.offsetWidth;
+  target.classList.add('active');
+  window.scrollTo({ top: 0 });
+  document.querySelectorAll('.switcher button').forEach(function(b) {
+    b.classList.toggle('on', b.dataset.s === id);
+  });
+  /* reset the sign demo when leaving */
+  if (id !== 's-sign') resetSign();
+}
+function toggleEdit(rowId, btn) {
+  var row = document.getElementById(rowId);
+  var editing = row.classList.toggle('editing');
+  btn.textContent = editing ? 'Done' : 'Edit';
+  if (editing) row.querySelector('input').focus();
+}
+function showWhisper() {
+  var w = document.getElementById('whisper1');
+  w.classList.remove('show'); void w.offsetWidth; w.classList.add('show');
+}
+function pick(chip) {
+  chip.parentNode.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('sel'); });
+  chip.classList.add('sel');
+}
+function sigmode(mode) {
+  var pad = document.getElementById('sigpad');
+  pad.classList.toggle('typed', mode === 'type');
+  document.getElementById('tabDraw').classList.toggle('on', mode === 'draw');
+  document.getElementById('tabType').classList.toggle('on', mode === 'type');
+  document.getElementById('tabDraw').setAttribute('aria-selected', mode === 'draw');
+  document.getElementById('tabType').setAttribute('aria-selected', mode === 'type');
+}
+function ack(id) { document.getElementById(id).classList.toggle('on'); }
+function signDemo() {
+  var seal = document.getElementById('seal');
+  var btn = document.getElementById('signbtn');
+  seal.classList.add('stamped');
+  btn.textContent = 'Signed';
+  btn.style.background = '#6F8F70';
+  setTimeout(resetSign, 2400);
+}
+function resetSign() {
+  var seal = document.getElementById('seal');
+  var btn = document.getElementById('signbtn');
+  if (!seal) return;
+  seal.classList.remove('stamped');
+  btn.textContent = 'Sign and continue';
+  btn.style.background = '';
+}
+</script>
+</body>
+</html>
