@@ -4,18 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v6 · Growing Mindfully</title>
+<title>Presence · Design mockup v7 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* PRESENCE MOCKUP v6 · design artifact, not production code.
+/* PRESENCE MOCKUP v7 · design artifact, not production code.
    One product on a responsive continuum: >=1200 full rail + 3-column grids;
    900-1199 full rail + 2-column grids; 700-899 slim icon rail + single column;
    <700 the mobile chaptered flow. Same header, cards, and CTA identity at every width.
-   v6: data-first flow (chapters chain; ALL signing at the end), the progress plant
-   spanning the top of the pane, the full canonical handbook inline, real filled LIC
-   documents in the confirm ceremony, and a real prefilled LIC 701 download. */
+   v7: stem = position + leaf = completion on the progress plant (both animated),
+   ORIGINAL CDSS form layouts filled with family data, full LIC 702 intake coverage
+   with age-band conditional blocks and enforced required fields, a filled needs and
+   services plan, handbook data prefill, upload glyphs, popover help, and the
+   petal-confetti finale. */
 :root {
   --paper: #FBF7EE; --paper-deep: #F0E9D8; --card: #FFFDF8;
   --ink: #1F2A2E; --ink-soft: #3F5359; --ink-mute: #6F7F84;
@@ -561,19 +563,23 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .chcard .cstep { font-size: 9.5px; font-weight: 800; letter-spacing: .1em;
   text-transform: uppercase; color: var(--sage-deep); margin-bottom: 2px; }
 
-/* ---- v6: the progress plant. One leaf per section, spanning the top of the
-   main pane; a leaf grows the moment its section completes. HTML cells over an
-   SVG stem so the labels stay readable at every width. ---- */
+/* ---- v7: the progress plant. STEM = position (extends to the current step),
+   LEAF = completion (grows only when its step finishes). Built once, updated by
+   class + dashoffset so the draw-in and unfurl really animate. ---- */
 .topgarden { position: relative; max-width: 1200px; margin: 0 auto; padding: 14px 20px 2px; }
-.tgstem { position: absolute; left: 40px; right: 40px; top: 50%; height: 34px;
-  margin-top: -11px; pointer-events: none; }
-.tgstem path { fill: none; stroke: var(--sage-deep); stroke-width: 2; stroke-linecap: round;
-  opacity: .8; }
+.tgstem { position: absolute; left: 40px; width: calc(100% - 80px); top: 50%;
+  height: 34px; margin-top: -11px; pointer-events: none; }
+.tgstem path { fill: none; stroke-width: 2; stroke-linecap: round; }
+.tgstem .tgtrace { stroke: var(--paper-deep); stroke-dasharray: .1 3;
+  vector-effect: non-scaling-stroke; }
+.tgstem .tggrow { stroke: var(--sage-deep); opacity: .85;
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+  transition: stroke-dashoffset .9s var(--ease); }
 .tgrow { position: relative; display: flex; align-items: stretch; }
 .tgsec { flex: 1; position: relative; height: 96px; min-width: 0; }
 .tgnode { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
   margin: -4px 0 0 -4px; border-radius: 50%; background: var(--paper-deep);
-  border: 1.5px solid var(--sage); }
+  border: 1.5px solid var(--sage); transition: background .4s, border-color .4s; }
 .tgsec.done .tgnode { background: var(--sage); border-color: var(--sage-deep); }
 .tgsec.now .tgnode { width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px;
   background: var(--sage); border-color: var(--sage-deep);
@@ -582,8 +588,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   opacity: 0; transform: scale(0); pointer-events: none; }
 .tgsec.up .tgleaf { bottom: 50%; margin-bottom: 3px; transform-origin: 20% 100%; }
 .tgsec.dn .tgleaf { top: 50%; margin-top: 3px; transform-origin: 20% 0%; }
-.tgsec.done .tgleaf { opacity: 1; transform: scale(1); }
-.tgsec.done .tgleaf.justgrown { animation: tgunfurl .6s var(--spring) both; }
+.tgsec.done .tgleaf { animation: tgunfurl .6s var(--spring) both; }
 @keyframes tgunfurl { from { opacity: 0; transform: scale(0) rotate(-14deg); }
   to { opacity: 1; transform: scale(1) rotate(0deg); } }
 .tglabel { position: absolute; left: 0; right: 0; text-align: center;
@@ -684,9 +689,61 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .finalecopy { font-size: 16.5px; color: var(--ink-soft); max-width: 500px; margin: 4px auto 18px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .tgsec.done .tgleaf.justgrown, .tgsec.dn.done .tgleaf.justgrown { animation: none; }
+  .tgsec.done .tgleaf { animation: none; opacity: 1; transform: scale(1); }
   .tgsec.now .tgnode { animation: none; }
+  .tgstem .tggrow { transition: none; }
   .tgend.open svg.tgbloom { animation: none; opacity: 1; transform: scale(1); }
+  .confetti { display: none; }
+}
+
+/* ---- v7: upload glyph (shared by LIC 701 + immunization rows) ---- */
+.st-upload { background: rgba(122,168,196,.16); color: var(--dusty-deep);
+  border: 1px solid rgba(122,168,196,.4); }
+
+/* ---- v7: the immunization help popover (hover on mouse, tap on touch) ---- */
+.helpwrap { position: relative; display: inline-flex; }
+.helppanel { display: none; position: absolute; top: 28px; left: -140px; width: 330px;
+  max-width: 76vw; z-index: 60; background: var(--card); border: 1px solid rgba(31,42,46,.12);
+  border-radius: var(--radius); box-shadow: var(--shadow-lift); padding: 12px 14px;
+  font-size: 12.5px; color: var(--ink-soft); text-align: left; }
+.helpwrap:hover .helppanel, .helppanel.on { display: block; }
+.helppanel .hprow { padding: 7px 0; border-top: 1px solid rgba(31,42,46,.07); }
+.helppanel .hprow:first-of-type { border-top: 0; padding-top: 2px; }
+.helppanel .hprow b { color: var(--ink); font-weight: 700; }
+.helppanel .hpintro { margin-bottom: 6px; }
+
+/* ---- v7: original-form fidelity helpers ---- */
+.fdsecthead { padding: 6px 14px 5px; border-top: 1px solid rgba(31,42,46,.22);
+  font-size: 9px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink); text-align: center; }
+.fdsecthead i { font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--ink-soft); }
+.fdchecks { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px 14px;
+  padding: 8px 14px 10px; border-top: 1px solid rgba(31,42,46,.22);
+  font-size: 11px; color: var(--ink-soft); }
+.fdchecks span { white-space: nowrap; }
+.fdunder { display: inline-block; border-bottom: 1px solid var(--ink-mute);
+  min-width: 120px; padding: 0 4px 1px; font-weight: 600; color: var(--ink); }
+.req { color: var(--earth); font-weight: 700; }
+.bandrow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin: 0 0 16px; }
+.bandchip { border: 1.5px solid var(--paper-deep); background: #fff; border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; color: var(--ink-soft); padding: 6px 14px; }
+.bandchip.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.healthgroup { margin-bottom: 18px; }
+.healthgroup .grouplabel { margin-top: 0; }
+.hgrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hgrid2 .full { grid-column: 1 / -1; }
+.radiorow { display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: var(--ink-soft); }
+.radiorow label { display: inline-flex; gap: 6px; align-items: center; }
+.radiorow input { accent-color: var(--sage-deep); width: 16px; height: 16px; }
+
+/* ---- v7: finale confetti (brand petals + leaves, never neon) ---- */
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 90; overflow: hidden; }
+.confetti .cpiece { position: absolute; top: -30px; will-change: transform, opacity;
+  animation: cfall linear both; }
+@keyframes cfall {
+  0% { transform: translateY(-4vh) rotate(0deg); opacity: 0; }
+  8% { opacity: .9; }
+  100% { transform: translateY(108vh) rotate(var(--spin)); opacity: .75; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -717,7 +774,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <line class="srail" x1="6" y1="16" x2="126" y2="16"/>
       <line class="sfill" x1="6" y1="16" x2="54" y2="16"/>
       <path class="minileaf" d="M18 15 Q 14 8 18 3 Q 24 7 21 15 Z"/>
-      <path class="minileaf" d="M44 15 Q 40 8 44 3 Q 50 7 47 15 Z"/>
+      <path class="minileaf" d="M44 17 Q 40 24 44 26 Q 50 24 47 17 Z"/>
       <circle class="n now" cx="72" cy="16" r="4.2"/>
       <circle class="n" cx="98" cy="16" r="3.4"/>
       <circle class="n" cx="122" cy="16" r="3.4"/>
@@ -753,18 +810,19 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </button>
     <button class="ritem signlock" data-go="s-review" id="r-lic700">
       <span class="st st-question">?</span>
-      LIC 700 · Identification <span class="rsub">Confirm</span>
+      LIC 700 · Identification <span class="rsub">Sign</span>
     </button>
     <button class="ritem signlock" data-go="s-review" id="r-lic702"><span class="st st-question">?</span> LIC 702 · Health history <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-lic627"><span class="st st-question">?</span> LIC 627 · Medical consent <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-lic613"><span class="st st-question">?</span> LIC 613A · Personal rights <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-lic995"><span class="st st-question">?</span> LIC 995 · Parents' rights <span class="rsub">Sign</span></button>
+    <button class="ritem signlock" data-go="s-review" id="r-nsp"><span class="st st-question">?</span> Needs and services plan <span class="rsub">Sign</span></button>
     <div class="rgroup"><span class="stepno">Step 7</span> Your doctor</div>
     <button class="ritem" data-go="s-docs">
-      <span class="st st-wait"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M8 5v3.2l2.2 1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-      LIC 701 · Doctor's report <span class="rsub">Waiting</span>
+      <span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+      LIC 701 · Doctor's report <span class="rsub">Upload</span>
     </button>
-    <button class="ritem" data-go="s-dash"><span class="st st-question">?</span> Immunization record <span class="rsub">Add photo</span></button>
+    <button class="ritem" data-go="s-dash"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Upload</span></button>
     <div class="rgroup">Home</div>
     <button class="ritem" data-go="s-dash">
       <span class="st st-bang">!</span>
@@ -813,7 +871,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
             <line class="srail" x1="6" y1="16" x2="126" y2="16"/>
             <line class="sfill wsfill" x1="6" y1="16" x2="54" y2="16"/>
             <path class="minileaf" d="M18 15 Q 14 8 18 3 Q 24 7 21 15 Z"/>
-            <path class="minileaf" d="M44 15 Q 40 8 44 3 Q 50 7 47 15 Z"/>
+            <path class="minileaf" d="M44 17 Q 40 24 44 26 Q 50 24 47 17 Z"/>
             <circle class="n now" cx="72" cy="16" r="4.2"/>
             <circle class="n" cx="98" cy="16" r="3.4"/>
             <circle class="n" cx="122" cy="16" r="3.4"/>
@@ -1127,34 +1185,128 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </div>
   </div>
   <div class="actionbar">
-    <div class="nextup" id="jicNext">Next: Health + routines · about 2 min</div>
+    <div class="nextup" id="jicNext">Next: Health + routines · about 6 min</div>
     <button class="cta" id="jicCta" onclick="finishChapter(3)">Finish chapter</button>
   </div>
 </section>
 
-<!-- SCREEN · STEP 4 · HEALTH + ROUTINES -->
+<!-- SCREEN · STEP 4 · HEALTH + ROUTINES · age-band conditional (v7) -->
 <section class="screen" id="s-health" aria-label="Health and routines chapter"
-  data-stage="answer" data-time="about 7 min left">
-  <div class="body" style="max-width:640px;margin:0 auto">
+  data-stage="answer" data-time="about 9 min left">
+  <div class="body" style="max-width:680px;margin:0 auto">
     <button class="backlink" onclick="go('s-welcome')">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Your chapters
     </button>
-    <span class="kicker step-in">Step 4 · Health + routines <span class="est" id="healthEst">· 0 of 5 fields done</span></span>
+    <span class="kicker step-in">Step 4 · Health + routines <span class="est" id="healthEst">· 0 of 34 fields done</span></span>
     <h1 class="title step-in d1" style="font-size:28px">How Theo eats, sleeps, and settles.</h1>
-    <p class="confirm-intro step-in d2">Only your teachers and directors see this.</p>
-    <div class="step-in d2" style="display:grid;gap:14px;margin-bottom:6px">
-      <div><span class="flabel">Allergies, if any</span><input type="text" class="hfield" placeholder="Food, medicine, insect stings... or none"></div>
-      <div><span class="flabel">Anything Theo does not eat</span><input type="text" class="hfield" placeholder="Family preference, texture, religion... or nothing"></div>
-      <div><span class="flabel">Nap routine</span><input type="text" class="hfield" placeholder="Usual time, sound machine, one nap or two"></div>
-      <div><span class="flabel">What comforts Theo</span><input type="text" class="hfield" placeholder="A lovey, a song, being held, a quiet corner"></div>
-      <div><span class="flabel">Anything else his teachers should know</span><input type="text" class="hfield" placeholder="Optional"></div>
+    <p class="confirm-intro step-in d2">Only your teachers and directors see this. It fills the state health history and Theo's needs and services plan. Fields marked <span class="req">*</span> are required by those forms.</p>
+    <div class="bandrow step-in d2">
+      <span class="flabel" style="margin:0 6px 0 0">Theo's room: Toddler</span>
+      <button class="bandchip" data-band="infant" onclick="setBand('infant')">Infant</button>
+      <button class="bandchip on" data-band="toddler" onclick="setBand('toddler')">Toddler</button>
+      <button class="bandchip" data-band="preschool" onclick="setBand('preschool')">Preschool</button>
+      <span class="demolink" style="font-size:11px">demo: the band is set by Theo's room, never asked</span>
     </div>
-    <div class="assist step-in d2">Every field autosaves. Leave anything blank and a teacher will ask you in person, gently.</div>
+
+    <div class="healthgroup step-in d2">
+      <div class="grouplabel">Health <span class="req">*</span></div>
+      <div class="hgrid2">
+        <div class="full"><span class="flabel">Allergies staff should know about <span class="req">*</span></span>
+          <input type="text" class="hreq" id="hAllergies" placeholder="Food, medicine, insect stings... or write none"></div>
+        <div class="full"><span class="flabel">Past illnesses Theo has had <span class="req">*</span></span>
+          <div class="radiorow" style="margin-top:2px" id="illChecks">
+            <label><input type="checkbox"> Chicken pox</label>
+            <label><input type="checkbox"> Asthma</label>
+            <label><input type="checkbox"> Whooping cough</label>
+            <label><input type="checkbox"> Mumps</label>
+            <label><input type="checkbox"> Measles</label>
+            <label><input type="checkbox" id="illNone" checked> None of these</label>
+          </div>
+        </div>
+        <div class="full"><span class="flabel">Other serious illnesses, accidents, or pre-existing conditions <span class="req">*</span></span>
+          <input type="text" class="hreq" id="hConditions" placeholder="Anything a teacher should know about... or none"></div>
+        <div><span class="flabel">Prescribed medications</span><input type="text" placeholder="Kind and side effects, or none"></div>
+        <div><span class="flabel">Special devices Theo uses</span><input type="text" placeholder="Glasses, hearing aid... or none"></div>
+      </div>
+    </div>
+
+    <div class="healthgroup step-in d3" data-band-block="infant" style="display:none">
+      <div class="grouplabel">Bottles and feeding · infant room</div>
+      <div class="hgrid2">
+        <div><span class="flabel">Bottles or cups daily <span class="req">*</span></span><input type="text" class="binfant" placeholder="How many"></div>
+        <div><span class="flabel">Solid foods</span>
+          <div class="radiorow" style="margin-top:8px"><label><input type="radio" name="solids"> Yes</label><label><input type="radio" name="solids"> Partial</label><label><input type="radio" name="solids"> Not yet</label></div></div>
+        <div class="full"><span class="flabel">Bottle 1: ounces · formula or breast milk · usual time</span><input type="text" placeholder="6 oz · formula · 9:00 a.m."></div>
+        <div class="full"><span class="flabel">Bottle 2</span><input type="text" placeholder="Optional"></div>
+        <div class="full"><span class="flabel">Bottle 3</span><input type="text" placeholder="Optional"></div>
+        <div><span class="flabel">Pacifier</span>
+          <div class="radiorow" style="margin-top:8px"><label><input type="radio" name="pacifier"> Yes</label><label><input type="radio" name="pacifier"> No</label></div></div>
+        <div><span class="flabel">If yes, when</span><input type="text" placeholder="Naps only, as needed..."></div>
+        <div class="full"><span class="flabel">Diapering allergies (Desitin, powder, wipes...)</span><input type="text" placeholder="Or none"></div>
+      </div>
+    </div>
+
+    <div class="healthgroup step-in d3" data-band-block="toddler">
+      <div class="grouplabel">Toilet training · toddler room</div>
+      <div class="hgrid2">
+        <div class="full"><span class="flabel">Where is Theo with toilet training? <span class="req">*</span></span>
+          <div class="radiorow" style="margin-top:2px" id="toiletRow">
+            <label><input type="radio" name="toilet"> Not started</label>
+            <label><input type="radio" name="toilet" checked> In progress</label>
+            <label><input type="radio" name="toilet"> Mostly independent</label>
+          </div>
+        </div>
+        <div><span class="flabel">Word Theo uses for bowel movement</span><input type="text" data-alpha placeholder="Their word"></div>
+        <div><span class="flabel">Word for urination</span><input type="text" data-alpha placeholder="Their word"></div>
+        <div class="full"><span class="flabel">Diapering allergies (Desitin, powder, wipes...)</span><input type="text" placeholder="Or none"></div>
+      </div>
+    </div>
+
+    <div class="healthgroup step-in d3" data-band-block="preschool" style="display:none">
+      <div class="grouplabel">Self care · preschool room</div>
+      <div class="hgrid2">
+        <div class="full"><span class="flabel">Toilet independence <span class="req">*</span></span>
+          <div class="radiorow" style="margin-top:2px"><label><input type="radio" name="ptoilet" checked> Fully independent</label><label><input type="radio" name="ptoilet"> Needs reminders</label><label><input type="radio" name="ptoilet"> Still working on it</label></div></div>
+        <div class="full"><span class="flabel">Rest time habits</span><input type="text" placeholder="Rests quietly, naps, needs a book..."></div>
+      </div>
+    </div>
+
+    <div class="healthgroup step-in d3">
+      <div class="grouplabel">Meals</div>
+      <div class="hgrid2">
+        <div><span class="flabel">Usual breakfast, and when</span><input type="text" placeholder="Oatmeal with fruit · 7:15 a.m."></div>
+        <div><span class="flabel">Usual dinner, and when</span><input type="text" placeholder="What and when"></div>
+        <div><span class="flabel">Food dislikes</span><input type="text" placeholder="Or none"></div>
+        <div><span class="flabel">Eating problems</span><input type="text" placeholder="Or none"></div>
+      </div>
+    </div>
+
+    <div class="healthgroup step-in d3">
+      <div class="grouplabel">Sleep and comfort</div>
+      <div class="hgrid2">
+        <div><span class="flabel">Wakes up at</span><input type="text" placeholder="6:30 a.m."></div>
+        <div><span class="flabel">Bedtime</span><input type="text" placeholder="7:30 p.m."></div>
+        <div><span class="flabel">Daily nap, when and how long</span><input type="text" placeholder="12:30, about two hours"></div>
+        <div><span class="flabel">What comforts Theo</span><input type="text" placeholder="A lovey, a song, being held"></div>
+        <div class="full"><span class="flabel">Special instructions (blanket, lovey, sound machine...)</span><input type="text" placeholder="Optional"></div>
+      </div>
+    </div>
+
+    <div class="healthgroup step-in d3">
+      <div class="grouplabel">Personality and social</div>
+      <div class="hgrid2">
+        <div class="full"><span class="flabel">How does Theo get along with family and other children?</span><input type="text" placeholder="A sentence is plenty"></div>
+        <div><span class="flabel">Group play experience</span><input type="text" placeholder="Daycare, playgroups, siblings..."></div>
+        <div><span class="flabel">Special problems, fears, or needs</span><input type="text" placeholder="Or none"></div>
+        <div class="full"><span class="flabel">Your plan for care when Theo is ill</span><input type="text" placeholder="Who stays home, backup care..."></div>
+      </div>
+    </div>
+    <div class="assist step-in d3">Every field autosaves. These answers fill LIC 702 and the needs and services plan; you review both before anything is filed.</div>
   </div>
   <div class="actionbar">
-    <div class="nextup" id="healthNext">Next: Permissions · about 1 min</div>
-    <button class="cta" onclick="finishChapter(4)">Finish chapter</button>
+    <div class="nextup" id="healthNext">3 required fields to go</div>
+    <button class="cta" id="healthCta" onclick="finishChapter(4)" disabled>Finish chapter</button>
   </div>
 </section>
 
@@ -1166,34 +1318,31 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Your chapters
     </button>
-    <span class="kicker step-in">Step 5 · Permissions <span class="est" id="permEst">· 0 of 5 checked</span></span>
+    <span class="kicker step-in">Step 5 · Permissions <span class="est" id="permEst">· 0 of 4 checked</span></span>
     <h1 class="title step-in d1" style="font-size:28px">A few yes-or-no permissions.</h1>
     <p class="confirm-intro step-in d2">Each one is summarized in plain language. The full text is one tap away.</p>
     <div class="confirm-card step-in d2" id="ackList">
       <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
         <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack1">
-        <label for="ack1" style="font-size:14.5px">Sunscreen and diaper cream. Teachers may apply the sunscreen and topical products you provide. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B.3 opens here.')">Read full text</button></label>
+        <label for="ack1" style="font-size:14.5px">Sunscreen and diaper cream. Teachers may apply the sunscreen and topical products you provide. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B opens here.')">Read full text</button></label>
       </div></div>
       <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
         <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack2">
-        <label for="ack2" style="font-size:14.5px">Brightwheel updates. Daily photos, notes, and messages arrive through the Brightwheel app. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B.2 opens here.')">Read full text</button></label>
+        <label for="ack2" style="font-size:14.5px">Developmental screening. Teachers may use standard screening tools and share results with you. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B opens here.')">Read full text</button></label>
       </div></div>
       <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
         <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack3">
-        <label for="ack3" style="font-size:14.5px">Developmental screening. Teachers may use standard screening tools and share results with you. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B.5 opens here.')">Read full text</button></label>
+        <label for="ack3" style="font-size:14.5px">Illness exposure notices. I understand Growing Mindfully notifies me when Theo may have been exposed to a communicable illness. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full acknowledgment text from Appendix B opens here.')">Read full text</button></label>
       </div></div>
       <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
         <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack4">
-        <label for="ack4" style="font-size:14.5px">Neighborhood walks. Stroller walks near the center, always with required ratios. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text opens here.')">Read full text</button></label>
-      </div></div>
-      <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
-        <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack5">
-        <label for="ack5" style="font-size:14.5px">Late-pickup calls. If pickup runs late, we call your emergency contacts in order. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B.11 opens here.')">Read full text</button></label>
+        <label for="ack4" style="font-size:14.5px">Late pickup. I understand that if pickup runs late, Growing Mindfully will call my emergency contacts in order. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full acknowledgment text from Appendix B opens here.')">Read full text</button></label>
       </div></div>
     </div>
+    <div class="assist step-in d3">Photo, media, and Brightwheel authorizations are part of the handbook (Appendix B), which you sign in Step 6. Each row here is an acknowledgment of how care works, not an opt-in.</div>
   </div>
   <div class="actionbar">
-    <div class="nextup" id="permNext">5 permissions to check</div>
+    <div class="nextup" id="permNext">4 permissions to check</div>
     <button class="cta" id="permCta" onclick="finishChapter(5)" disabled>Finish chapter</button>
   </div>
 </section>
@@ -1218,8 +1367,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">1 slot</span></div>
     </button>
     <button class="gendoc-anim docrow" style="animation-delay:.35s" id="g-lic700" onclick="goGate('s-review')">
-      <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review the filled form, then confirm</div></div>
-      <div class="cstat"><span class="st st-question">?</span><span class="cfields">21/21 filled</span></div>
+      <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review the filled form, then sign</div></div>
+      <div class="cstat"><span class="st st-question">?</span><span class="cfields">27/27 filled</span></div>
     </button>
     <button class="gendoc-anim docrow" style="animation-delay:.45s" id="g-lic702" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 702 · Health history</div><div class="rmeta">Review the filled form, then sign</div></div>
@@ -1236,6 +1385,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <button class="gendoc-anim docrow" style="animation-delay:.7s" id="g-lic995" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 995 · Parents' rights</div><div class="rmeta">Review, then sign the acknowledgment</div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">2/2 filled</span></div>
+    </button>
+    <button class="gendoc-anim docrow" style="animation-delay:.75s" id="g-nsp" onclick="goGate('s-review')">
+      <div class="rmain"><div class="rname">Needs and services plan</div><div class="rmeta">Your routines answers, on one page with room to read them</div></div>
+      <div class="cstat"><span class="st st-question">?</span><span class="cfields">24/24 filled</span></div>
     </button>
     </div>
     <div>
@@ -1260,7 +1413,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <span>When your doctor's done, add a photo here.<span class="usub">Every page of the completed form. We take it from there.</span></span>
         </button>
       </div>
-      <div class="cstat" id="lic701Stat"><span class="st st-wait"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M8 5v3.2l2.2 1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Waiting</span></div>
+      <div class="cstat" id="lic701Stat"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Upload</span></div>
     </div>
     </div>
     </div>
@@ -1426,7 +1579,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       </svg>
       <h1 class="title step-in d1" style="font-size:32px;margin-top:10px">That's all for now!</h1>
       <p class="finalecopy step-in d2">Please complete your doctor evaluation form no later than your second week of attendance (but earlier is fine, too!)</p>
-      <p class="lede step-in d3" style="font-size:14px">7 steps · 6 documents signed and confirmed · 63 answers we typed for you.</p>
+      <p class="lede step-in d3" style="font-size:14px">7 steps · 7 documents signed · 63 answers we typed for you.</p>
+      <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">We emailed you links to every completed document. They also live in your documents, always.</p>
       <p class="hand step-in d3" style="font-size:19px;color:var(--sage-deep)">See you Monday, August 3.</p>
     </div>
   </div>
@@ -1454,9 +1608,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">1 slot</span></div>
     </button>
     <button class="docrow step-in d1" id="d-lic700" onclick="goGate('s-review')">
-      <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review and confirm · about 1 min</div>
+      <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review and sign · about 1 min</div>
         <div class="rowactions"></div></div>
-      <div class="cstat"><span class="st st-question">?</span><span class="cfields">21/21 filled</span></div>
+      <div class="cstat"><span class="st st-question">?</span><span class="cfields">27/27 filled</span></div>
     </button>
     <button class="docrow step-in d1" id="d-lic702" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 702 · Health history</div><div class="rmeta">Review and sign · about 1 min</div>
@@ -1477,6 +1631,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="rmain"><div class="rname">LIC 995 · Parents' rights</div><div class="rmeta">Review and sign · about 1 min</div>
         <div class="rowactions"></div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">2/2 filled</span></div>
+    </button>
+    <button class="docrow step-in d1" id="d-nsp" onclick="goGate('s-review')">
+      <div class="rmain"><div class="rname">Needs and services plan</div><div class="rmeta">Review and sign · about 1 min</div>
+        <div class="rowactions"></div></div>
+      <div class="cstat"><span class="st st-question">?</span><span class="cfields">24/24 filled</span></div>
     </button>
 
     <div class="grouplabel step-in d2">Signed earlier</div>
@@ -1502,26 +1661,30 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <span>When your doctor's done, add a photo here.<span class="usub">Every page of the completed form.</span></span>
         </button>
       </div>
-      <div class="cstat"><span class="st st-wait"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M8 5v3.2l2.2 1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Waiting</span></div>
+      <div class="cstat"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Upload</span></div>
     </div>
     <div class="docrow step-in d3" id="d-imm">
       <div class="rmain">
         <div class="rname" style="display:flex;align-items:center;gap:8px">Immunization record
-          <button class="helpq" onclick="document.getElementById('immHelp').classList.toggle('on')" aria-label="How to get the immunization record">?</button>
+          <span class="helpwrap">
+            <button class="helpq" onclick="document.getElementById('immHelp').classList.toggle('on');event.stopPropagation()" aria-label="How to get the immunization record">?</button>
+            <div class="helppanel" id="immHelp">
+              <div class="hpintro">Wherever you can see the record, a screenshot or photo works. The usual paths:</div>
+              <div class="hprow"><b>Kaiser Permanente</b> · kp.org or the app: Medical record, then Immunizations. Print or screenshot.</div>
+              <div class="hprow"><b>Sutter Health</b> · My Health Online: Health, then Immunizations. Download or screenshot.</div>
+              <div class="hprow"><b>UC Davis Health</b> · MyUCDavisHealth: Health, then Immunizations.</div>
+              <div class="hprow"><b>Dignity Health</b> · My Portal: Health record, then Immunizations.</div>
+              <div class="hprow"><b>Any California child</b> · myvaccinerecord.cdph.ca.gov: enter name, birthdate, and your phone or email for the state's official digital record.</div>
+              <div class="hprow">Stuck? Ask your pediatrician's front desk for a printout, or a director will chase it down with you.</div>
+            </div>
+          </span>
         </div>
         <div class="rmeta">A photo of the record from your doctor or patient portal</div>
         <div class="rowactions"><button class="raction" onclick="alert('Mockup: the camera or file picker opens here.')">Upload a photo or PDF</button></div>
-        <div class="helppanel" id="immHelp">
-          <div class="hpintro">Wherever you can see the record, a screenshot or photo works. The usual paths:</div>
-          <div class="hprow"><b>Kaiser Permanente</b> · kp.org or the app: Medical record, then Immunizations. Print or screenshot.</div>
-          <div class="hprow"><b>Sutter Health</b> · My Health Online: Health, then Immunizations. Download or screenshot.</div>
-          <div class="hprow"><b>UC Davis Health</b> · MyUCDavisHealth: Health, then Immunizations.</div>
-          <div class="hprow"><b>Dignity Health</b> · My Portal: Health record, then Immunizations.</div>
-          <div class="hprow"><b>Any California child</b> · myvaccinerecord.cdph.ca.gov: enter name, birthdate, and your phone or email for the state's official digital record.</div>
-          <div class="hprow">Stuck? Ask your pediatrician's front desk for a printout, or a director will chase it down with you.</div>
+        
         </div>
       </div>
-      <div class="cstat"><span class="st st-question">?</span><span class="cfields">0/1 pages</span></div>
+      <div class="cstat"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Upload</span></div>
     </div>
 
     <div class="grouplabel step-in d3">Your record</div>
@@ -3474,19 +3637,20 @@ var chState = [
   { id: 'ch1', name: 'Your family',       screen: 's-family',      done: 22, total: 22, mins: 0 },
   { id: 'ch2', name: 'About Theo',        screen: 's-child',       done: 49, total: 49, mins: 0 },
   { id: 'ch3', name: 'Just in case',      screen: 's-justincase',  done: 16, total: 18, mins: 3 },
-  { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 5,  mins: 2 },
+  { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 34, mins: 6 },
   { id: 'ch5', name: 'Permissions',       screen: 's-permissions', done: 0,  total: 13, mins: 1 }
 ];
 /* ---- documents (step 6): signed/confirmed state persists; fixes the v5
    completion bug where the handbook never registered as signed ---- */
-var docState = { hb: false, lic700: false, lic702: false, lic627: false, lic613: false, lic995: false };
+var docState = { hb: false, lic700: false, lic702: false, lic627: false, lic613: false, lic995: false, nsp: false };
 var DOCLIST = [
   { id: 'hb',     rail: 'r-hb',     gen: 'g-hb',     dash: 'd-hb',     doneLabel: 'Signed',    pend: '1 slot' },
-  { id: 'lic700', rail: 'r-lic700', gen: 'g-lic700', dash: 'd-lic700', doneLabel: 'Confirmed', pend: '21/21 filled' },
+  { id: 'lic700', rail: 'r-lic700', gen: 'g-lic700', dash: 'd-lic700', doneLabel: 'Signed',    pend: '27/27 filled' },
   { id: 'lic702', rail: 'r-lic702', gen: 'g-lic702', dash: 'd-lic702', doneLabel: 'Signed',    pend: '14/14 filled' },
   { id: 'lic627', rail: 'r-lic627', gen: 'g-lic627', dash: 'd-lic627', doneLabel: 'Signed',    pend: '5/5 filled' },
   { id: 'lic613', rail: 'r-lic613', gen: 'g-lic613', dash: 'd-lic613', doneLabel: 'Signed',    pend: '2/2 filled' },
-  { id: 'lic995', rail: 'r-lic995', gen: 'g-lic995', dash: 'd-lic995', doneLabel: 'Signed',    pend: '2/2 filled' }
+  { id: 'lic995', rail: 'r-lic995', gen: 'g-lic995', dash: 'd-lic995', doneLabel: 'Signed',    pend: '2/2 filled' },
+  { id: 'nsp',    rail: 'r-nsp',    gen: 'g-nsp',    dash: 'd-nsp',    doneLabel: 'Signed',    pend: '24/24 filled' }
 ];
 var lic701Downloaded = false;
 
@@ -3500,54 +3664,71 @@ function allDocsDone() { return DOCLIST.every(function(d){ return docState[d.id]
 function docsDoneCount() { return DOCLIST.filter(function(d){ return docState[d.id]; }).length; }
 function nextChapter() { return chState.filter(function(c){ return c.done < c.total; })[0] || null; }
 
-/* ---- the progress plant (v6 item 11): one leaf per section, top of the pane ---- */
+/* ---- the progress plant (v7): STEM extends to the CURRENT step; a LEAF grows
+   only when its step FINISHES. Built once so the draw-in and unfurl animate. ---- */
 var TG_SECTIONS = [
   { label: 'your family' }, { label: 'Theo' }, { label: 'just in case' },
   { label: 'health + routines' }, { label: 'permissions' },
   { label: 'sign + confirm' }, { label: 'your doctor' }
 ];
-var tgPrevGrown = [true, true, false, false, false, false, false];
 var LEAF_PATHS = '<path d="M6 33 C 2 20 8 6 20 1 C 24 12 20 26 8 32 Q 6 33 6 33 Z" fill="#9BB99E"/><path d="M7 31 C 10 22 14 13 19 4" stroke="#6F8F70" stroke-width="1" fill="none"/>';
-var LEAF_SVG_UP = '<svg class="tgleaf CLS" viewBox="0 0 26 34" aria-hidden="true">' + LEAF_PATHS + '</svg>';
-var LEAF_SVG_DN = '<svg class="tgleaf CLS" viewBox="0 0 26 34" aria-hidden="true"><g transform="translate(0 34) scale(1 -1)">' + LEAF_PATHS + '</g></svg>';
+var LEAF_SVG_UP = '<svg class="tgleaf" viewBox="0 0 26 34" aria-hidden="true">' + LEAF_PATHS + '</svg>';
+var LEAF_SVG_DN = '<svg class="tgleaf" viewBox="0 0 26 34" aria-hidden="true"><g transform="translate(0 34) scale(1 -1)">' + LEAF_PATHS + '</g></svg>';
 function tgStates() {
-  var s = [];
-  for (var i = 0; i < 5; i++) s.push(chState[i].done >= chState[i].total ? 'done' : 'dormant');
-  s.push(allDocsDone() ? 'done' : 'dormant');
-  s.push('dormant'); /* your doctor: waiting until the report comes back */
-  /* the active section: first not-done, in order */
+  var st = [];
+  for (var i = 0; i < 5; i++) st.push(chState[i].done >= chState[i].total ? 'done' : 'dormant');
+  st.push(allDocsDone() ? 'done' : 'dormant');
+  st.push('dormant'); /* your doctor: waiting until the report comes back */
   var actIdx = -1;
-  for (var j = 0; j < s.length; j++) { if (s[j] !== 'done') { actIdx = j; break; } }
-  return { states: s, active: actIdx };
+  for (var j = 0; j < st.length; j++) { if (st[j] !== 'done') { actIdx = j; break; } }
+  return { states: st, active: actIdx };
+}
+var tgBuilt = false;
+function tgBuild() {
+  var el = document.getElementById('topGarden');
+  var stemPath = 'M0 17 C 8 13 15 21 23 17 S 38 13 46 17 S 61 21 69 17 S 84 13 92 17 L 100 17';
+  var html = '<svg class="tgstem" preserveAspectRatio="none" viewBox="0 0 100 34" aria-hidden="true">' +
+    '<path class="tgtrace" d="' + stemPath + '"/>' +
+    '<path class="tggrow" pathLength="100" d="' + stemPath + '"/></svg><div class="tgrow">';
+  TG_SECTIONS.forEach(function(sec, i) {
+    html += '<div class="tgsec ' + (i % 2 === 0 ? 'up' : 'dn') + '" data-tg="' + i + '">' +
+      (i % 2 === 0 ? LEAF_SVG_UP : LEAF_SVG_DN) +
+      '<span class="tgnode"></span><span class="tglabel">' + sec.label + '</span></div>';
+  });
+  html += '<div class="tgend"><span class="tgbud"></span>' +
+    '<svg class="tgbloom" viewBox="0 0 36 36" aria-hidden="true"><g transform="translate(18 18)">' +
+    '<g fill="#9BB99E" opacity=".92"><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(45)"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(90)"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(135)"/></g>' +
+    '<circle r="3.4" fill="#C9A86A"/></g></svg>' +
+    '<span class="tgpct"></span></div></div>';
+  el.innerHTML = html;
+  tgBuilt = true;
 }
 function renderTopGarden() {
   var el = document.getElementById('topGarden');
   if (!el) return;
+  if (!tgBuilt) tgBuild();
   var t = tgStates();
-  var grown = t.states.map(function(x){ return x === 'done'; });
-  var doneSections = grown.filter(Boolean).length;
+  var doneSections = t.states.filter(function(x){ return x === 'done'; }).length;
   var pct = Math.round(doneSections / TG_SECTIONS.length * 100);
-  var html = '<svg class="tgstem" preserveAspectRatio="none" viewBox="0 0 100 34" aria-hidden="true">' +
-    '<path d="M0 17 C 8 13 15 21 23 17 S 38 13 46 17 S 61 21 69 17 S 84 13 92 17 L 100 17" vector-effect="non-scaling-stroke"/></svg>' +
-    '<div class="tgrow">';
-  TG_SECTIONS.forEach(function(sec, i) {
-    var cls = 'tgsec ' + (i % 2 === 0 ? 'up' : 'dn');
-    if (grown[i]) cls += ' done';
-    if (i === t.active) cls += ' now';
-    var leaf = grown[i] ? (i % 2 === 0 ? LEAF_SVG_UP : LEAF_SVG_DN).replace('CLS', (!tgPrevGrown[i] && !reduceMotion) ? 'justgrown' : '') : '';
-    html += '<div class="' + cls + '">' + leaf + '<span class="tgnode"></span>' +
-      '<span class="tglabel">' + sec.label + '</span></div>';
+  el.querySelectorAll('.tgsec').forEach(function(cell, i) {
+    cell.classList.toggle('done', t.states[i] === 'done');   /* leaf = completion */
+    cell.classList.toggle('now', i === t.active);            /* bud = you are here */
   });
-  html += '<div class="tgend' + (allDocsDone() ? ' open' : '') + '">' +
-    '<span class="tgbud"></span>' +
-    '<svg class="tgbloom" viewBox="0 0 36 36" aria-hidden="true"><g transform="translate(18 18)">' +
-    '<g fill="#9BB99E" opacity=".92"><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(45)"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(90)"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(135)"/></g>' +
-    '<circle r="3.4" fill="#C9A86A"/></g></svg>' +
-    '<span class="tgpct">' + pct + '%</span></div></div>';
-  el.innerHTML = html;
-  el.setAttribute('aria-label', 'Enrollment progress: ' + doneSections + ' of ' + TG_SECTIONS.length + ' steps complete, ' + pct + ' percent');
-  tgPrevGrown = grown;
+  var end = el.querySelector('.tgend');
+  end.classList.toggle('open', allDocsDone());
+  el.querySelector('.tgpct').textContent = pct + '%';
+  el.setAttribute('aria-label', 'Enrollment progress: ' + doneSections + ' of ' + TG_SECTIONS.length + ' steps complete, ' + pct + ' percent. Currently on ' + (t.active >= 0 ? TG_SECTIONS[t.active].label : 'the finish'));
+  /* stem = position: draw the grown stem to the current step's node */
+  var grow = el.querySelector('.tggrow');
+  var stemBox = el.querySelector('.tgstem').getBoundingClientRect();
+  var target = (t.active >= 0) ? el.querySelectorAll('.tgsec')[t.active].querySelector('.tgnode') : end.querySelector(allDocsDone() ? '.tgbloom' : '.tgbud');
+  var tb = target.getBoundingClientRect();
+  if (stemBox.width > 0) {
+    var pos = Math.max(0, Math.min(100, ((tb.left + tb.width / 2) - stemBox.left) / stemBox.width * 100));
+    requestAnimationFrame(function(){ grow.style.strokeDashoffset = (100 - pos); });
+  }
 }
+window.addEventListener('resize', function(){ if (tgBuilt) renderTopGarden(); });
 
 /* ---- shared render pass ---- */
 function renderState() {
@@ -3597,10 +3778,19 @@ function renderState() {
   var jc = document.getElementById('jicCta');
   if (jc) jc.disabled = !jReady;
   var jn = document.getElementById('jicNext');
-  if (jn) jn.textContent = jReady ? 'Next: Health + routines · about 2 min'
+  if (jn) jn.textContent = jReady ? 'Next: Health + routines · about 6 min'
     : 'Add at least one pickup person with a first and last name';
   var je = document.getElementById('jicEst');
   if (je) je.textContent = '· ' + chState[2].done + ' of ' + chState[2].total + ' fields done';
+  /* v7 item 6: required-ness enforced where the underlying form requires it */
+  var hReady = healthValid();
+  var hc = document.getElementById('healthCta');
+  if (hc) hc.disabled = !hReady;
+  var hn = document.getElementById('healthNext');
+  if (hn) hn.textContent = hReady ? 'Next: Permissions · about 1 min'
+    : healthMissing() + ' required ' + (healthMissing() === 1 ? 'field' : 'fields') + ' to go, marked *';
+  var he = document.getElementById('healthEst');
+  if (he) he.textContent = '· ' + healthFilled() + ' of ' + chState[3].total + ' fields done';
   var acks = document.querySelectorAll('.ack');
   var ackDone = Array.prototype.filter.call(acks, function(a){ return a.checked; }).length;
   var pc = document.getElementById('permCta');
@@ -3673,6 +3863,7 @@ function go(id) {
   if (id === 's-docs') countUp();
   if (id === 's-handbook') hbInit();
   if (id === 's-review') renderForm();
+  if (id === 's-finale') spawnConfetti();
   maskInputs();
   renderState();
 }
@@ -3694,8 +3885,18 @@ function goNextChapter() {
 function finishChapter(n) {
   var c = chState[n - 1];
   if (n === 3 && !pickupOk()) { renderState(); return; }
+  if (n === 4 && !healthValid()) { renderState(); return; }
   if (n === 5) {
-    var acks = document.querySelectorAll('.ack');
+    /* v7 item 6: required-ness enforced where the underlying form requires it */
+  var hReady = healthValid();
+  var hc = document.getElementById('healthCta');
+  if (hc) hc.disabled = !hReady;
+  var hn = document.getElementById('healthNext');
+  if (hn) hn.textContent = hReady ? 'Next: Permissions · about 1 min'
+    : healthMissing() + ' required ' + (healthMissing() === 1 ? 'field' : 'fields') + ' to go, marked *';
+  var he = document.getElementById('healthEst');
+  if (he) he.textContent = '· ' + healthFilled() + ' of ' + chState[3].total + ' fields done';
+  var acks = document.querySelectorAll('.ack');
     if (Array.prototype.some.call(acks, function(a){ return !a.checked; })) { renderState(); return; }
   }
   c.done = c.total;
@@ -3804,8 +4005,22 @@ function hbInit() {
   if (hbInited) return;
   hbInited = true;
   var fr = document.getElementById('hbFrame');
-  fr.onload = function() { try { hbWire(fr.contentDocument); } catch (e) {} };
+  var wired = false;
+  function tryWire() {
+    if (wired) return;
+    try {
+      var d = fr.contentDocument;
+      if (d && d.readyState === 'complete' && d.querySelector('.flabel')) {
+        wired = true;
+        hbWire(d);
+        return;
+      }
+    } catch (e) {}
+    setTimeout(tryWire, 120);
+  }
+  fr.onload = tryWire;
   fr.srcdoc = document.getElementById('hbSource').innerHTML;
+  setTimeout(tryWire, 200);
 }
 function hbWire(doc) {
   hbDoc = doc;
@@ -3833,6 +4048,56 @@ function hbWire(doc) {
     cv.textContent = 'Theo Alvarez';
     childField.insertBefore(cv, childField.firstChild);
   }
+  /* v7 item 12: prefill EVERY handbook data field we hold or asked. Values are
+     matched by label text plus the nearest preceding named label for the
+     ambiguous ones (Phone / Relationship / Date), so a handbook version bump
+     keeps working. */
+  var ctx = '';
+  var FILLS = [
+    [/Parent\/Guardian #1: Full Name/i, 'Maria Alvarez'],
+    [/Parent\/Guardian #2: Full Name/i, 'Jordan Alvarez'],
+    [/Parent \/ Guardian Name/i, 'Maria Alvarez'],
+    [/Name\(s\) of Child|Child\(ren\)'s Name/i, 'Theo Alvarez'],
+    [/Child's Name/i, 'Theo Alvarez'],
+    [/Date\(s\) of Birth/i, 'March 14, 2024'],
+    [/Cell Phone/i, '(916) 555-0134'],
+    [/Emergency Contact: Name/i, 'Denise Alvarez'],
+    [/Emergency Contact: Phone/i, '(916) 555-0173'],
+    [/Insurance Carrier and Policy Number/i, 'Western Health Advantage · WHA-204577'],
+    [/Approximate Arrival Time/i, '8:00 a.m.'],
+    [/Approximate Departure Time/i, '5:00 p.m.'],
+    [/Breakfast: Food/i, 'Oatmeal with fruit · 7:15 a.m. at home'],
+    [/Lunch: Food/i, 'Provided by Growing Mindfully · 11:30 a.m.'],
+    [/Solid Foods/i, 'Yes, full table food'],
+    [/Number of Bottles/i, 'Cups only, at meals'],
+    [/Bottle 1/i, 'n/a'], [/Bottle 2/i, 'n/a'], [/Bottle 3/i, 'n/a'],
+    [/Sleeping Habits/i, 'Sleeps through, 7:30 p.m. to 6:30 a.m.'],
+    [/Bed Time at Night/i, '7:30 p.m.'],
+    [/Daily Nap Time/i, 'One nap, 12:30 to 2:30'],
+    [/Special Instructions/i, 'Gray elephant lovey for nap'],
+    [/Diapering \/ Topical Allergies/i, 'None known'],
+    [/All Other Allergies/i, 'None known'],
+    [/Products my child is allergic to/i, 'None known']
+  ];
+  labels.forEach(function(l) {
+    var t = l.textContent.trim();
+    var field = l.parentNode;
+    if (field.querySelector('.pres-fill') || field.querySelector('.pres-slot')) return;
+    var val = null;
+    for (var i = 0; i < FILLS.length; i++) { if (FILLS[i][0].test(t)) { val = FILLS[i][1]; break; } }
+    if (!val) {
+      if (/^Phone$/i.test(t)) val = /#2/.test(ctx) ? '(916) 555-0187' : '(916) 555-0134';
+      else if (/^Relationship$/i.test(t)) val = /Emergency/i.test(ctx) ? 'Grandmother' : 'Parent';
+      else if (/^Date$/i.test(t) && !l.closest('.sig-row')) val = TODAY;
+    }
+    if (/Full Name|Contact: Name|Guardian Name/i.test(t)) ctx = t;
+    if (val) {
+      var v = doc.createElement('div');
+      v.className = 'pres-fill';
+      v.textContent = val;
+      field.insertBefore(v, field.firstChild);
+    }
+  });
   if (sigField) {
     sigRow = sigField.closest('.sig-row');
     var btn = doc.createElement('button');
@@ -3900,7 +4165,10 @@ function downloadHandbook() {
   a.click();
 }
 
-/* ---- v6 item 7: the confirm ceremony renders the ACTUAL filled form ---- */
+/* ---- v7 item 10: ORIGINAL CDSS form layouts, filled with the family's data.
+   Production rule (spec 16.3): production fills the actual CDSS PDF templates
+   (pdf-lib AcroForm/overlay); this HTML reproduction exists only because the
+   mockup is a single self-contained file. ---- */
 function fdrow(cells) {
   var h = '<div class="fdrow">';
   cells.forEach(function(c) {
@@ -3909,61 +4177,149 @@ function fdrow(cells) {
   });
   return h + '</div>';
 }
+function fdsect(t, note) {
+  return '<div class="fdsecthead">' + t + (note ? ' <i>' + note + '</i>' : '') + '</div>';
+}
+function cb(on) { return on ? '&#9745;' : '&#9744;'; }
 var FORMS = [
   { id: 'lic700', no: 'LIC 700 (8/08)', name: 'Identification and Emergency Information',
-    sub: 'Child care centers / family child care homes · To be completed by parent or authorized representative',
-    sig: false,
+    sub: 'Child care centers/family child care homes · To be completed by parent or authorized representative',
+    sig: true, sigLabel: 'Signature of parent/guardian or authorized representative',
     body: function() {
-      return fdrow([{l:"Child's name · last", v:'Alvarez'},{l:'First', v:'Theo'},{l:'Sex', v:'M'},{l:'Birthdate', v:'3/14/2024'}]) +
-        fdrow([{l:'Address', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'Telephone', v:'(916) 555-0134'}]) +
-        fdrow([{l:"Parent/guardian 1 name", v:'Maria Alvarez'},{l:'Home telephone', v:'(916) 555-0134'},{l:'Business telephone', v:'(916) 555-0134'}]) +
-        fdrow([{l:"Parent/guardian 2 name", v:'Jordan Alvarez'},{l:'Home telephone', v:'(916) 555-0187'},{l:'Business telephone', v:'(916) 555-0187'}]) +
-        fdrow([{l:'Additional person to be called in an emergency', v:'Denise Alvarez · Grandmother', flex:2},{l:'Telephone', v:'(916) 555-0173'}]) +
-        fdrow([{l:'Additional person to be called in an emergency', v:'Sam Okafor · Family friend', flex:2},{l:'Telephone', v:'(916) 555-0148'}]) +
-        fdrow([{l:'Physician', v:'Dr. Priya Nair · Capitol Pediatrics', flex:2},{l:'Telephone', v:'(916) 555-0122'}]) +
-        fdrow([{l:'Persons authorized to take child from the facility', v:'Maria Alvarez · Jordan Alvarez · Denise Alvarez', flex:3}]) +
-        fdrow([{l:'Time child will spend in facility · from', v:'8:00 a.m.'},{l:'To', v:'5:00 p.m.'},{l:'Days', v:'Monday to Friday'}]);
+      return fdrow([{l:"Child's name · last", v:'Alvarez'},{l:'Middle'},{l:'First', v:'Theo'},{l:'Sex', v:'M'},{l:'Telephone', v:'(916) 555-0134'}]) +
+        fdrow([{l:'Address · number, street, city, state, zip', v:'1418 P Street, Sacramento, CA 95814', flex:3},{l:'Birthdate', v:'3/14/2024'}]) +
+        fdrow([{l:"Father's/guardian's name · last, middle, first", v:'Alvarez, Jordan', flex:2},{l:'Business telephone', v:'(916) 555-0187'}]) +
+        fdrow([{l:'Home address', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'Home telephone', v:'(916) 555-0187'}]) +
+        fdrow([{l:"Mother's/guardian's name · last, middle, first", v:'Alvarez, Maria', flex:2},{l:'Business telephone', v:'(916) 555-0134'}]) +
+        fdrow([{l:'Home address', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'Home telephone', v:'(916) 555-0134'}]) +
+        fdrow([{l:'Person responsible for child', v:'Maria Alvarez'},{l:'Home telephone', v:'(916) 555-0134'},{l:'Business telephone', v:'(916) 555-0134'}]) +
+        fdsect('Additional persons who may be called in an emergency') +
+        fdrow([{l:'Name', v:'Denise Alvarez'},{l:'Address', v:'Sacramento', flex:1.4},{l:'Telephone', v:'(916) 555-0173'},{l:'Relationship', v:'Grandmother'}]) +
+        fdrow([{l:'Name', v:'Sam Okafor'},{l:'Address', v:'Sacramento', flex:1.4},{l:'Telephone', v:'(916) 555-0148'},{l:'Relationship', v:'Family friend'}]) +
+        fdsect('Physician or dentist to be called in an emergency') +
+        fdrow([{l:'Physician', v:'Dr. Priya Nair'},{l:'Address', v:'Capitol Pediatrics, Sacramento', flex:1.4},{l:'Medical plan and number', v:'Western Health Advantage'},{l:'Telephone', v:'(916) 555-0122'}]) +
+        fdrow([{l:'Dentist'},{l:'Address', flex:1.4},{l:'Medical plan and number'},{l:'Telephone'}]) +
+        '<div class="fdtext">If physician cannot be reached, what action should be taken?&nbsp;&nbsp;' + cb(true) + ' <span class="fv">Call emergency hospital</span>&nbsp;&nbsp;' + cb(false) + ' Other, explain</div>' +
+        fdsect('Names of persons authorized to take child from the facility', '(child will not be allowed to leave with any other person without written authorization from parent or authorized representative)') +
+        fdrow([{l:'Name', v:'Maria Alvarez', flex:2},{l:'Relationship', v:'Parent'}]) +
+        fdrow([{l:'Name', v:'Jordan Alvarez', flex:2},{l:'Relationship', v:'Parent'}]) +
+        fdrow([{l:'Name', v:'Denise Alvarez', flex:2},{l:'Relationship', v:'Grandmother'}]) +
+        fdrow([{l:'Time child will be called for', v:'8:00 a.m. to 5:00 p.m., Monday to Friday', flex:1}]);
     } },
-  { id: 'lic702', no: 'LIC 702 (8/08)', name: "Child's Preadmission Health History",
-    sub: "Parent's report · To be completed by parent or guardian",
-    sig: true,
+  { id: 'lic702', no: 'LIC 702 (10/19) (Confidential)', name: "Child's Preadmission Health History · Parent/Authorized Representative Report",
+    sub: 'State of California · Health and Human Services Agency · California Department of Social Services',
+    sig: true, sigLabel: 'Parent/authorized representative signature',
     body: function() {
-      return fdrow([{l:"Child's name", v:'Theo Alvarez', flex:2},{l:'Birthdate', v:'3/14/2024'}]) +
-        fdrow([{l:'Father', v:'Jordan Alvarez'},{l:'Mother', v:'Maria Alvarez'}]) +
-        fdrow([{l:'Walked at age', v:'11 months'},{l:'Toilet trained', v:'In progress'},{l:'Weaned', v:'Yes'}]) +
-        '<div class="fdtext"><b style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute)">Health history</b>' +
-        '<ul><li>Past illnesses: none reported beyond common colds.</li>' +
-        '<li>Allergies: none known.</li>' +
-        '<li>Current medication, special routines, or restrictions: none.</li>' +
-        '<li>Daily routines: one nap after lunch; comfort item is a gray elephant lovey.</li></ul></div>';
+      return fdrow([{l:"Child's name", v:'Theo Alvarez', flex:2},{l:'Sex', v:'M'},{l:'Birthdate', v:'3/14/2024'}]) +
+        fdrow([{l:'Parent / authorized representative name', v:'Maria Alvarez', flex:2},{l:'Does parent live in home with child?', v:'Yes'}]) +
+        fdrow([{l:'Parent / authorized representative name', v:'Jordan Alvarez', flex:2},{l:'Does parent live in home with child?', v:'Yes'}]) +
+        fdrow([{l:'Is / has child been under regular supervision of physician?', v:'Yes', flex:2},{l:'Date of last physical/medical examination', v:'March 2026'}]) +
+        fdsect('Developmental history', '(*for infants and preschool-age children only)') +
+        fdrow([{l:'Walked at*', v:'11 months'},{l:'Began talking at*', v:'14 months'},{l:'Toilet training started at*', v:'24 months'}]) +
+        fdsect('Past illnesses', 'check illnesses that child has had and specify approximate dates of illnesses') +
+        '<div class="fdchecks">' +
+        '<span>' + cb(false) + ' Chicken Pox</span><span>' + cb(false) + ' Diabetes</span><span>' + cb(false) + ' Poliomyelitis</span>' +
+        '<span>' + cb(false) + ' Asthma</span><span>' + cb(false) + ' Epilepsy</span><span>' + cb(false) + ' Ten-Day Measles (Rubeola)</span>' +
+        '<span>' + cb(false) + ' Rheumatic Fever</span><span>' + cb(false) + ' Whooping Cough</span><span>' + cb(false) + ' Three-Day Measles (Rubella)</span>' +
+        '<span>' + cb(false) + ' Hay Fever</span><span>' + cb(false) + ' Mumps</span><span class="fv">None</span>' +
+        '</div>' +
+        fdrow([{l:'Specify any other serious or severe illnesses or accidents', v:'None', flex:1}]) +
+        fdrow([{l:'Does child have frequent colds?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'How many in last year?', v:'Two or three'},{l:'List any allergies staff should be aware of', v:'None known'}]) +
+        fdsect('Daily routines', '(*for infants and preschool-age children only)') +
+        fdrow([{l:'What time does child get up?*', v:'6:30 a.m.'},{l:'What time does child go to bed?*', v:'7:30 p.m.'},{l:'Does child sleep well?*', v:'Yes'}]) +
+        fdrow([{l:'Does child sleep during the day?*', v:'Yes'},{l:'When?*', v:'12:30 p.m.'},{l:'How long?*', v:'About two hours'}]) +
+        fdrow([{l:'Diet pattern · breakfast', v:'Oatmeal with fruit'},{l:'Lunch', v:'Provided by the center'},{l:'Dinner', v:'Family dinner, varied'}]) +
+        fdrow([{l:'Usual eating hours · breakfast', v:'7:15 a.m.'},{l:'Lunch', v:'11:30 a.m.'},{l:'Dinner', v:'6:00 p.m.'}]) +
+        fdrow([{l:'Any food dislikes?', v:'Broccoli'},{l:'Any eating problems?', v:'None'}]) +
+        fdrow([{l:'Is child toilet trained?*', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, at what stage?*', v:'Training in progress'},{l:'Are bowel movements regular?*', v:'Yes'},{l:'What is usual time?*', v:'After breakfast'}]) +
+        fdrow([{l:'Word used for "bowel movement"*', v:'Poop'},{l:'Word used for urination*', v:'Potty'}]) +
+        fdsect("Parent/authorized representative evaluation of child's health") +
+        fdrow([{l:"Is child presently under a doctor's care?", v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, name of doctor'},{l:'Does child take prescribed medication(s)?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, what kind and any side effects'}]) +
+        fdrow([{l:'Does child use any special device(s)?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, what kind'},{l:'Does child use any special device(s) at home?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, what kind'}]) +
+        fdsect("Parent/authorized representative evaluation of child's personality") +
+        fdrow([{l:'How does child get along with parent, brothers, sisters, and other children?', v:'Warm and easygoing; plays alongside his cousins happily.', flex:1}]) +
+        fdrow([{l:'Has the child had group play experiences?', v:'Weekly library playgroup since age one.', flex:1}]) +
+        fdrow([{l:'Does the child have any special problems/fears/needs? (Explain.)', v:'Startles at loud sudden noises; settles quickly when held.', flex:1}]) +
+        fdrow([{l:'What is the plan for care when the child is ill?', v:'Maria works from home and keeps Theo; Denise is backup.', flex:1}]) +
+        fdrow([{l:'Reason for requesting day care placement', v:'Both parents returning to full-time work.', flex:1}]);
     } },
-  { id: 'lic627', no: 'LIC 627 (4/99)', name: 'Consent for Emergency Medical Treatment',
+  { id: 'lic627', no: 'LIC 627 (9/08) (Confidential)', name: 'Consent for Emergency Medical Treatment',
     sub: 'Child care centers or family child care homes',
-    sig: true,
+    sig: true, sigLabel: 'Parent or authorized representative signature',
     body: function() {
-      return fdrow([{l:"Child's name", v:'Theo Alvarez', flex:2},{l:'Birthdate', v:'3/14/2024'}]) +
-        '<div class="fdtext">As the parent or authorized representative, I hereby consent to any necessary emergency medical care for the child named above. In the event I cannot be reached immediately, I authorize the staff of <span class="fv">Growing Mindfully (Present Pathways, Inc.), 750 N Street, Sacramento</span> to obtain treatment from:</div>' +
-        fdrow([{l:'Physician', v:'Dr. Priya Nair · Capitol Pediatrics', flex:2},{l:'Telephone', v:'(916) 555-0122'}]) +
-        fdrow([{l:'Preferred hospital', v:'Sutter Medical Center, Sacramento', flex:2},{l:'Medical plan', v:'Western Health Advantage'}]);
+      return '<div class="fdtext" style="border-top:0;font-size:12.5px;line-height:1.7">AS THE PARENT OR AUTHORIZED REPRESENTATIVE, I HEREBY GIVE CONSENT TO ' +
+        '<span class="fdunder fv">Growing Mindfully (Present Pathways, Inc.)</span> <span style="font-size:8px;color:var(--ink-mute)">(FACILITY NAME)</span> ' +
+        'TO OBTAIN ALL EMERGENCY MEDICAL OR DENTAL CARE PRESCRIBED BY A DULY LICENSED PHYSICIAN (M.D.) OSTEOPATH (D.O.) OR DENTIST (D.D.S.) FOR ' +
+        '<span class="fdunder fv">Theo Alvarez</span> <span style="font-size:8px;color:var(--ink-mute)">(NAME)</span>. ' +
+        'THIS CARE MAY BE GIVEN UNDER WHATEVER CONDITIONS ARE NECESSARY TO PRESERVE THE LIFE, LIMB OR WELL BEING OF THE CHILD NAMED ABOVE.</div>' +
+        fdrow([{l:'Child has the following medication allergies', v:'None known', flex:1}]) +
+        fdrow([{l:'Home address', v:'1418 P Street, Sacramento, CA 95814', flex:1}]) +
+        fdrow([{l:'Home phone', v:'(916) 555-0134'},{l:'Work phone', v:'(916) 555-0134'}]);
     } },
   { id: 'lic613', no: 'LIC 613A (8/08)', name: 'Personal Rights · Child Care Centers',
-    sub: 'Acknowledgment of receipt',
-    sig: true,
+    sub: 'Personal rights, see Section 101223 for waiver conditions applicable to child care centers',
+    sig: true, sigLabel: 'Signature of the representative/parent/guardian',
     body: function() {
-      return '<div class="fdtext">Each child receiving services from a child care center has rights which include, but are not limited to:' +
-        '<ul><li>To be accorded dignity in personal relationships with staff, and safe, healthful, comfortable accommodations.</li>' +
-        '<li>To be free from corporal or unusual punishment, infliction of pain, humiliation, intimidation, ridicule, coercion, threat, mental abuse, or other actions of a punitive nature.</li>' +
-        '<li>To be informed of the provisions of the law regarding complaints, and to make a complaint without fear of reprisal.</li>' +
-        '<li>Not to be locked in any room, building, or center premises; not to be placed in any restraining device.</li></ul>' +
-        'I, the parent or authorized representative of <span class="fv">Theo Alvarez</span>, have been personally advised of, and have received a copy of, the personal rights of children in care.</div>';
+      return '<div class="fdtext" style="border-top:0">(a) Child Care Centers. Each child receiving services from a Child Care Center shall have rights which include, but are not limited to, the following:' +
+        '<ul><li>(1) To be accorded dignity in his/her personal relationships with staff and other persons.</li>' +
+        '<li>(2) To be accorded safe, healthful and comfortable accommodations, furnishings and equipment to meet his/her needs.</li>' +
+        '<li>(3) To be free from corporal or unusual punishment, infliction of pain, humiliation, intimidation, ridicule, coercion, threat, mental abuse, or other actions of a punitive nature, including but not limited to: interference with daily living functions, including eating, sleeping, or toileting; or withholding of shelter, clothing, medication or aids to physical functioning.</li>' +
+        '<li>(4) To be informed, and to have his/her authorized representative, if any, informed by the licensee of the provisions of law regarding complaints including, but not limited to, the address and telephone number of the complaint receiving unit of the licensing agency and of information regarding confidentiality.</li>' +
+        '<li>(5) To be free to attend religious services or activities of his/her choice and to have visits from the spiritual advisor of his/her choice. Attendance at religious services, either in or outside the facility, shall be on a completely voluntary basis. In Child Care Centers, decisions concerning attendance at religious services or visits from spiritual advisors shall be made by the parent(s), or guardian(s) of the child.</li>' +
+        '<li>(6) Not to be locked in any room, building, or facility premises by day or night.</li>' +
+        '<li>(7) Not to be placed in any restraining device, except a supportive restraint approved in advance by the licensing agency.</li></ul>' +
+        'THE REPRESENTATIVE/PARENT/GUARDIAN HAS THE RIGHT TO BE INFORMED OF THE APPROPRIATE LICENSING AGENCY TO CONTACT REGARDING COMPLAINTS, WHICH IS:</div>' +
+        fdrow([{l:'Name', v:'California Department of Social Services', flex:1}]) +
+        fdrow([{l:'Address', v:'851 Traeger Ave (Ste 360)', flex:1}]) +
+        fdrow([{l:'City', v:'San Bruno'},{l:'Zip code', v:'94066'},{l:'Area code/telephone number', v:'650-266-8843'}]) +
+        '<div class="fdtext" style="text-align:center;letter-spacing:.1em;font-size:9px;color:var(--ink-mute)">DETACH HERE</div>' +
+        '<div class="fdtext"><b style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)">To: parent/guardian/child or authorized representative</b> · <b style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)">Place in child’s file</b><br>' +
+        'ACKNOWLEDGMENT: I/We have been personally advised of, and have received a copy of, the personal rights contained in the California Code of Regulations, Title 22, at the time of admission to:</div>' +
+        fdrow([{l:'Print the name of the facility', v:'Growing Mindfully (Present Pathways, Inc.)'},{l:'Print the address of the facility', v:'750 N Street, Sacramento, CA 95814'}]) +
+        fdrow([{l:'Print the name of the child', v:'Theo Alvarez', flex:1}]);
+    },
+    extraSig: [{l:'Title of the representative/parent/guardian', v:'Parent'}] },
+  { id: 'lic995', no: 'LIC 995 (9/08)', name: "Child Care Center · Notification of Parents' Rights",
+    sub: "Acknowledgement of notification of parents' rights · parent/authorized representative signature required",
+    sig: true, sigLabel: 'Signature (parent/authorized representative)',
+    body: function() {
+      return '<div class="fdtext" style="border-top:0"><b style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)">Parents’ rights</b> · As a Parent/Authorized Representative, you have the right to:' +
+        '<ul><li>1. Enter and inspect the child care center without advance notice whenever children are in care.</li>' +
+        '<li>2. File a complaint against the licensee with the licensing office and review the licensee’s public file kept by the licensing office.</li>' +
+        '<li>3. Review, at the child care center, reports of licensing visits and substantiated complaints against the licensee made during the last three years.</li>' +
+        '<li>4. Complain to the licensing office and inspect the child care center without discrimination or retaliation against you or your child.</li>' +
+        '<li>5. Request in writing that a parent not be allowed to visit your child or take your child from the child care center, provided you have shown a certified copy of a court order.</li>' +
+        '<li>6. Receive from the licensee the name, address and telephone number of the local licensing office.</li>' +
+        '<li>7. Be informed by the licensee, upon request, of the name and type of association to the child care center for any adult who has been granted a criminal record exemption, and that the name of the person may also be obtained by contacting the local licensing office.</li>' +
+        '<li>8. Receive, from the licensee, the Caregiver Background Check Process form.</li></ul></div>' +
+        fdrow([{l:'Licensing office name', v:'California Department of Social Services'},{l:'Licensing office address', v:'851 Traeger Ave (Ste 360), San Bruno, CA 94066'},{l:'Licensing office telephone', v:'650-266-8843'}]) +
+        '<div class="fdtext" style="text-align:center;letter-spacing:.1em;font-size:9px;color:var(--ink-mute)">DETACH HERE · GIVE UPPER PORTION TO PARENTS</div>' +
+        '<div class="fdtext">I, the parent/authorized representative of <span class="fdunder fv">Theo Alvarez</span>, have received a copy of the "CHILD CARE CENTER NOTIFICATION OF PARENTS’ RIGHTS" and the CAREGIVER BACKGROUND CHECK PROCESS form from the licensee.</div>' +
+        fdrow([{l:'Name of child care center', v:'Growing Mindfully (Present Pathways, Inc.)', flex:1}]);
     } },
-  { id: 'lic995', no: 'LIC 995 (9/08)', name: "Notification of Parents' Rights",
-    sub: 'Parent acknowledgment',
-    sig: true,
+  { id: 'nsp', no: 'Growing Mindfully · refreshed quarterly', name: 'Needs and Services Plan',
+    sub: 'Daily routine · filled from your answers, with room to actually read them',
+    sig: true, sigLabel: "Parent's signature",
     body: function() {
-      return '<div class="fdtext">As the parent or authorized representative of <span class="fv">Theo Alvarez</span>, I acknowledge receipt of the CHILD CARE CENTER NOTIFICATION OF PARENTS’ RIGHTS and understand my rights, including the right to enter and inspect the center without advance notice whenever children are in care, to review the public licensing file, and to receive complaint information.</div>';
-    } }
+      return fdrow([{l:"Child's name", v:'Theo Alvarez', flex:2},{l:'Date', v:'July 12, 2026'}]) +
+        fdrow([{l:'Parent name', v:'Maria Alvarez', flex:2},{l:'Cell', v:'(916) 555-0134'}]) +
+        fdsect('Daily routine') +
+        fdrow([{l:'Approximate arrival time', v:'8:00 a.m.'},{l:'Approximate daily departure time', v:'5:00 p.m.'}]) +
+        fdrow([{l:'Breakfast', v:'Oatmeal with fruit, at home', flex:2},{l:'Time', v:'7:15 a.m.'}]) +
+        fdrow([{l:'Lunch', v:'Provided by Growing Mindfully', flex:2},{l:'Time', v:'11:30 a.m.'}]) +
+        fdrow([{l:'Solid foods?', v:'Yes, full table food'},{l:'Number of bottles or cups daily', v:'Cups only, at meals'}]) +
+        fdrow([{l:'Bottle 1 · oz, formula/breast milk, time', v:'n/a'},{l:'Bottle 2', v:'n/a'},{l:'Bottle 3', v:'n/a'}]) +
+        fdrow([{l:'Sleeping habits at night', v:'Sleeps through, 7:30 p.m. to 6:30 a.m.', flex:1}]) +
+        fdrow([{l:'Bed time at night', v:'7:30 p.m.'},{l:'Daily nap times', v:'One nap, 12:30 to 2:30'}]) +
+        fdrow([{l:'Special instructions (blanket, lovey, etc.)', v:'Gray elephant lovey lives in his cubby for nap', flex:1}]) +
+        fdrow([{l:'Pacifier', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'When', v:'n/a', flex:2}]) +
+        fdrow([{l:'Allergies for diapering (Desitin, ointment, powder, wipes, etc.)', v:'None known', flex:1}]) +
+        fdrow([{l:'Please list all other allergies (food, medications, etc.)', v:'None known', flex:1}]) +
+        '<div class="fdtext">It is very important to us that we provide the best care possible for your child on an ongoing basis. To facilitate that goal, we will meet informally to discuss aspects of your child’s care as needed, and this form will be updated quarterly.</div>' +
+        fdrow([{l:'Growing Mindfully representative'},{l:'Date'}]);
+    } },
 ];
+
 var revTarget = null;
 function pendingForms() { return FORMS.filter(function(f){ return !docState[f.id]; }); }
 var revSigned = false;
@@ -3978,8 +4334,11 @@ function formDocHTML(f, signed) {
       (signed
         ? '<span class="slot filled" style="min-width:190px">' + sigName + '</span>'
         : '<button class="slot" id="revSlot" onclick="revSign(this)" style="min-width:190px">Tap to sign</button>') +
-      '<span class="siglab">Signature of parent, guardian, or authorized representative</span></div>' +
-      '<div class="sigcol"><span class="datefill" id="revDate">' + (signed ? TODAY : '') + '</span><span class="siglab">Date</span></div></div>';
+      '<span class="siglab">' + (f.sigLabel || 'Signature of parent, guardian, or authorized representative') + '</span></div>';
+    (f.extraSig || []).forEach(function(x) {
+      h += '<div class="sigcol"><span class="datefill">' + (x.v || '') + '</span><span class="siglab">' + x.l + '</span></div>';
+    });
+    h += '<div class="sigcol"><span class="datefill" id="revDate">' + (signed ? TODAY : '') + '</span><span class="siglab">Date</span></div></div>';
   }
   h += '<div class="fdfoot"><span>' + f.no + '</span><span>Filled by Presence from your answers · Page 1 of 1</span></div></div>';
   return h;
@@ -4107,8 +4466,8 @@ function lic701HTML() {
   var h = '<div class="formdoc">' +
     '<div class="fdstate"><span>State of California<br>Health and Human Services Agency</span>' +
     '<span>California Department of Social Services<br>Community Care Licensing</span></div>' +
-    '<div class="fdtitle">Physician’s Report · Child Care Centers</div>' +
-    '<div class="fdsub">Child’s pre-admission health evaluation</div>' +
+    '<div class="fdtitle">Physician&#8217;s Report - Child Care Centers</div>' +
+    '<div class="fdsub">(Child&#8217;s pre-admission health evaluation)</div>' +
     '<div class="fdtext" style="border-top:0"><b style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84">Part A · Parent’s consent (to be completed by parent)</b><br>' +
     '<span class="fv">Theo Alvarez</span> (name of child), born <span class="fv">March 14, 2024</span> (birth date), is being studied for readiness to enter ' +
     '<span class="fv">Growing Mindfully (Present Pathways, Inc.), 750 N Street, Sacramento, CA 95814</span> (name of child care center/school). ' +
@@ -4149,6 +4508,67 @@ function openLic701() {
   if (u2) u2.classList.add('show');
   var m = document.getElementById('d-701-meta');
   if (m) m.textContent = 'Downloaded ' + TODAY + ' · due September 2. Nothing else is blocked while you wait.';
+}
+
+/* ---- v7 item 4: age-band conditional blocks (Needs and Services data).
+   The band comes from the child's room; the chips are a mockup-only demo. ---- */
+var band = 'toddler';
+function setBand(b) {
+  band = b;
+  document.querySelectorAll('.bandchip').forEach(function(c){ c.classList.toggle('on', c.dataset.band === b); });
+  document.querySelectorAll('[data-band-block]').forEach(function(el){
+    el.style.display = el.dataset.bandBlock === b ? '' : 'none';
+  });
+  renderState();
+}
+function healthRequiredFields() {
+  var req = [document.getElementById('hAllergies'), document.getElementById('hConditions')];
+  if (band === 'infant') req.push(document.querySelector('.binfant'));
+  return req.filter(Boolean);
+}
+function healthMissing() {
+  var n = healthRequiredFields().filter(function(f){ return !f.value.trim(); }).length;
+  if (band === 'toddler' && !document.querySelector('#toiletRow input:checked')) n++;
+  return n;
+}
+function healthValid() { return healthMissing() === 0; }
+function healthFilled() {
+  var vis = document.querySelectorAll('#s-health input[type=text]');
+  var n = 0;
+  vis.forEach(function(f){ if (f.offsetParent && f.value.trim()) n++; });
+  document.querySelectorAll('#s-health input:checked').forEach(function(f){ if (f.offsetParent) n++; });
+  return Math.min(n, chState[3].total);
+}
+document.addEventListener('input', function(e) {
+  if (e.target.closest && e.target.closest('#s-health')) renderState();
+});
+
+/* ---- v7 item 15: the finale confetti. Brand petals and leaves, never neon. ---- */
+function spawnConfetti() {
+  if (reduceMotion) return;
+  var old = document.querySelector('.confetti');
+  if (old) old.remove();
+  var wrap = document.createElement('div');
+  wrap.className = 'confetti';
+  wrap.setAttribute('aria-hidden', 'true');
+  var COLORS = ['#9BB99E', '#6F8F70', '#C9A86A', '#E8C9B5'];
+  var LEAF = '<path d="M3 16 C 1 9 4 3 10 1 C 12 6 10 13 4 15 Z" fill="{c}"/>';
+  var PETAL = '<path d="M6 16 Q 2 8 6 1 Q 10 8 6 16 Z" fill="{c}"/>';
+  for (var i = 0; i < 30; i++) {
+    var c = COLORS[i % COLORS.length];
+    var shape = (i % 2 === 0 ? LEAF : PETAL).replace('{c}', c);
+    var size = 9 + Math.random() * 9;
+    var el = document.createElement('div');
+    el.className = 'cpiece';
+    el.innerHTML = '<svg width="' + size + '" height="' + (size * 1.3) + '" viewBox="0 0 12 17">' + shape + '</svg>';
+    el.style.left = (Math.random() * 100) + 'vw';
+    el.style.setProperty('--spin', (Math.random() > .5 ? '' : '-') + (360 + Math.random() * 420) + 'deg');
+    el.style.animationDuration = (2.6 + Math.random() * 1.8) + 's';
+    el.style.animationDelay = (Math.random() * 1.1) + 's';
+    wrap.appendChild(el);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(function(){ wrap.remove(); }, 6000);
 }
 
 /* ---- the generate-moment counter ---- */
