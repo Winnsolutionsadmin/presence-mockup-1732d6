@@ -4,14 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v3 · Growing Mindfully</title>
+<title>Presence · Design mockup v5 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* PRESENCE MOCKUP v3 · design artifact, not production code.
-   Desktop: app shell (left-rail dashboard + main pane).
-   Mobile: chaptered flow. Shared tokens, divergent layout. */
+/* PRESENCE MOCKUP v5 · design artifact, not production code.
+   One product on a responsive continuum: >=1200 full rail + 3-column grids;
+   900-1199 full rail + 2-column grids; 700-899 slim icon rail + single column;
+   <700 the mobile chaptered flow. Same header, cards, and CTA identity at every width. */
 :root {
   --paper: #FBF7EE; --paper-deep: #F0E9D8; --card: #FFFDF8;
   --ink: #1F2A2E; --ink-soft: #3F5359; --ink-mute: #6F7F84;
@@ -112,7 +113,7 @@ p.lede { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 8px; }
 .stagebar .stime { font-weight: 600; }
 
 .garden-wrap { display: flex; flex-direction: column; align-items: center; padding: 4px 0 2px; }
-.garden { width: 200px; height: 232px; overflow: visible; }
+.garden { width: 250px; height: 210px; overflow: visible; }
 .garden .stem { fill: none; stroke: var(--sage-deep); stroke-width: 2.4; stroke-linecap: round;
   stroke-dasharray: 260; stroke-dashoffset: 260; }
 .play .garden .stem { animation: stemDraw 1.6s var(--ease) .2s forwards; }
@@ -133,10 +134,16 @@ p.lede { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 8px; }
   transform-box: fill-box; transform-origin: center; }
 .play .garden .bud.activebud { animation: budIn .4s var(--ease) 1.3s forwards, breathe 5.5s ease-in-out 1.9s infinite; }
 @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+/* v5: chapter labels sit clear of the foliage: a dotted connector runs outward
+   from the stem to an anchor dot, labels alternate sides, never over a leaf */
 .garden .chlabel { font-family: var(--hand); font-size: 15px; fill: var(--ink-mute); opacity: 0; }
 .garden .chlabel.done { fill: var(--sage-deep); }
 .garden .chlabel.now { fill: var(--ink-soft); font-weight: 600; }
-.play .garden .chlabel { animation: budIn .5s var(--ease) 1.6s forwards; }
+.garden .cline { stroke: rgba(111,143,112,.45); stroke-width: 1; stroke-dasharray: 1.5 3.5;
+  stroke-linecap: round; opacity: 0; }
+.garden .cdot { fill: var(--sage-deep); opacity: 0; }
+.play .garden .chlabel, .play .garden .cline, .play .garden .cdot {
+  animation: budIn .5s var(--ease) 1.6s forwards; }
 .garden .bloom { transform-box: fill-box; transform-origin: center; opacity: 0; transform: scale(0); }
 .play .garden .bloom.open { animation: bloomIn .9s var(--spring) 1.5s forwards; }
 @keyframes bloomIn { to { opacity: 1; transform: scale(1); } }
@@ -206,6 +213,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .prow { background: var(--card); border: 1px solid rgba(31,42,46,.08); border-radius: var(--radius);
   box-shadow: var(--shadow-soft); padding: 14px 16px 10px; margin-bottom: 10px; position: relative; }
 .prow .fieldgrid { margin-bottom: 4px; }
+.prow .pnote { font-family: var(--hand); font-size: 14.5px; color: var(--sage-deep); margin: 2px 0 2px; }
 .prow .removep { position: absolute; top: 6px; right: 8px; background: none; border: 0;
   color: var(--ink-mute); font-size: 12px; font-weight: 700; padding: 6px; }
 .addbtn { display: inline-flex; align-items: center; gap: 8px; background: none;
@@ -406,78 +414,136 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .hmeta { display: none; }
 .hband { margin-bottom: 4px; }
 
-/* DESKTOP APP SHELL (>= 1000px): rail + main pane, designed as a product */
-@media (min-width: 1000px) {
-  .shell { display: grid; grid-template-columns: 300px 1fr; }
-  .mtop, .stagebar { display: none; }
-  .rail { display: flex; flex-direction: column; position: sticky; top: 0;
+/* RESPONSIVE CONTINUUM (v5). One product resizing, never a different app.
+   Tier 1  <700px      mobile chaptered flow: brand bar, progress strip, sticky CTA, stage bar.
+   Tier 2  700-899px   the rail arrives slim (72px, icons): same dashboard semantics
+                       (percent, current item, lock state) in glyph form; single column content.
+   Tier 3  900-1199px  full rail at 240px with labels + field counts; 2-column grids.
+   Tier 4  >=1200px    full rail at 300px; 3-column chapter grid; widest measure.
+   Header, cards, and the CTA keep their identity at every tier. */
+
+/* Tier 2+: the app shell exists from 700px up; only its density changes */
+@media (min-width: 700px) {
+  .shell { display: grid; grid-template-columns: 72px 1fr; }
+  .mtop, .stagebar, .progressrow { display: none; }
+  .rail { display: flex; flex-direction: column; align-items: center; position: sticky; top: 0;
     height: 100dvh; overflow-y: auto; background: #F7F2E6;
-    border-right: 1px solid rgba(31,42,46,.09); padding: 22px 0 16px; }
-  .railbrand { display: flex; align-items: center; gap: 9px; padding: 0 20px 4px; }
+    border-right: 1px solid rgba(31,42,46,.09); padding: 18px 0 14px; }
+  .railbrand { display: flex; align-items: center; justify-content: center; padding: 0 0 10px; }
   .railbrand img.mark { width: 34px; height: 34px; }
-  .railbrand img.word { height: 24px; width: auto; }
-  .railapp { padding: 0 20px 14px; font-size: 10px; font-weight: 700; letter-spacing: .18em;
-    text-transform: uppercase; color: var(--ink-mute); }
-  .railapp .over { color: var(--ink-soft); }
-  .railprog { padding: 12px 20px; border-top: 1px solid rgba(31,42,46,.07);
-    border-bottom: 1px solid rgba(31,42,46,.07); display: flex; align-items: center; gap: 10px; }
-  .railprog .childchip { margin-left: auto; font-size: 11px; font-weight: 700;
-    color: var(--ink-soft); background: var(--paper-deep); border-radius: 999px; padding: 3px 10px; }
-  .railnav { flex: 1; padding: 6px 10px; }
-  .rgroup { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--ink-mute); padding: 14px 10px 6px; }
-  .ritem { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
-    background: none; border: 0; border-radius: var(--radius); padding: 8px 10px;
-    font-size: 13.5px; font-weight: 600; color: var(--ink-soft); border-left: 3px solid transparent; }
-  .ritem .st { width: 20px; height: 20px; font-size: 11px; }
-  .ritem .st svg { width: 10px; height: 10px; }
-  .ritem .rsub { margin-left: auto; font-size: 10.5px; font-weight: 600; color: var(--ink-mute);
-    white-space: nowrap; }
+  .railbrand img.word { display: none; }
+  .railapp { display: none; }
+  .railprog { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 10px 0; border-top: 1px solid rgba(31,42,46,.07);
+    border-bottom: 1px solid rgba(31,42,46,.07); }
+  .railprog .sprig, .railprog .childchip { display: none; }
+  .railnav { flex: 1; width: 100%; padding: 6px 8px; }
+  .rgroup { font-size: 0; height: 1px; background: rgba(31,42,46,.09); margin: 12px 10px; padding: 0; }
+  .railnav .rgroup:first-child { height: 0; background: none; margin: 2px 0 0; }
+  .ritem { display: flex; align-items: center; justify-content: center; width: 100%;
+    background: none; border: 0; border-radius: var(--radius); padding: 7px 0;
+    font-size: 0; color: var(--ink-soft); border-left: 3px solid transparent; }
+  .ritem .st { width: 22px; height: 22px; font-size: 12px; }
+  .ritem .st svg { width: 11px; height: 11px; }
+  .ritem .rsub { display: none; }
   .ritem[data-go]:hover { background: rgba(255,253,248,.9); }
   .ritem.on { background: var(--card); border-left-color: var(--sage-deep);
     box-shadow: var(--shadow-soft); color: var(--ink); }
   .ritem:not([data-go]) { cursor: default; }
-  .railfoot { padding: 12px 20px 4px; border-top: 1px solid rgba(31,42,46,.07);
-    font-size: 11.5px; color: var(--ink-mute); line-height: 1.5; }
+  .locknote { display: none; }
+  .railfoot { display: none; }
   .main { max-width: none; margin: 0; }
   .screen { min-height: auto; padding-bottom: 48px; }
-  .body { max-width: 1200px; padding: 40px 48px 8px; margin: 0 auto; }
-  h1.title { font-size: 36px; }
-  .actionbar { position: static; transform: none; max-width: 1200px; margin: 0 auto;
-    padding: 28px 48px 0; background: none; }
+  .body { max-width: 680px; padding: 36px 32px 8px; margin: 0 auto; }
+  .actionbar { position: static; transform: none; max-width: 680px; margin: 0 auto;
+    padding: 28px 32px 0; background: none; }
   .actionbar .cta { max-width: 460px; margin: 0 auto; }
   .actionbar .quietlink { max-width: 460px; margin: 10px auto 0; }
   .nextup { text-align: center; }
   .hidedesk { display: none; }
-  /* header band: headline left, live meta right; no duplicated garden */
-  .hband { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 48px;
-    align-items: start; border-bottom: 1px solid rgba(31,42,46,.08);
-    padding-bottom: 26px; margin-bottom: 26px; }
+  /* header band: same headline + meta card at every tier; the big garden is mobile's */
   .hband .mobonly { display: none; }
   .hband .htext { text-align: left !important; }
   .hband .htext .kicker { justify-content: flex-start !important; }
   .hmeta { display: block; background: var(--card); border: 1px solid rgba(31,42,46,.08);
-    border-radius: var(--radius); box-shadow: var(--shadow-soft); padding: 8px 18px; }
+    border-radius: var(--radius); box-shadow: var(--shadow-soft); padding: 8px 18px;
+    margin-top: 18px; }
   .hmeta .hrow { display: flex; align-items: center; gap: 10px; padding: 10px 0;
     font-size: 13px; color: var(--ink-soft); }
   .hmeta .hrow + .hrow { border-top: 1px solid rgba(31,42,46,.06); }
   .hmeta .hrow svg.lockic { width: 14px; height: 14px; flex-shrink: 0; }
   .hmeta .hrow b { color: var(--ink); font-weight: 700; }
-  .chaptercards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 12px; }
+  .hband { border-bottom: 1px solid rgba(31,42,46,.08); padding-bottom: 24px; margin-bottom: 24px; }
+  .chaptercards .chcard { margin-bottom: 8px; }
+  .pagecard { height: 480px; }
+  .trust { justify-content: flex-start; }
+}
+
+/* Tier 3: the rail gains its labels and counts; grids go 2-up */
+@media (min-width: 900px) {
+  .shell { grid-template-columns: 240px 1fr; }
+  .rail { align-items: stretch; padding: 22px 0 16px; }
+  .railbrand { justify-content: flex-start; gap: 9px; padding: 0 18px 4px; }
+  .railbrand img.word { display: block; height: 22px; width: auto; }
+  .railapp { display: block; padding: 0 18px 12px; font-size: 10px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--ink-mute); }
+  .railapp .over { color: var(--ink-soft); }
+  .railprog { flex-direction: row; align-items: center; gap: 10px; padding: 12px 18px; }
+  .railprog .sprig { display: block; }
+  .railnav { padding: 6px 10px; }
+  .rgroup { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-mute); height: auto; background: none; margin: 0; padding: 14px 10px 6px; }
+  .railnav .rgroup:first-child { height: auto; margin: 0; padding-top: 4px; }
+  .ritem { justify-content: flex-start; gap: 10px; text-align: left; padding: 8px 10px;
+    font-size: 13.5px; font-weight: 600; }
+  .ritem .st { width: 20px; height: 20px; font-size: 11px; }
+  .ritem .st svg { width: 10px; height: 10px; }
+  .ritem .rsub { display: inline; margin-left: auto; font-size: 10.5px; font-weight: 600;
+    color: var(--ink-mute); white-space: nowrap; }
+  .locknote { display: block; font-size: 10px; font-weight: 600; letter-spacing: .02em;
+    text-transform: none; color: var(--ink-mute); padding: 0 10px 6px; }
+  .railfoot { display: block; padding: 12px 18px 4px; border-top: 1px solid rgba(31,42,46,.07);
+    font-size: 11.5px; color: var(--ink-mute); line-height: 1.5; }
+  .body { max-width: 880px; padding: 40px 40px 8px; }
+  .actionbar { max-width: 880px; padding: 28px 40px 0; }
+  h1.title { font-size: 34px; }
+  .hband { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 40px;
+    align-items: start; padding-bottom: 26px; margin-bottom: 26px; }
+  .hmeta { margin-top: 0; }
+  .chaptercards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .chaptercards .chcard { margin-bottom: 0; }
   .jicgrid { display: grid; grid-template-columns: minmax(0,1.08fr) minmax(0,.92fr);
-    gap: 44px; align-items: start; }
+    gap: 40px; align-items: start; }
   .jicgrid .prow .fieldgrid { grid-template-columns: 1fr 1fr; }
   .cedit .fieldgrid { grid-template-columns: 1fr 1fr 1fr 1fr; }
   .cedit .fieldgrid .full { grid-column: span 2; }
   .prow .fieldgrid { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  .hbgrid { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 24px; align-items: start; }
+  .hbgrid { display: grid; grid-template-columns: minmax(0,1fr) 260px; gap: 20px; align-items: start; }
   .hbside { display: block; }
-  .pagecard { height: 560px; }
+  .pagecard { height: 540px; }
   .docgroups { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; align-items: start; }
   .docgroups .gwide { grid-column: 1 / -1; }
-  .trust { justify-content: flex-start; }
+}
+
+/* Tier 4: widest measure; 3-up chapter grid; full rail */
+@media (min-width: 1200px) {
+  .shell { grid-template-columns: 300px 1fr; }
+  .railbrand { padding: 0 20px 4px; }
+  .railbrand img.word { height: 24px; }
+  .railapp { padding: 0 20px 14px; }
+  .railprog { padding: 12px 20px; }
+  .railprog .childchip { display: inline-flex; margin-left: auto; font-size: 11px;
+    font-weight: 700; color: var(--ink-soft); background: var(--paper-deep);
+    border-radius: 999px; padding: 3px 10px; }
+  .railfoot { padding: 12px 20px 4px; }
+  .body { max-width: 1200px; padding: 40px 48px 8px; }
+  .actionbar { max-width: 1200px; padding: 28px 48px 0; }
+  h1.title { font-size: 36px; }
+  .hband { grid-template-columns: minmax(0,1fr) 340px; gap: 48px; }
+  .chaptercards { grid-template-columns: 1fr 1fr 1fr; }
+  .jicgrid { gap: 44px; }
+  .hbgrid { grid-template-columns: minmax(0,1fr) 300px; gap: 24px; }
+  .pagecard { height: 560px; }
 }
 .trust { display: flex; gap: 8px; align-items: flex-start; margin-top: 16px;
   font-size: 13px; color: var(--ink-mute); }
@@ -487,7 +553,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   .screen.active .step-in { animation: none; opacity: 1; transform: none; }
   .play .garden .stem, .garden .stem { animation: none; stroke-dashoffset: 56; }
   .garden .leafG.grown { animation: none !important; opacity: 1; transform: none; }
-  .garden .bud, .garden .chlabel { animation: none !important; opacity: 1; }
+  .garden .bud, .garden .chlabel, .garden .cline, .garden .cdot { animation: none !important; opacity: 1; }
   .garden .bud.activebud { animation: none !important; opacity: 1; transform: none; }
   .garden .bloom.open { animation: none !important; opacity: 1; transform: none; }
   .screen.active .sigpad .drawn path { animation: none; stroke-dashoffset: 0; }
@@ -585,20 +651,30 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   <div class="body">
     <div class="hband">
       <div class="garden-wrap step-in play mobonly" role="img" aria-label="Enrollment progress: 2 of 5 chapters complete, 40 percent">
-        <svg class="garden" viewBox="0 0 216 252">
-          <ellipse class="mound" cx="108" cy="236" rx="44" ry="8"/>
-          <path class="stem" d="M108 234 C 105 208 112 190 108 168 C 104 148 113 128 108 108 C 104 90 111 74 108 58 C 106 46 109 38 108 30"/>
-          <g class="leafG grown left g1"><path class="leaf" d="M106 197 Q 84 194 74 176 Q 72 170 76 165 Q 94 168 103 184 Q 106 191 106 197 Z"/></g>
-          <text class="chlabel done" x="64" y="212" text-anchor="middle">your family</text>
-          <g class="leafG grown right g2"><path class="leaf" d="M110 159 Q 132 156 142 138 Q 144 132 140 127 Q 122 130 113 146 Q 110 153 110 159 Z"/></g>
-          <text class="chlabel done" x="156" y="174" text-anchor="middle">Theo</text>
-          <circle class="bud activebud" cx="103" cy="116" r="6"/>
-          <text class="chlabel now" x="70" y="112" text-anchor="middle">just in case</text>
-          <circle class="bud" cx="112" cy="82" r="4.4"/>
-          <text class="chlabel" x="152" y="80" text-anchor="middle">health + routines</text>
-          <circle class="bud" cx="105" cy="52" r="4.4"/>
-          <text class="chlabel" x="66" y="50" text-anchor="middle">permissions</text>
-          <circle class="bud" cx="108" cy="30" r="3.4"/>
+        <svg class="garden" viewBox="0 0 300 252">
+          <ellipse class="mound" cx="150" cy="236" rx="44" ry="8"/>
+          <path class="stem" d="M150 234 C 147 208 154 190 150 168 C 146 148 155 128 150 108 C 146 90 153 74 150 58 C 148 46 151 38 150 30"/>
+          <g class="leafG grown left g1"><path class="leaf" d="M148 197 Q 126 194 116 176 Q 114 170 118 165 Q 136 168 145 184 Q 148 191 148 197 Z"/></g>
+          <line class="cline" x1="112" y1="176" x2="98" y2="176"/>
+          <circle class="cdot" cx="94" cy="176" r="2.2"/>
+          <text class="chlabel done" x="88" y="180" text-anchor="end">your family</text>
+          <g class="leafG grown right g2"><path class="leaf" d="M152 159 Q 174 156 184 138 Q 186 132 182 127 Q 164 130 155 146 Q 152 153 152 159 Z"/></g>
+          <line class="cline" x1="188" y1="140" x2="202" y2="140"/>
+          <circle class="cdot" cx="206" cy="140" r="2.2"/>
+          <text class="chlabel done" x="212" y="144" text-anchor="start">Theo</text>
+          <circle class="bud activebud" cx="145" cy="116" r="6"/>
+          <line class="cline" x1="135" y1="116" x2="110" y2="116"/>
+          <circle class="cdot" cx="106" cy="116" r="2.2"/>
+          <text class="chlabel now" x="100" y="120" text-anchor="end">just in case</text>
+          <circle class="bud" cx="154" cy="82" r="4.4"/>
+          <line class="cline" x1="162" y1="82" x2="180" y2="82"/>
+          <circle class="cdot" cx="184" cy="82" r="2.2"/>
+          <text class="chlabel" x="190" y="86" text-anchor="start">health + routines</text>
+          <circle class="bud" cx="147" cy="52" r="4.4"/>
+          <line class="cline" x1="139" y1="52" x2="114" y2="52"/>
+          <circle class="cdot" cx="110" cy="52" r="2.2"/>
+          <text class="chlabel" x="104" y="56" text-anchor="end">permissions</text>
+          <circle class="bud" cx="150" cy="30" r="3.4"/>
         </svg>
         <div class="gardenpct"><span class="pctnum">40%</span> complete <span class="sub pctsub">· 2 of 5 chapters</span></div>
       </div>
@@ -712,8 +788,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="cvalue">Maria Alvarez</div>
           <div class="cnote">from your application</div>
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" value="Maria"></div>
-            <div><span class="flabel">Last name</span><input type="text" value="Alvarez"></div>
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Maria"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('f-p1name', this)">Edit</button>
@@ -755,8 +831,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="cvalue">Jordan Alvarez</div>
           <div class="cnote">from your application</div>
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" value="Jordan"></div>
-            <div><span class="flabel">Last name</span><input type="text" value="Alvarez"></div>
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Jordan"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('f-p2name', this)">Edit</button>
@@ -812,10 +888,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="cvalue">Denise Alvarez · Grandmother<br><span class="soft">(916) 555-0173</span></div>
           <div class="cnote">from your application</div>
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" value="Denise"></div>
-            <div><span class="flabel">Last name</span><input type="text" value="Alvarez"></div>
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Denise"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
             <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0173"></div>
-            <div><span class="flabel">Relationship</span><input type="text" value="Grandmother"></div>
+            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Grandmother"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('jic-ec1', this)">Edit</button>
@@ -826,10 +902,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="cvalue">Sam Okafor · Family friend<br><span class="soft">(916) 555-0148</span></div>
           <div class="cnote">from your application</div>
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" value="Sam"></div>
-            <div><span class="flabel">Last name</span><input type="text" value="Okafor"></div>
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Sam"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Okafor"></div>
             <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0148"></div>
-            <div><span class="flabel">Relationship</span><input type="text" value="Family friend"></div>
+            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Family friend"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('jic-ec2', this)">Edit</button>
@@ -840,8 +916,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="cvalue">Dr. Priya Nair · Capitol Pediatrics<br><span class="soft">(916) 555-0122</span></div>
           <div class="cnote">from your application</div>
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" value="Priya"></div>
-            <div><span class="flabel">Last name</span><input type="text" value="Nair"></div>
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Priya"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Nair"></div>
             <div><span class="flabel">Practice</span><input type="text" value="Capitol Pediatrics"></div>
             <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0122"></div>
           </div></div>
@@ -859,18 +935,28 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div id="pickupRows">
         <div class="prow">
           <div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" placeholder="First name"></div>
-            <div><span class="flabel">Last name</span><input type="text" placeholder="Last name"></div>
-            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" placeholder="(916) 555-0100"></div>
-            <div><span class="flabel">Relationship</span><input type="text" placeholder="Aunt, neighbor..."></div>
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Maria"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
+            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0134"></div>
+            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Parent"></div>
           </div>
+          <div class="pnote">from your application</div>
+        </div>
+        <div class="prow">
+          <div class="fieldgrid">
+            <div><span class="flabel">First name</span><input type="text" data-alpha value="Jordan"></div>
+            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
+            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0187"></div>
+            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Parent"></div>
+          </div>
+          <div class="pnote">from your application</div>
         </div>
       </div>
       <button class="addbtn" onclick="addPickup()">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         Add another person
       </button>
-      <div class="assist">Anyone here will show ID at the door the first time.</div>
+      <div class="assist">Both parents are already covered. Add anyone else only if you want to; everyone here shows ID at the door the first time.</div>
     </div>
 
     <div class="quietopt step-in d3" id="nocontact">
@@ -882,7 +968,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         </label>
       </div>
       <div class="qreveal">
-        <input type="text" placeholder="Their name is enough">
+        <input type="text" data-alpha placeholder="Their name is enough">
         <div class="assist">A director will follow up with you privately.</div>
       </div>
     </div>
@@ -890,9 +976,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </div>
   </div>
   <div class="actionbar">
-    <div class="nextup" id="jicNext">6 fields to go: add at least one pickup person</div>
-    <button class="cta" id="jicCta" onclick="go('s-docs')" disabled>Finish chapter</button>
-    <button class="quietlink demolink" onclick="demoCompleteChapter()">demo: complete this chapter</button>
+    <div class="nextup" id="jicNext">Pickup is covered by both parents, from your application.</div>
+    <button class="cta" id="jicCta" onclick="finishJic()">Finish chapter</button>
   </div>
 </section>
 
@@ -1222,7 +1307,7 @@ var sigName = 'Maria Alvarez';
 var chState = [
   { id: 'ch1', name: 'Your family',       done: 22, total: 22, when: 'Done - July 8' },
   { id: 'ch2', name: 'About Theo',        done: 49, total: 49, when: 'Done - July 8' },
-  { id: 'ch3', name: 'Just in case',      done: 12, total: 18, when: 'Up next, about 3 min' },
+  { id: 'ch3', name: 'Just in case',      done: 16, total: 18, when: 'Up next, about 3 min' },
   { id: 'ch4', name: 'Health + routines', done: 0,  total: 5,  when: 'About 2 min' },
   { id: 'ch5', name: 'Permissions',       done: 0,  total: 13, when: 'About 1 min' }
 ];
@@ -1258,7 +1343,7 @@ function renderState() {
     else if (r.querySelector('.st-lock')) { r.querySelector('.st').outerHTML = Q_SVG; }
   });
   var note = document.getElementById('signLockNote');
-  if (note) note.style.display = locked ? 'block' : 'none';
+  if (note) note.style.display = locked ? '' : 'none'; /* '' lets the tiered CSS decide */
   var banner = document.getElementById('signLockBanner');
   if (banner) banner.style.display = locked ? 'flex' : 'none';
   var lt = document.getElementById('signLockText');
@@ -1267,11 +1352,17 @@ function renderState() {
   if (sb) sb.disabled = locked;
   var sn = document.getElementById('startSignNext');
   if (sn) sn.textContent = locked ? 'Locked until every chapter is complete' : 'First: adopt your signature, once';
+  /* v5: pickup is prefilled with both parents, so the pickup requirement is
+     always satisfied; adding more people is optional and never gates the CTA */
   var jc = document.getElementById('jicCta');
   var j = chState[2];
-  if (jc) jc.disabled = j.done < j.total;
+  var jReady = pickupOk();
+  if (jc) jc.disabled = !jReady;
   var jn = document.getElementById('jicNext');
-  if (jn) jn.textContent = j.done < j.total ? (j.total - j.done) + ' fields to go: add at least one pickup person' : 'Chapter complete. Next: your paperwork, filled out';
+  if (jn) jn.textContent = j.done >= j.total
+    ? 'Chapter complete. Next: your paperwork, filled out'
+    : (jReady ? 'Pickup is covered by both parents, from your application.'
+              : 'Add at least one pickup person with a first and last name');
   var je = document.getElementById('jicEst');
   if (je) je.textContent = '· ' + j.done + ' of ' + j.total + ' fields done';
   var hm = document.getElementById('hmetaNext');
@@ -1280,9 +1371,26 @@ function renderState() {
     hm.innerHTML = nxt ? '<b>Next up</b> ' + nxt.name + ' · about ' + (nxt.id === 'ch3' ? '3' : nxt.id === 'ch4' ? '2' : '1') + ' min' : '<b>Next up</b> Review and sign your documents';
   }
 }
-/* demo affordances (mockup only, labeled in the UI) */
-function demoCompleteChapter() { chState[2].done = chState[2].total; renderState(); }
+/* demo affordance (mockup only, labeled in the UI) */
 function demoCompleteAll() { chState.forEach(function(c){ c.done = c.total; }); renderState(); go('s-docs'); }
+
+/* v5: the pickup requirement. Parent 1 and Parent 2 arrive pre-populated from
+   held data, so this is satisfied on load and stays satisfied; rows a family
+   adds are optional and never required by validation. */
+function pickupOk() {
+  var rows = document.querySelectorAll('#pickupRows .prow');
+  for (var i = 0; i < rows.length; i++) {
+    var f = rows[i].querySelectorAll('input');
+    if (f[0] && f[0].value.trim() && f[1] && f[1].value.trim()) return true;
+  }
+  return false;
+}
+function finishJic() {
+  if (!pickupOk()) { renderState(); return; }
+  chState[2].done = chState[2].total;
+  renderState();
+  go('s-docs');
+}
 
 function initialsOf(n) {
   return n.trim().split(/\s+/).map(function(w){ return w.charAt(0).toUpperCase(); }).slice(0,3).join('');
@@ -1313,7 +1421,7 @@ function go(id) {
   });
   if (id === 's-docs') countUp();
   if (id === 's-handbook') hbRender();
-  maskPhones();
+  maskInputs();
   renderState();
 }
 /* clicking into signing while chapters are incomplete shows the locked state */
@@ -1330,7 +1438,7 @@ function toggleEdit(rowId, btn) {
   var editing = row.classList.toggle('editing');
   btn.textContent = editing ? 'Done' : 'Edit';
   if (editing) { var f = row.querySelector('input'); if (f) f.focus(); }
-  maskPhones();
+  maskInputs();
 }
 function soloToggle(cb) {
   document.getElementById('parent2block').classList.toggle('collapsed', cb.checked);
@@ -1340,15 +1448,16 @@ function addPickup() {
   var rows = document.getElementById('pickupRows');
   var row = document.createElement('div');
   row.className = 'prow';
-  row.innerHTML = '<button class="removep" onclick="this.parentNode.remove()">Remove</button>' +
+  row.innerHTML = '<button class="removep" onclick="this.parentNode.remove(); renderState();">Remove</button>' +
     '<div class="fieldgrid">' +
-    '<div><span class="flabel">First name</span><input type="text" placeholder="First name"></div>' +
-    '<div><span class="flabel">Last name</span><input type="text" placeholder="Last name"></div>' +
+    '<div><span class="flabel">First name</span><input type="text" data-alpha placeholder="First name"></div>' +
+    '<div><span class="flabel">Last name</span><input type="text" data-alpha placeholder="Last name"></div>' +
     '<div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" placeholder="(916) 555-0100"></div>' +
-    '<div><span class="flabel">Relationship</span><input type="text" placeholder="Aunt, neighbor..."></div>' +
+    '<div><span class="flabel">Relationship</span><input type="text" data-alpha placeholder="Aunt, neighbor..."></div>' +
     '</div>';
   rows.appendChild(row);
-  maskPhones();
+  maskInputs();
+  renderState();
   row.querySelector('input').focus();
 }
 function sigmode(mode) {
@@ -1376,6 +1485,26 @@ function maskPhones() {
     el.addEventListener('input', function() { el.value = fmtPhone(el.value); });
   });
 }
+/* v5: name and relationship fields reject numeric characters at the input,
+   the mirror of the tel mask (which rejects everything but digits) */
+function maskAlpha() {
+  document.querySelectorAll('input[data-alpha]').forEach(function(el) {
+    if (el.dataset.masked) return;
+    el.dataset.masked = '1';
+    el.addEventListener('beforeinput', function(e) {
+      if (e.data && /[0-9]/.test(e.data)) e.preventDefault();
+    });
+    el.addEventListener('input', function() {
+      var v = el.value.replace(/[0-9]/g, '');
+      if (v !== el.value) el.value = v;
+    });
+  });
+}
+function maskInputs() { maskPhones(); maskAlpha(); }
+/* live revalidation: typing or removing in the pickup repeater re-renders state */
+document.addEventListener('input', function(e) {
+  if (e.target.closest && e.target.closest('#pickupRows')) renderState();
+});
 
 /* ---- handbook stage: real pages, adopted-signature slots ---- */
 var hbPages = [
@@ -1385,8 +1514,7 @@ var hbPages = [
     '<div class="covertitle">For the families who grow with us.</div>' +
     '<p>Everything you need to know about your child’s care at Growing Mindfully, our schedule, our health and safety standards, our communication practices, our authorizations, and the rights you and your child are entitled to.</p>' +
     '<div class="covermeta"><div><b>Version</b>2.6</div><div><b>Revised</b>May 1, 2026</div>' +
-    '<div><b>Founders</b>Ashley Teeney and Jarred Winn</div><div><b>Address</b>750 N Street, Sacramento</div></div>' +
-    '<p style="margin-top:14px;font-family:var(--hand);font-size:17px;color:#6F8F70">We would rather answer the same question five times than have you guess.</p>' },
+    '<div><b>Founders</b>Ashley Teeney and Jarred Winn</div><div><b>Address</b>750 N Street, Sacramento</div></div>' },
   { n: 49, html: '<div class="eyebrow">Appendix A · Admission agreement</div>' +
     '<h4>A.11 Dispute Resolution</h4>' +
     '<p>(a) The parties shall attempt in good faith to resolve any dispute arising from or relating to this Agreement through informal discussion and, if unresolved, through non-binding mediation in Sacramento County, California, before initiating legal action.</p>' +
@@ -1512,7 +1640,7 @@ function countUp() {
   }
   setTimeout(function(){ requestAnimationFrame(tick); }, 400);
 }
-maskPhones();
+maskInputs();
 hbRender();
 renderState();
 </script>
