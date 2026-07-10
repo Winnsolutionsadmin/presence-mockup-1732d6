@@ -392,6 +392,20 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   display: grid; place-items: center; border-radius: var(--radius); }
 .iconbtn svg { width: 18px; height: 18px; }
 
+
+/* v4: gating + header band + demo affordances */
+.st-lock { background: var(--paper-deep); color: var(--ink-mute); border: 1px solid rgba(111,127,132,.35); }
+.ritem.locked { opacity: .55; }
+.locknote { font-size: 10px; font-weight: 600; letter-spacing: .02em; text-transform: none;
+  color: var(--ink-mute); padding: 0 10px 6px; }
+.lockbanner { display: flex; gap: 12px; align-items: center; background: var(--paper-deep);
+  border: 1px solid rgba(31,42,46,.1); border-radius: var(--radius); padding: 14px 16px;
+  margin: 0 0 18px; font-size: 13.5px; color: var(--ink-soft); }
+.lockbanner svg { width: 18px; height: 18px; flex-shrink: 0; }
+.demolink { color: var(--dusty-deep); opacity: .75; font-size: 12px; }
+.hmeta { display: none; }
+.hband { margin-bottom: 4px; }
+
 /* DESKTOP APP SHELL (>= 1000px): rail + main pane, designed as a product */
 @media (min-width: 1000px) {
   .shell { display: grid; grid-template-columns: 300px 1fr; }
@@ -426,20 +440,35 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   .railfoot { padding: 12px 20px 4px; border-top: 1px solid rgba(31,42,46,.07);
     font-size: 11.5px; color: var(--ink-mute); line-height: 1.5; }
   .main { max-width: none; margin: 0; }
-  .screen { min-height: auto; padding-bottom: 40px; }
-  .body { max-width: 800px; padding: 44px 56px 8px; }
+  .screen { min-height: auto; padding-bottom: 48px; }
+  .body { max-width: 1200px; padding: 40px 48px 8px; margin: 0 auto; }
   h1.title { font-size: 36px; }
-  .actionbar { position: static; transform: none; max-width: 800px; padding: 20px 56px 0;
-    background: none; }
-  .actionbar .cta, .actionbar .quietlink { max-width: 440px; margin-left: 0; }
-  .nextup { text-align: left; max-width: 440px; }
-  .quietlink { text-align: left; }
-  .welcomegrid { display: grid; grid-template-columns: 270px 1fr; gap: 44px; align-items: center; }
-  .welcomegrid .wtext { text-align: left !important; }
-  .welcomegrid .wtext .kicker { justify-content: flex-start !important; }
-  .welcomegrid .wtext .trust { justify-content: flex-start !important; }
-  .chaptercards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .actionbar { position: static; transform: none; max-width: 1200px; margin: 0 auto;
+    padding: 28px 48px 0; background: none; }
+  .actionbar .cta { max-width: 460px; margin: 0 auto; }
+  .actionbar .quietlink { max-width: 460px; margin: 10px auto 0; }
+  .nextup { text-align: center; }
+  .hidedesk { display: none; }
+  /* header band: headline left, live meta right; no duplicated garden */
+  .hband { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 48px;
+    align-items: start; border-bottom: 1px solid rgba(31,42,46,.08);
+    padding-bottom: 26px; margin-bottom: 26px; }
+  .hband .mobonly { display: none; }
+  .hband .htext { text-align: left !important; }
+  .hband .htext .kicker { justify-content: flex-start !important; }
+  .hmeta { display: block; background: var(--card); border: 1px solid rgba(31,42,46,.08);
+    border-radius: var(--radius); box-shadow: var(--shadow-soft); padding: 8px 18px; }
+  .hmeta .hrow { display: flex; align-items: center; gap: 10px; padding: 10px 0;
+    font-size: 13px; color: var(--ink-soft); }
+  .hmeta .hrow + .hrow { border-top: 1px solid rgba(31,42,46,.06); }
+  .hmeta .hrow svg.lockic { width: 14px; height: 14px; flex-shrink: 0; }
+  .hmeta .hrow b { color: var(--ink); font-weight: 700; }
+  .chaptercards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px; }
   .chaptercards .chcard { margin-bottom: 0; }
+  .jicgrid { display: grid; grid-template-columns: minmax(0,1.08fr) minmax(0,.92fr);
+    gap: 44px; align-items: start; }
+  .jicgrid .prow .fieldgrid { grid-template-columns: 1fr 1fr; }
   .cedit .fieldgrid { grid-template-columns: 1fr 1fr 1fr 1fr; }
   .cedit .fieldgrid .full { grid-column: span 2; }
   .prow .fieldgrid { grid-template-columns: 1fr 1fr 1fr 1fr; }
@@ -492,37 +521,38 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   </div>
   <nav class="railnav">
     <div class="rgroup">Chapters</div>
-    <button class="ritem" data-go="s-family">
+    <button class="ritem" data-go="s-family" id="r-ch1">
       <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      Your family <span class="rsub">8/8 fields</span>
+      Your family <span class="rsub"></span>
     </button>
-    <button class="ritem">
+    <button class="ritem" id="r-ch2">
       <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      About Theo <span class="rsub">11/11 fields</span>
+      About Theo <span class="rsub"></span>
     </button>
-    <button class="ritem" data-go="s-justincase">
+    <button class="ritem" data-go="s-justincase" id="r-ch3">
       <span class="st st-question">?</span>
-      Just in case <span class="rsub">2/6 fields</span>
+      Just in case <span class="rsub"></span>
     </button>
-    <button class="ritem"><span class="st st-question">?</span> Health + routines <span class="rsub">0/7 fields</span></button>
-    <button class="ritem"><span class="st st-question">?</span> Permissions <span class="rsub">0/4 fields</span></button>
+    <button class="ritem" id="r-ch4"><span class="st st-question">?</span> Health + routines <span class="rsub"></span></button>
+    <button class="ritem" id="r-ch5"><span class="st st-question">?</span> Permissions <span class="rsub"></span></button>
     <div class="rgroup">Sign and confirm</div>
+    <div class="locknote" id="signLockNote">Locked · finish your chapters first</div>
     <button class="ritem">
       <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       Enrollment agreement <span class="rsub">Jun 30</span>
     </button>
-    <button class="ritem" data-go="s-consent">
+    <button class="ritem signlock" data-go="s-consent" id="r-hb">
       <span class="st st-question">?</span>
       Parent handbook <span class="rsub">Sign · 2 slots</span>
     </button>
-    <button class="ritem" data-go="s-review">
+    <button class="ritem signlock" data-go="s-review" id="r-700">
       <span class="st st-question">?</span>
       LIC 700 · Identification <span class="rsub">Confirm</span>
     </button>
-    <button class="ritem"><span class="st st-question">?</span> LIC 702 · Health history <span class="rsub">Confirm</span></button>
-    <button class="ritem"><span class="st st-question">?</span> LIC 627 · Medical consent <span class="rsub">Confirm</span></button>
-    <button class="ritem"><span class="st st-question">?</span> LIC 613A · Personal rights <span class="rsub">Confirm</span></button>
-    <button class="ritem"><span class="st st-question">?</span> LIC 995 · Parents' rights <span class="rsub">Confirm</span></button>
+    <button class="ritem signlock"><span class="st st-question">?</span> LIC 702 · Health history <span class="rsub">Confirm</span></button>
+    <button class="ritem signlock"><span class="st st-question">?</span> LIC 627 · Medical consent <span class="rsub">Confirm</span></button>
+    <button class="ritem signlock"><span class="st st-question">?</span> LIC 613A · Personal rights <span class="rsub">Confirm</span></button>
+    <button class="ritem signlock"><span class="st st-question">?</span> LIC 995 · Parents' rights <span class="rsub">Confirm</span></button>
     <div class="rgroup">Your doctor</div>
     <button class="ritem" data-go="s-docs">
       <span class="st st-wait"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M8 5v3.2l2.2 1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
@@ -553,8 +583,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 <section class="screen active" id="s-welcome" aria-label="Welcome"
   data-stage="answer" data-time="about 12 min left">
   <div class="body">
-    <div class="welcomegrid">
-      <div class="garden-wrap step-in play" role="img" aria-label="Enrollment progress: 2 of 5 chapters complete, 40 percent">
+    <div class="hband">
+      <div class="garden-wrap step-in play mobonly" role="img" aria-label="Enrollment progress: 2 of 5 chapters complete, 40 percent">
         <svg class="garden" viewBox="0 0 216 252">
           <ellipse class="mound" cx="108" cy="236" rx="44" ry="8"/>
           <path class="stem" d="M108 234 C 105 208 112 190 108 168 C 104 148 113 128 108 108 C 104 90 111 74 108 58 C 106 46 109 38 108 30"/>
@@ -570,78 +600,82 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <text class="chlabel" x="66" y="50" text-anchor="middle">permissions</text>
           <circle class="bud" cx="108" cy="30" r="3.4"/>
         </svg>
-        <div class="gardenpct">40% complete <span class="sub">· 2 of 5 chapters</span></div>
+        <div class="gardenpct"><span class="pctnum">40%</span> complete <span class="sub pctsub">· 2 of 5 chapters</span></div>
       </div>
-      <div class="wtext" style="text-align:center">
+      <div class="htext" style="text-align:center">
         <div class="step-in d1"><span class="kicker" style="justify-content:center">Getting ready for August 3</span></div>
         <h1 class="title step-in d2">Let's get Theo ready for his first day.</h1>
         <p class="lede step-in d3">
           We already filled in most of your paperwork from your application.
           Two chapters down, three to go, then everything is ready to sign.
         </p>
-        <div class="trust step-in d3" style="justify-content:center">
+        <div class="trust step-in d3 mobonly" style="justify-content:center">
           <svg viewBox="0 0 16 16" fill="none"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>
           Autosaves as you go. Stop anytime and pick up where you left off.
         </div>
       </div>
+      <div class="hmeta step-in d2" aria-label="Progress and next step">
+        <div class="hrow">
+          <svg class="sprig" viewBox="0 0 132 26" style="width:104px;height:22px" aria-hidden="true">
+            <line class="srail" x1="6" y1="16" x2="126" y2="16"/>
+            <line class="sfill wsfill" x1="6" y1="16" x2="54" y2="16"/>
+            <path class="minileaf" d="M18 15 Q 14 8 18 3 Q 24 7 21 15 Z"/>
+            <path class="minileaf" d="M44 15 Q 40 8 44 3 Q 50 7 47 15 Z"/>
+            <circle class="n now" cx="72" cy="16" r="4.2"/>
+            <circle class="n" cx="98" cy="16" r="3.4"/>
+            <circle class="n" cx="122" cy="16" r="3.4"/>
+          </svg>
+          <b class="pctnum">40%</b> <span class="pctsub">2 of 5 chapters</span>
+        </div>
+        <div class="hrow" id="hmetaNext"><b>Next up</b> Just in case · about 3 min</div>
+        <div class="hrow">
+          <svg class="lockic" viewBox="0 0 16 16" fill="none"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Autosaves as you go. Stop anytime.
+        </div>
+      </div>
     </div>
-    <div class="chaptercards step-in d3" style="margin-top:18px">
-      <div class="chcard">
+    <div class="chaptercards step-in d3">
+      <div class="chcard" id="c-ch1">
         <div class="cmainx">
           <div class="cname">Your family</div>
           <div class="csub">Done · July 8</div>
           <button class="creview" onclick="go('s-family')">Review</button>
         </div>
-        <div class="cstat">
-          <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span class="cfields">8/8 fields</span>
-        </div>
+        <div class="cstat"></div>
       </div>
-      <div class="chcard">
+      <div class="chcard" id="c-ch2">
         <div class="cmainx">
           <div class="cname">About Theo</div>
           <div class="csub">Done · July 8</div>
           <button class="creview">Review</button>
         </div>
-        <div class="cstat">
-          <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span class="cfields">11/11 fields</span>
-        </div>
+        <div class="cstat"></div>
       </div>
-      <div class="chcard next">
+      <div class="chcard next" id="c-ch3">
         <div class="cmainx">
           <div class="cname">Just in case</div>
           <div class="csub">Up next · about 3 min</div>
         </div>
-        <div class="cstat">
-          <span class="st st-question">?</span>
-          <span class="cfields">2/6 fields</span>
-        </div>
+        <div class="cstat"></div>
       </div>
-      <div class="chcard">
+      <div class="chcard" id="c-ch4">
         <div class="cmainx">
           <div class="cname">Health + routines</div>
           <div class="csub">About 2 min</div>
         </div>
-        <div class="cstat">
-          <span class="st st-question">?</span>
-          <span class="cfields">0/7 fields</span>
-        </div>
+        <div class="cstat"></div>
       </div>
-      <div class="chcard">
+      <div class="chcard" id="c-ch5">
         <div class="cmainx">
           <div class="cname">Permissions</div>
           <div class="csub">About 1 min</div>
         </div>
-        <div class="cstat">
-          <span class="st st-question">?</span>
-          <span class="cfields">0/4 fields</span>
-        </div>
+        <div class="cstat"></div>
       </div>
     </div>
   </div>
   <div class="actionbar">
-    <div class="nextup">Next up: Just in case · about 3 min</div>
+    <div class="nextup hidedesk">Next up: Just in case · about 3 min</div>
     <button class="cta" onclick="go('s-justincase')">Continue</button>
   </div>
 </section>
@@ -765,10 +799,12 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Your chapters
     </button>
-    <span class="kicker step-in">Chapter three · Just in case <span class="est">· about 3 min</span></span>
+    <span class="kicker step-in">Chapter three · Just in case <span class="est" id="jicEst">· 12 of 18 fields done</span></span>
     <h1 class="title step-in d1" style="font-size:28px">Who can we call,<br>and who can pick up?</h1>
     <p class="confirm-intro step-in d2">Check what we have. Tap edit if anything changed.</p>
 
+    <div class="jicgrid">
+    <div>
     <div class="confirm-card step-in d2">
       <div class="crow" id="jic-ec1">
         <div class="cmain">
@@ -814,6 +850,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       </div>
     </div>
 
+    </div>
+    <div>
     <div class="divider step-in d3">A few things only you know</div>
 
     <div class="step-in d3" style="margin-bottom:20px">
@@ -848,10 +886,13 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="assist">A director will follow up with you privately.</div>
       </div>
     </div>
+    </div>
+    </div>
   </div>
   <div class="actionbar">
-    <div class="nextup">Next: your paperwork, filled out</div>
-    <button class="cta" onclick="go('s-docs')">Finish chapter</button>
+    <div class="nextup" id="jicNext">6 fields to go: add at least one pickup person</div>
+    <button class="cta" id="jicCta" onclick="go('s-docs')" disabled>Finish chapter</button>
+    <button class="quietlink demolink" onclick="demoCompleteChapter()">demo: complete this chapter</button>
   </div>
 </section>
 
@@ -862,6 +903,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <h1 class="title step-in" style="text-align:center;font-size:30px;margin-top:8px">We filled out<br>your paperwork.</h1>
     <p class="countline step-in d1" style="text-align:center"><strong><span id="fillcount">0</span> answers</strong> filled in from what you've already told us. Here is where everything stands.</p>
 
+    <div class="lockbanner step-in d1" id="signLockBanner">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span id="signLockText">Signing unlocks when your chapters are done. 3 chapters to finish.</span>
+    </div>
+
     <div class="docgroups">
     <div>
     <div class="grouplabel step-in d1">Ready to sign or confirm · needs you</div>
@@ -869,7 +915,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="rmain"><div class="rname">Parent handbook</div><div class="rmeta">Adopt your signature, then sign as you read</div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">2 slots</span></div>
     </div>
-    <button class="gendoc-anim docrow" style="animation-delay:.35s" onclick="go('s-review')">
+    <button class="gendoc-anim docrow" style="animation-delay:.35s" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review the filled form, then confirm</div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">21/21 filled</span></div>
     </button>
@@ -911,8 +957,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </div>
   </div>
   <div class="actionbar">
-    <div class="nextup">First: adopt your signature, once</div>
-    <button class="cta" onclick="go('s-consent')">Start signing</button>
+    <div class="nextup" id="startSignNext">First: adopt your signature, once</div>
+    <button class="cta" id="startSignBtn" onclick="go('s-consent')" disabled>Start signing</button>
+    <button class="quietlink demolink" onclick="demoCompleteAll()">demo: complete all chapters</button>
   </div>
 </section>
 
@@ -1075,11 +1122,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div class="docgroups">
     <div>
     <div class="grouplabel step-in d1">Needs you · 2</div>
-    <button class="docrow step-in d1" onclick="go('s-consent')">
+    <button class="docrow step-in d1" onclick="goGate('s-consent')">
       <div class="rmain"><div class="rname">Parent handbook</div><div class="rmeta">Sign as you read · about 5 min</div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">2 slots</span></div>
     </button>
-    <button class="docrow step-in d1" onclick="go('s-review')">
+    <button class="docrow step-in d1" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review and confirm · about 1 min</div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">21/21 filled</span></div>
     </button>
@@ -1170,6 +1217,73 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var sigName = 'Maria Alvarez';
 
+/* ---- v4: real field counts (docs/enrollment/field-matrix.csv, 107 chapter fields
+   + 2 ceremony rows). Prefilled HELD/DERIVED rows count once confirmed. ---- */
+var chState = [
+  { id: 'ch1', name: 'Your family',       done: 22, total: 22, when: 'Done - July 8' },
+  { id: 'ch2', name: 'About Theo',        done: 49, total: 49, when: 'Done - July 8' },
+  { id: 'ch3', name: 'Just in case',      done: 12, total: 18, when: 'Up next, about 3 min' },
+  { id: 'ch4', name: 'Health + routines', done: 0,  total: 5,  when: 'About 2 min' },
+  { id: 'ch5', name: 'Permissions',       done: 0,  total: 13, when: 'About 1 min' }
+];
+var CHECK_SVG = '<span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+var Q_SVG = '<span class="st st-question">?</span>';
+var LOCK_SVG = '<span class="st st-lock"><svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px"><path d="M4.5 7.5V5.5a3.5 3.5 0 117 0v2m-8 0h9v5a1.5 1.5 0 01-1.5 1.5h-6a1.5 1.5 0 01-1.5-1.5v-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
+function chaptersDone() { return chState.filter(function(c){ return c.done >= c.total; }).length; }
+function signLocked() { return chState.some(function(c){ return c.done < c.total; }); }
+function renderState() {
+  var pctv = Math.round(chaptersDone() / chState.length * 100) + '%';
+  document.querySelectorAll('.pctnum').forEach(function(e){ e.textContent = pctv; });
+  document.querySelectorAll('.pctsub').forEach(function(e){ e.textContent = (e.classList.contains('sub') ? '· ' : '') + chaptersDone() + ' of 5 chapters'; });
+  document.querySelectorAll('.railprog .pct').forEach(function(e){ e.textContent = pctv; });
+  chState.forEach(function(c, i) {
+    var full = c.done >= c.total;
+    var rail = document.getElementById('r-' + c.id);
+    if (rail) {
+      rail.querySelector('.st').outerHTML = full ? CHECK_SVG : Q_SVG;
+      rail.querySelector('.rsub').textContent = c.done + '/' + c.total + ' fields';
+    }
+    var card = document.getElementById('c-' + c.id);
+    if (card) {
+      card.querySelector('.cstat').innerHTML = (full ? CHECK_SVG : Q_SVG) +
+        '<span class="cfields">' + c.done + '/' + c.total + ' fields</span>';
+      card.querySelector('.csub').textContent = full ? 'Done · July 8' : c.when.replace('Up next, ', 'Up next · ');
+    }
+  });
+  var locked = signLocked();
+  var left = chState.filter(function(c){ return c.done < c.total; }).length;
+  document.querySelectorAll('.ritem.signlock').forEach(function(r) {
+    r.classList.toggle('locked', locked);
+    if (locked) { r.querySelector('.st').outerHTML = LOCK_SVG; }
+    else if (r.querySelector('.st-lock')) { r.querySelector('.st').outerHTML = Q_SVG; }
+  });
+  var note = document.getElementById('signLockNote');
+  if (note) note.style.display = locked ? 'block' : 'none';
+  var banner = document.getElementById('signLockBanner');
+  if (banner) banner.style.display = locked ? 'flex' : 'none';
+  var lt = document.getElementById('signLockText');
+  if (lt) lt.textContent = 'Signing unlocks when your chapters are done. ' + left + (left === 1 ? ' chapter' : ' chapters') + ' to finish.';
+  var sb = document.getElementById('startSignBtn');
+  if (sb) sb.disabled = locked;
+  var sn = document.getElementById('startSignNext');
+  if (sn) sn.textContent = locked ? 'Locked until every chapter is complete' : 'First: adopt your signature, once';
+  var jc = document.getElementById('jicCta');
+  var j = chState[2];
+  if (jc) jc.disabled = j.done < j.total;
+  var jn = document.getElementById('jicNext');
+  if (jn) jn.textContent = j.done < j.total ? (j.total - j.done) + ' fields to go: add at least one pickup person' : 'Chapter complete. Next: your paperwork, filled out';
+  var je = document.getElementById('jicEst');
+  if (je) je.textContent = '· ' + j.done + ' of ' + j.total + ' fields done';
+  var hm = document.getElementById('hmetaNext');
+  if (hm) {
+    var nxt = chState.filter(function(c){ return c.done < c.total; })[0];
+    hm.innerHTML = nxt ? '<b>Next up</b> ' + nxt.name + ' · about ' + (nxt.id === 'ch3' ? '3' : nxt.id === 'ch4' ? '2' : '1') + ' min' : '<b>Next up</b> Review and sign your documents';
+  }
+}
+/* demo affordances (mockup only, labeled in the UI) */
+function demoCompleteChapter() { chState[2].done = chState[2].total; renderState(); }
+function demoCompleteAll() { chState.forEach(function(c){ c.done = c.total; }); renderState(); go('s-docs'); }
+
 function initialsOf(n) {
   return n.trim().split(/\s+/).map(function(w){ return w.charAt(0).toUpperCase(); }).slice(0,3).join('');
 }
@@ -1200,7 +1314,17 @@ function go(id) {
   if (id === 's-docs') countUp();
   if (id === 's-handbook') hbRender();
   maskPhones();
+  renderState();
 }
+/* clicking into signing while chapters are incomplete shows the locked state */
+function goGate(id) {
+  if (signLocked() && (id === 's-consent' || id === 's-handbook' || id === 's-review')) { go('s-docs'); return; }
+  go(id);
+}
+document.addEventListener('click', function(e) {
+  var r = e.target.closest('.ritem[data-go]');
+  if (r) goGate(r.dataset.go);
+});
 function toggleEdit(rowId, btn) {
   var row = document.getElementById(rowId);
   var editing = row.classList.toggle('editing');
@@ -1390,6 +1514,7 @@ function countUp() {
 }
 maskPhones();
 hbRender();
+renderState();
 </script>
 </body>
 </html>
