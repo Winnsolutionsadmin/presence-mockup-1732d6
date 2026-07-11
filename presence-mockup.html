@@ -4,20 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v7 · Growing Mindfully</title>
+<title>Presence · Design mockup v8 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* PRESENCE MOCKUP v7 · design artifact, not production code.
+/* PRESENCE MOCKUP v8 · design artifact, not production code.
    One product on a responsive continuum: >=1200 full rail + 3-column grids;
    900-1199 full rail + 2-column grids; 700-899 slim icon rail + single column;
    <700 the mobile chaptered flow. Same header, cards, and CTA identity at every width.
-   v7: stem = position + leaf = completion on the progress plant (both animated),
-   ORIGINAL CDSS form layouts filled with family data, full LIC 702 intake coverage
-   with age-band conditional blocks and enforced required fields, a filled needs and
-   services plan, handbook data prefill, upload glyphs, popover help, and the
-   petal-confetti finale. */
+   v8: completed chapters open as FULL locked field views with unlock-to-edit,
+   per-field LIVE progress (fractional stem + sun-spark glint), literal monochrome
+   CDSS form rendering compared against the blank state templates, handbook
+   accuracy affordances on every prefilled slot, WebAudio zen chimes + audio toggle,
+   deadline semantics (immunization due by enrollment, LIC 701 due by August 17),
+   the certificate as a real document row, a live 7-step rail sprig, the lotus
+   mark ending the progress stem, and denser petal confetti at the finale. */
 :root {
   --paper: #FBF7EE; --paper-deep: #F0E9D8; --card: #FFFDF8;
   --ink: #1F2A2E; --ink-soft: #3F5359; --ink-mute: #6F7F84;
@@ -746,6 +748,123 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   100% { transform: translateY(108vh) rotate(var(--spin)); opacity: .75; }
 }
 
+/* ---- v8 item 1: completed-chapter review · full field view, locked, unlock to edit ---- */
+.lockwrap { position: relative; }
+.lockwrap input { padding-right: 44px; }
+.lockwrap input[disabled] { background: #FCFAF4; color: var(--ink); opacity: 1;
+  -webkit-text-fill-color: var(--ink); border-color: var(--paper-deep); cursor: default; }
+.unlockbtn { position: absolute; right: 4px; bottom: 5px; width: 36px; height: 36px;
+  display: grid; place-items: center; background: none; border: 0; border-radius: var(--radius);
+  color: var(--ink-mute); padding: 0; }
+.unlockbtn svg { width: 15px; height: 15px; }
+.unlockbtn:hover { color: var(--teal-deep); }
+.lockwrap.editing .unlockbtn { color: var(--teal-deep); }
+.lockwrap .savewhisper { position: absolute; right: 44px; bottom: 13px; font-size: 11.5px;
+  font-weight: 700; color: var(--sage-deep); opacity: 0; pointer-events: none; }
+.lockwrap .savewhisper.show { animation: whisperIn 1.7s var(--ease) both; }
+@keyframes whisperIn { 0% { opacity: 0; } 12% { opacity: 1; } 72% { opacity: 1; } 100% { opacity: 0; } }
+.reviewfields .grouplabel { margin: 20px 0 10px; }
+.reviewfields .fieldgrid { margin-bottom: 12px; }
+.lockbanner .unlockall { margin-left: auto; background: none; border: 1.5px solid var(--teal-deep);
+  border-radius: var(--radius); color: var(--teal-deep); font-size: 12.5px; font-weight: 700;
+  padding: 8px 14px; white-space: nowrap; flex-shrink: 0; }
+.lockbanner.editingall { background: rgba(155,185,158,.14); }
+
+/* ---- v8 item 2: the sun spark · a small gold glint at the stem tip when a field completes ---- */
+.tgspark { position: absolute; width: 20px; height: 20px; margin: -10px 0 0 -10px;
+  pointer-events: none; opacity: 0; z-index: 3; }
+.tgspark.fire { animation: sunspark .7s var(--ease) both; }
+@keyframes sunspark { 0% { opacity: 0; transform: scale(.35) rotate(0deg); }
+  30% { opacity: .95; } 100% { opacity: 0; transform: scale(1.2) rotate(26deg); } }
+
+/* ---- v8 item 10: the stem ends in the GM lotus mark; no % on the bar itself ---- */
+.tgend img.tglotus { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px;
+  margin: -15px 0 0 -15px; opacity: .38; filter: grayscale(1);
+  transition: opacity .6s var(--ease), filter .6s var(--ease); }
+.tgend.open img.tglotus { opacity: 1; filter: none; animation: bloomIn .9s var(--spring) both; }
+
+/* ---- v8 item 11: rail rows never wrap; Health + routines stays on one line ---- */
+.ritem { white-space: nowrap; }
+@media (min-width: 900px) and (max-width: 1199px) {
+  .ritem { font-size: 12.5px; gap: 8px; padding: 8px 8px; }
+  .ritem .rsub { font-size: 10px; }
+  .ritem .stepno { font-size: 9px; }
+}
+
+/* ---- v8 items 6 + 7: due chips + right-aligned upload controls, identical on both rows ---- */
+.duechip { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px;
+  font-weight: 700; letter-spacing: .03em; padding: 3px 9px; border-radius: 999px;
+  white-space: nowrap; vertical-align: middle; }
+.duechip.firm { background: rgba(201,168,106,.26); color: #7A5F2C; border: 1px solid rgba(201,168,106,.55); }
+.duechip.soft { background: rgba(122,168,196,.16); color: var(--dusty-deep); border: 1px solid rgba(122,168,196,.35); }
+.upright { flex-shrink: 0; align-self: center; }
+.upright .upbtn { display: flex; flex-direction: column; align-items: center; gap: 4px;
+  width: 96px; padding: 12px 8px; border: 1.5px dashed var(--sage); border-radius: var(--radius);
+  background: rgba(155,185,158,.06); color: var(--sage-deep); font-size: 11px; font-weight: 700;
+  text-align: center; cursor: pointer; }
+.upright .upbtn:hover { background: rgba(155,185,158,.14); }
+.upright .upbtn svg { width: 18px; height: 18px; }
+
+/* ---- v8 item 5: the audio toggle ---- */
+.audiotog { background: none; border: 0; color: var(--ink-mute); padding: 8px;
+  display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700;
+  border-radius: var(--radius); }
+.audiotog svg { width: 16px; height: 16px; }
+.audiotog:hover { color: var(--ink-soft); }
+.railfoot .audiotog { padding: 8px 0 0; }
+
+/* ---- v8 item 4: literal CDSS form rendering · monochrome black-on-white inside the
+   paper frame. No brand color inside the document body; the gold signature slot is
+   the single interaction overlay (the DocuSign-tab pattern), not part of the form. ---- */
+.formdoc { font-family: Arial, Helvetica, sans-serif; color: #111; }
+.formdoc .fdstate { color: #111; font-size: 6.5px; letter-spacing: .04em; padding: 8px 12px 4px; }
+.formdoc .fdhead { padding: 2px 12px 6px; }
+.formdoc .fdmaintitle { font-size: 14px; font-weight: 700; color: #000; line-height: 1.25;
+  letter-spacing: .005em; }
+.formdoc .fdmaintitle .t2 { display: block; }
+.formdoc .fdmaintitle .t2.mixed { text-transform: none; }
+.formdoc .fdheadnote { font-size: 9.5px; font-weight: 700; color: #000; margin-top: 2px; }
+.formdoc .fdheadnote i { font-weight: 400; }
+.formdoc .fdstate.modern { font-size: 9px; text-transform: none; letter-spacing: 0;
+  font-weight: 400; color: #111; border-bottom: 2px solid #111; padding-bottom: 4px; }
+.formdoc .fdrow { border-top: 1px solid #111; }
+.formdoc .fdcell { padding: 3px 6px 5px; }
+.formdoc .fdcell + .fdcell { border-left: 1px solid #111; }
+.formdoc .fdcell b { color: #111; font-weight: 400; font-size: 6.5px; letter-spacing: .03em; }
+.formdoc .fdcell span { color: #000; font-size: 11.5px; font-weight: 400; }
+.formdoc .fv { background: none; color: #000; }
+.formdoc .fdsecthead { border-top: 2px solid #111; color: #000; font-size: 9px;
+  font-weight: 700; letter-spacing: .02em; padding: 4px 12px 3px; }
+.formdoc .fdsecthead i { color: #111; font-weight: 400; font-size: 8px; }
+.formdoc .fdchecks { border-top: 1px solid #111; color: #000; font-size: 10.5px; padding: 6px 12px 8px; }
+.formdoc .fdtext { border-top: 1px solid #111; color: #000; font-size: 10.5px; line-height: 1.6;
+  padding: 7px 12px; }
+.formdoc .fdunder { border-bottom: 1px solid #000; color: #000; font-weight: 400; }
+.formdoc .fdsig { border-top: 1px solid #111; }
+.formdoc .fdsig .sigcol .siglab { color: #111; font-weight: 400; font-size: 6.5px; }
+.formdoc .fdsig .datefill { color: #000; border-bottom: 1px solid #000; }
+.formdoc .fdfoot { border-top: 1px solid #111; color: #111; font-size: 7.5px;
+  font-weight: 400; letter-spacing: .02em; }
+.formdoc .fdtable { width: 100%; border-collapse: collapse; border-top: 1px solid #111; }
+.formdoc .fdtable th { font-size: 10px; font-weight: 400; color: #000; text-align: center;
+  border: 1px solid #111; border-top: 0; padding: 4px 6px; }
+.formdoc .fdtable th:first-child, .formdoc .fdtable td:first-child { border-left: 0; }
+.formdoc .fdtable th:last-child, .formdoc .fdtable td:last-child { border-right: 0; }
+.formdoc .fdtable td { font-size: 10.5px; color: #000; border: 1px solid #111;
+  padding: 4px 6px; height: 17px; }
+.formdoc .fddetach { border-top: 1px dashed #111; text-align: center; font-size: 7.5px;
+  letter-spacing: .08em; color: #111; padding: 4px 12px 3px; text-transform: uppercase; }
+.formdoc .fdbox { border: 1.5px solid #111; margin: 6px 12px 8px; padding: 6px 10px;
+  font-size: 10.5px; color: #000; line-height: 1.6; }
+.formdoc + .formdoc { margin-top: 14px; }
+.fidnote { font-size: 12px; color: var(--ink-mute); margin: 8px 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tgspark.fire { animation: none; opacity: 0; }
+  .lockwrap .savewhisper.show { animation: none; opacity: 1; }
+  .tgend.open img.tglotus { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .screen.active .step-in { animation: none; opacity: 1; transform: none; }
   .play .garden .stem, .garden .stem { animation: none; stroke-dashoffset: 56; }
@@ -770,16 +889,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   </div>
   <div class="railapp"><span class="over">Presence</span> · Portal</div>
   <div class="railprog">
-    <svg class="sprig" viewBox="0 0 132 26" style="width:96px;height:22px" role="img" aria-label="2 of 5 chapters complete, 40 percent">
-      <line class="srail" x1="6" y1="16" x2="126" y2="16"/>
-      <line class="sfill" x1="6" y1="16" x2="54" y2="16"/>
-      <path class="minileaf" d="M18 15 Q 14 8 18 3 Q 24 7 21 15 Z"/>
-      <path class="minileaf" d="M44 17 Q 40 24 44 26 Q 50 24 47 17 Z"/>
-      <circle class="n now" cx="72" cy="16" r="4.2"/>
-      <circle class="n" cx="98" cy="16" r="3.4"/>
-      <circle class="n" cx="122" cy="16" r="3.4"/>
-    </svg>
-    <span class="pct">40%</span>
+    <!-- v8 item 9: the rail sprig is rendered live from the same 7-step state as the
+         top plant: one node per step, a leaf per COMPLETED step (sides alternating),
+         fill drawn to the same fractional position as the stem. Never hand-drawn. -->
+    <svg class="sprig railsprig" viewBox="0 0 132 26" style="width:96px;height:22px" role="img" aria-label="Enrollment progress"></svg>
+    <span class="pct">29%</span>
     <span class="childchip">Theo · Aug 3</span>
   </div>
   <nav class="railnav">
@@ -818,18 +932,24 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <button class="ritem signlock" data-go="s-review" id="r-lic995"><span class="st st-question">?</span> LIC 995 · Parents' rights <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-nsp"><span class="st st-question">?</span> Needs and services plan <span class="rsub">Sign</span></button>
     <div class="rgroup"><span class="stepno">Step 7</span> Your doctor</div>
-    <button class="ritem" data-go="s-docs">
+    <!-- v8 item 7: immunization sits ABOVE the doctor's report; it is the day-1 gate -->
+    <button class="ritem" data-go="s-dash"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Day 1</span></button>
+    <button class="ritem" data-go="s-dash">
       <span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-      LIC 701 · Doctor's report <span class="rsub">Upload</span>
+      LIC 701 · Doctor's report <span class="rsub">Aug 17</span>
     </button>
-    <button class="ritem" data-go="s-dash"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Upload</span></button>
     <div class="rgroup">Home</div>
     <button class="ritem" data-go="s-dash">
       <span class="st st-bang">!</span>
       Documents dashboard <span class="rsub">All files</span>
     </button>
   </nav>
-  <div class="railfoot">Questions? A director answers same day.<br>hello@growingmindfully.org</div>
+  <div class="railfoot">Questions? A director answers same day.<br>hello@growingmindfully.org
+    <button class="audiotog" onclick="toggleAudio(this)" aria-pressed="true" title="Sounds on">
+      <svg viewBox="0 0 16 16" fill="none" class="aud-on"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6H2.5z" fill="currentColor"/><path d="M10.5 5.5a3.4 3.4 0 010 5M12 3.8a5.8 5.8 0 010 8.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span class="audlbl">Sounds on</span>
+    </button>
+  </div>
 </aside>
 
 <!-- MAIN PANE -->
@@ -840,7 +960,12 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <img class="mark" src="data:image/png;base64,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" alt="">
     <img class="word" src="data:image/png;base64,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" alt="Growing Mindfully">
   </span>
-  <span class="appname"><span class="over">Presence</span><br>Portal</span>
+  <span style="display:inline-flex;align-items:center;gap:2px">
+    <button class="audiotog" onclick="toggleAudio(this)" aria-pressed="true" title="Sounds on">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6H2.5z" fill="currentColor"/><path d="M10.5 5.5a3.4 3.4 0 010 5M12 3.8a5.8 5.8 0 010 8.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <span class="appname"><span class="over">Presence</span><br>Portal</span>
+  </span>
 </div>
 
 <!-- v6: THE PROGRESS PLANT. One leaf per section, spanning the top of the main
@@ -867,16 +992,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       </div>
       <div class="hmeta step-in d2" aria-label="Progress and next step">
         <div class="hrow">
-          <svg class="sprig" viewBox="0 0 132 26" style="width:104px;height:22px" aria-hidden="true">
-            <line class="srail" x1="6" y1="16" x2="126" y2="16"/>
-            <line class="sfill wsfill" x1="6" y1="16" x2="54" y2="16"/>
-            <path class="minileaf" d="M18 15 Q 14 8 18 3 Q 24 7 21 15 Z"/>
-            <path class="minileaf" d="M44 17 Q 40 24 44 26 Q 50 24 47 17 Z"/>
-            <circle class="n now" cx="72" cy="16" r="4.2"/>
-            <circle class="n" cx="98" cy="16" r="3.4"/>
-            <circle class="n" cx="122" cy="16" r="3.4"/>
-          </svg>
-          <b class="pctnum">40%</b> <span class="pctsub">2 of 5 chapters</span>
+          <svg class="sprig railsprig" viewBox="0 0 132 26" style="width:104px;height:22px" aria-hidden="true"></svg>
+          <b class="pctnum">29%</b> <span class="pctsub">2 of 7 steps</span>
         </div>
         <div class="hrow" id="hmetaNext"><b>Next up</b> Just in case · about 3 min</div>
         <div class="hrow">
@@ -946,77 +1063,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </button>
     <span class="kicker step-in">Step 1 · Your family <span class="est">· done, review anytime</span></span>
     <h1 class="title step-in d1" style="font-size:28px">The grown-ups in Theo's world.</h1>
-    <p class="confirm-intro step-in d2">Check what we have. Tap edit if anything changed.</p>
-
-    <div class="grouplabel step-in d2" style="margin-top:6px">Parent or guardian 1</div>
-    <div class="confirm-card step-in d2">
-      <div class="crow" id="f-p1name">
-        <div class="cmain">
-          <div class="clabel">Name</div>
-          <div class="cvalue">Maria Alvarez</div>
-          <div class="cnote">from your application</div>
-          <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Maria"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
-          </div></div>
-        </div>
-        <button class="editbtn" onclick="toggleEdit('f-p1name', this)">Edit</button>
-      </div>
-      <div class="crow" id="f-p1phone">
-        <div class="cmain">
-          <div class="clabel">Phone</div>
-          <div class="cvalue">(916) 555-0134</div>
-          <div class="cnote">from your application</div>
-          <div class="cedit"><div class="fieldgrid">
-            <div class="full"><span class="flabel">Phone number</span><input type="tel" inputmode="tel" autocomplete="tel" value="(916) 555-0134"></div>
-          </div></div>
-        </div>
-        <button class="editbtn" onclick="toggleEdit('f-p1phone', this)">Edit</button>
-      </div>
-      <div class="crow" id="f-p1email">
-        <div class="cmain">
-          <div class="clabel">Email</div>
-          <div class="cvalue">maria.alvarez@example.com</div>
-          <div class="cnote">from your application</div>
-          <div class="cedit"><div class="fieldgrid">
-            <div class="full"><span class="flabel">Email</span><input type="text" inputmode="email" value="maria.alvarez@example.com"></div>
-          </div></div>
-        </div>
-        <button class="editbtn" onclick="toggleEdit('f-p1email', this)">Edit</button>
-      </div>
-    </div>
-
-    <div class="grouplabel step-in d3">Parent or guardian 2</div>
-    <div class="soloparent step-in d3">
-      <input type="checkbox" id="soloParent" onchange="soloToggle(this)">
-      <label class="sptext" for="soloParent">Theo has one parent or guardian. Skip this section.</label>
-    </div>
-    <p class="p2note" id="p2note">No problem. We'll leave this section out of Theo's paperwork.</p>
-    <div class="confirm-card step-in d3" id="parent2block">
-      <div class="crow" id="f-p2name">
-        <div class="cmain">
-          <div class="clabel">Name</div>
-          <div class="cvalue">Jordan Alvarez</div>
-          <div class="cnote">from your application</div>
-          <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Jordan"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
-          </div></div>
-        </div>
-        <button class="editbtn" onclick="toggleEdit('f-p2name', this)">Edit</button>
-      </div>
-      <div class="crow" id="f-p2phone">
-        <div class="cmain">
-          <div class="clabel">Phone</div>
-          <div class="cvalue">(916) 555-0187</div>
-          <div class="cnote">from your application</div>
-          <div class="cedit"><div class="fieldgrid">
-            <div class="full"><span class="flabel">Phone number</span><input type="tel" inputmode="tel" autocomplete="tel" value="(916) 555-0187"></div>
-          </div></div>
-        </div>
-        <button class="editbtn" onclick="toggleEdit('f-p2phone', this)">Edit</button>
-      </div>
-    </div>
+    <!-- v8 item 1: a completed chapter opens as the FULL field view, every entry
+         visible and locked. Unlock a field to edit it; the edit saves the moment
+         you leave the field. Production: the save writes the database. -->
+    <div class="reviewfields step-in d2" id="ch1Fields"></div>
   </div>
   <div class="actionbar">
     <button class="cta" onclick="go('s-welcome')">Back to your chapters</button>
@@ -1024,7 +1074,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 </section>
 
 <!-- SCREEN · STEP 2 REVISIT · ABOUT THEO -->
-<section class="screen" id="s-child" aria-label="About Theo chapter"
+<section class="screen" id="s-child" aria-label="About Theo chapter" data-locknote="All 49 answers, saved July 8 and locked. Unlock any field to change it; changes save as you go."
   data-stage="answer" data-time="about 12 min left">
   <div class="body">
     <button class="backlink" onclick="go('s-welcome')">
@@ -1033,41 +1083,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </button>
     <span class="kicker step-in">Step 2 · About Theo <span class="est">· done, review anytime</span></span>
     <h1 class="title step-in d1" style="font-size:28px">Theo, as you described him.</h1>
-    <p class="confirm-intro step-in d2">Check what we have. Tap edit if anything changed.</p>
-    <div class="confirm-card step-in d2">
-      <div class="crow" id="ch-name">
-        <div class="cmain">
-          <div class="clabel">Name</div>
-          <div class="cvalue">Theo Alvarez</div>
-          <div class="cnote">from your application</div>
-          <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Theo"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
-          </div></div>
-        </div>
-        <button class="editbtn" onclick="toggleEdit('ch-name', this)">Edit</button>
-      </div>
-      <div class="crow">
-        <div class="cmain">
-          <div class="clabel">Date of birth</div>
-          <div class="cvalue">March 14, 2024</div>
-          <div class="cnote">from your application</div>
-        </div>
-      </div>
-      <div class="crow">
-        <div class="cmain">
-          <div class="clabel">First day</div>
-          <div class="cvalue">August 3, 2026</div>
-          <div class="cnote">from your reservation</div>
-        </div>
-      </div>
-      <div class="crow">
-        <div class="cmain">
-          <div class="clabel">The 48 questions you answered</div>
-          <div class="cvalue"><span class="soft">Feeding, sleep, language, comfort, and development. All saved July 8.</span></div>
-        </div>
-      </div>
-    </div>
+    <!-- v8 item 1: every one of the chapter's entries, in full field view, locked -->
+    <div class="reviewfields step-in d2" id="ch2Fields"></div>
   </div>
   <div class="actionbar">
     <button class="cta" onclick="go('s-welcome')">Back to your chapters</button>
@@ -1399,21 +1416,31 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="cstat"><span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cfields">Signed</span></div>
     </div>
 
-    <div class="grouplabel step-in d1">Waiting on your doctor</div>
+    <!-- v8 item 7: two deadlines, named. Immunization is the day-1 gate and sits
+         first; the doctor's report has until the end of the second week. -->
+    <div class="grouplabel step-in d1">Your doctor · before Theo's first day</div>
+    <div class="gendoc-anim docrow doctor" style="animation-delay:.8s">
+      <div class="rmain">
+        <div class="rname">Immunization record <span class="duechip firm">Due by enrollment</span></div>
+        <div class="rmeta">California requires it on file before Theo's first morning. A photo or screenshot from your patient portal works.</div>
+      </div>
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Add photo</span></div>
+    </div>
+    <div class="grouplabel step-in d1">Your doctor · first two weeks</div>
     <div class="gendoc-anim docrow doctor" style="animation-delay:.85s">
       <div class="rmain">
-        <div class="rname">LIC 701 · Doctor's health report</div>
-        <div class="rmeta">Part A is filled in with Theo's details. Print or save it, take it to Theo's doctor, and they complete Part B. Due September 2; nothing else is blocked while you wait.</div>
+        <div class="rname">LIC 701 · Doctor's health report <span class="duechip soft">Due by August 17</span></div>
+        <div class="rmeta">Part A is filled in with Theo's details. Print or save it, take it to Theo's doctor, and they complete Part B. Due by the end of Theo's second week; nothing else is blocked while you wait.</div>
         <button class="dlbtn" onclick="openLic701()">
           <svg viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Download for your doctor
         </button>
-        <button class="uploadbox" id="lic701Upload" onclick="alert('Mockup: the camera or file picker opens here.')">
-          <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          <span>When your doctor's done, add a photo here.<span class="usub">Every page of the completed form. We take it from there.</span></span>
-        </button>
       </div>
-      <div class="cstat" id="lic701Stat"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Upload</span></div>
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Add photo</span></div>
     </div>
     </div>
     </div>
@@ -1546,6 +1573,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="ctext">I have reviewed this document, the information on it is factually correct, and I authorize Growing Mindfully to use it for Theo's enrollment file.</div>
     </div>
     <p class="legal step-in d3" id="reviewLegal">Confirming is recorded with a timestamp and the exact document you saw, like a signature.</p>
+    <p class="legal step-in d3" style="margin-top:2px">When you confirm, this exact information is filed onto the official state form.</p>
   </div>
   <div class="actionbar">
     <div class="nextup" id="reviewNext">4 more forms after this one</div>
@@ -1581,6 +1609,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <p class="finalecopy step-in d2">Please complete your doctor evaluation form no later than your second week of attendance (but earlier is fine, too!)</p>
       <p class="lede step-in d3" style="font-size:14px">7 steps · 7 documents signed · 63 answers we typed for you.</p>
       <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">We emailed you links to every completed document. They also live in your documents, always.</p>
+      <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">Your signature certificate is in your documents.</p>
       <p class="hand step-in d3" style="font-size:19px;color:var(--sage-deep)">See you Monday, August 3.</p>
     </div>
   </div>
@@ -1650,22 +1679,13 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </div>
     </div>
     <div>
-    <div class="grouplabel step-in d3">Waiting on your doctor</div>
-    <div class="docrow doctor step-in d3">
-      <div class="rmain">
-        <div class="rname">LIC 701 · Doctor's health report</div>
-        <div class="rmeta" id="d-701-meta">Part A is filled in. Take it to Theo's doctor; due September 2. Nothing else is blocked while you wait.</div>
-        <div class="rowactions"><button class="raction" onclick="openLic701()">Download for your doctor</button></div>
-        <button class="uploadbox" id="lic701UploadDash" onclick="alert('Mockup: the camera or file picker opens here.')">
-          <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          <span>When your doctor's done, add a photo here.<span class="usub">Every page of the completed form.</span></span>
-        </button>
-      </div>
-      <div class="cstat"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Upload</span></div>
-    </div>
+    <!-- v8 item 7: the two doctor deadlines, named and ordered. The immunization
+         record gates day 1; the doctor's report has until the end of week two. -->
+    <div class="grouplabel step-in d3">Your doctor · before Theo's first day</div>
     <div class="docrow step-in d3" id="d-imm">
       <div class="rmain">
-        <div class="rname" style="display:flex;align-items:center;gap:8px">Immunization record
+        <div class="rname" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">Immunization record
+          <span class="duechip firm">Due by enrollment</span>
           <span class="helpwrap">
             <button class="helpq" onclick="document.getElementById('immHelp').classList.toggle('on');event.stopPropagation()" aria-label="How to get the immunization record">?</button>
             <div class="helppanel" id="immHelp">
@@ -1679,12 +1699,24 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
             </div>
           </span>
         </div>
-        <div class="rmeta">A photo of the record from your doctor or patient portal</div>
-        <div class="rowactions"><button class="raction" onclick="alert('Mockup: the camera or file picker opens here.')">Upload a photo or PDF</button></div>
-        
-        </div>
+        <div class="rmeta">California requires it on file before Theo's first morning. A photo of the record from your doctor or patient portal.</div>
       </div>
-      <div class="cstat"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="cfields">Upload</span></div>
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Add photo</span></div>
+    </div>
+    <div class="grouplabel step-in d3">Your doctor · first two weeks</div>
+    <div class="docrow doctor step-in d3">
+      <div class="rmain">
+        <div class="rname" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">LIC 701 · Doctor's health report
+          <span class="duechip soft">Due by August 17</span>
+        </div>
+        <div class="rmeta" id="d-701-meta">Part A is filled in. Take it to Theo's doctor; due by the end of Theo's second week. Nothing else is blocked while you wait.</div>
+        <div class="rowactions"><button class="raction" onclick="openLic701()">Download for your doctor</button></div>
+      </div>
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        Add photo</span></div>
     </div>
 
     <div class="grouplabel step-in d3">Your record</div>
@@ -1692,8 +1724,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <svg class="minileafseal" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="#C9A86A" stroke-width="2.4"/><circle cx="30" cy="30" r="21" fill="none" stroke="#C9A86A" stroke-width="1" opacity=".6"/><path d="M30 42 Q 20 30 30 15 Q 40 30 30 42 Z" fill="#C9A86A"/></svg>
       <div class="rmain">
         <div class="rname">Signature certificate</div>
-        <div class="rmeta">Every signature and confirmation, timestamped</div>
-        <div class="rowactions"><button class="raction" onclick="alert('Mockup: certificate PDF download.')">Download PDF</button></div>
+        <div class="rmeta" id="certMeta">Every signature and confirmation, timestamped. Builds as you sign.</div>
+        <div class="rowactions"><button class="raction" onclick="viewCert()">View</button><button class="raction" onclick="downloadCert()">Download</button></div>
       </div>
     </div>
     </div>
@@ -3627,19 +3659,42 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 </script>
 
 <script>
-/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md (v6). */
+/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md (v8). */
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var sigName = 'Maria Alvarez';
 var TODAY = 'July 12, 2026';
 
-/* ---- chapters (field counts from docs/enrollment/field-matrix.csv) ---- */
+/* ---- chapters. v8 item 2: `done` is LIVE, recomputed from the actual fields the
+   moment any of them completes; `finished` is the chapter-complete state that grows
+   the leaf and gates signing (set by Finish chapter). Counts stop going stale. ---- */
 var chState = [
-  { id: 'ch1', name: 'Your family',       screen: 's-family',      done: 22, total: 22, mins: 0 },
-  { id: 'ch2', name: 'About Theo',        screen: 's-child',       done: 49, total: 49, mins: 0 },
-  { id: 'ch3', name: 'Just in case',      screen: 's-justincase',  done: 16, total: 18, mins: 3 },
-  { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 34, mins: 6 },
-  { id: 'ch5', name: 'Permissions',       screen: 's-permissions', done: 0,  total: 13, mins: 1 }
+  { id: 'ch1', name: 'Your family',       screen: 's-family',      done: 22, total: 22, mins: 0, finished: true },
+  { id: 'ch2', name: 'About Theo',        screen: 's-child',       done: 49, total: 49, mins: 0, finished: true },
+  { id: 'ch3', name: 'Just in case',      screen: 's-justincase',  done: 16, total: 18, mins: 3, finished: false },
+  { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 34, mins: 6, finished: false },
+  { id: 'ch5', name: 'Permissions',       screen: 's-permissions', done: 0,  total: 4,  mins: 1, finished: false }
 ];
+function refreshLiveCounts() {
+  chState[0].done = chState[0].finished ? Math.max(countFilled('#ch1Fields'), 0) : countFilled('#ch1Fields');
+  chState[1].done = countFilled('#ch2Fields');
+  chState[2].done = chState[2].finished ? chState[2].total : jicFilled();
+  chState[3].done = chState[3].finished ? chState[3].total : healthFilled();
+  chState[4].done = chState[4].finished ? chState[4].total : document.querySelectorAll('.ack:checked').length;
+}
+function countFilled(sel) {
+  var n = 0;
+  document.querySelectorAll(sel + ' input[type=text], ' + sel + ' input[type=tel]').forEach(function(f) {
+    if (f.value.trim()) n++;
+  });
+  return n;
+}
+function jicFilled() {
+  var n = 0;
+  document.querySelectorAll('#s-justincase input[type=text], #s-justincase input[type=tel]').forEach(function(f) {
+    if (f.value.trim()) n++;
+  });
+  return Math.min(n, chState[2].total);
+}
 /* ---- documents (step 6): signed/confirmed state persists; fixes the v5
    completion bug where the handbook never registered as signed ---- */
 var docState = { hb: false, lic700: false, lic702: false, lic627: false, lic613: false, lic995: false, nsp: false };
@@ -3658,11 +3713,24 @@ var CHECK_SVG = '<span class="st st-check"><svg viewBox="0 0 16 16" fill="none">
 var Q_SVG = '<span class="st st-question">?</span>';
 var LOCK_SVG = '<span class="st st-lock"><svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px"><path d="M4.5 7.5V5.5a3.5 3.5 0 117 0v2m-8 0h9v5a1.5 1.5 0 01-1.5 1.5h-6a1.5 1.5 0 01-1.5-1.5v-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
 
-function chaptersDone() { return chState.filter(function(c){ return c.done >= c.total; }).length; }
-function signLocked() { return chState.some(function(c){ return c.done < c.total; }); }
+function chaptersDone() { return chState.filter(function(c){ return c.finished; }).length; }
+function signLocked() { return chState.some(function(c){ return !c.finished; }); }
 function allDocsDone() { return DOCLIST.every(function(d){ return docState[d.id]; }); }
 function docsDoneCount() { return DOCLIST.filter(function(d){ return docState[d.id]; }).length; }
-function nextChapter() { return chState.filter(function(c){ return c.done < c.total; })[0] || null; }
+function nextChapter() { return chState.filter(function(c){ return !c.finished; })[0] || null; }
+/* v8 item 2: fractional progress. Each of the 7 steps contributes 1/7th; inside a
+   step, every completed field moves the bar its 1/Nth. The percent readouts and the
+   stem tip all derive from this one number. */
+function sectionFraction(i) {
+  if (i < 5) { var c = chState[i]; return c.finished ? 1 : Math.min(c.done / c.total, 1); }
+  if (i === 5) return docsDoneCount() / DOCLIST.length;
+  return 0; /* your doctor: waits on the report */
+}
+function overallPct() {
+  var sum = 0;
+  for (var i = 0; i < 7; i++) sum += sectionFraction(i);
+  return sum / 7;
+}
 
 /* ---- the progress plant (v7): STEM extends to the CURRENT step; a LEAF grows
    only when its step FINISHES. Built once so the draw-in and unfurl animate. ---- */
@@ -3676,7 +3744,7 @@ var LEAF_SVG_UP = '<svg class="tgleaf" viewBox="0 0 26 34" aria-hidden="true">' 
 var LEAF_SVG_DN = '<svg class="tgleaf" viewBox="0 0 26 34" aria-hidden="true"><g transform="translate(0 34) scale(1 -1)">' + LEAF_PATHS + '</g></svg>';
 function tgStates() {
   var st = [];
-  for (var i = 0; i < 5; i++) st.push(chState[i].done >= chState[i].total ? 'done' : 'dormant');
+  for (var i = 0; i < 5; i++) st.push(chState[i].finished ? 'done' : 'dormant');
   st.push(allDocsDone() ? 'done' : 'dormant');
   st.push('dormant'); /* your doctor: waiting until the report comes back */
   var actIdx = -1;
@@ -3695,55 +3763,113 @@ function tgBuild() {
       (i % 2 === 0 ? LEAF_SVG_UP : LEAF_SVG_DN) +
       '<span class="tgnode"></span><span class="tglabel">' + sec.label + '</span></div>';
   });
-  html += '<div class="tgend"><span class="tgbud"></span>' +
-    '<svg class="tgbloom" viewBox="0 0 36 36" aria-hidden="true"><g transform="translate(18 18)">' +
-    '<g fill="#9BB99E" opacity=".92"><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(45)"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(90)"/><path d="M0 9 Q -3 2 0 -9 Q 3 2 0 9 Z" transform="rotate(135)"/></g>' +
-    '<circle r="3.4" fill="#C9A86A"/></g></svg>' +
-    '<span class="tgpct"></span></div></div>';
+  /* v8 item 10: the stem ends in the GM lotus mark itself (the real logo, already
+     inlined in this file); muted while the journey runs, full color at completion.
+     No percent rides on the bar; the meta card and rail keep the number. */
+  var markSrc = document.querySelector('.railbrand img.mark').getAttribute('src');
+  html += '<div class="tgend"><img class="tglotus" alt="" src="' + markSrc + '"></div></div>' +
+    '<svg class="tgspark" viewBox="0 0 20 20" aria-hidden="true">' +
+    '<g stroke="#C9A86A" stroke-width="1.6" stroke-linecap="round">' +
+    '<path d="M10 2v3.4M10 14.6V18M2 10h3.4M14.6 10H18"/>' +
+    '<path d="M4.3 4.3l2.2 2.2M13.5 13.5l2.2 2.2M15.7 4.3l-2.2 2.2M6.5 13.5l-2.2 2.2" opacity=".7"/>' +
+    '</g><circle cx="10" cy="10" r="2" fill="#C9A86A"/></svg>';
   el.innerHTML = html;
   tgBuilt = true;
 }
+var tgLastPos = -1, sparkPending = false;
 function renderTopGarden() {
   var el = document.getElementById('topGarden');
   if (!el) return;
   if (!tgBuilt) tgBuild();
   var t = tgStates();
   var doneSections = t.states.filter(function(x){ return x === 'done'; }).length;
-  var pct = Math.round(doneSections / TG_SECTIONS.length * 100);
+  var pct = Math.round(overallPct() * 100);
   el.querySelectorAll('.tgsec').forEach(function(cell, i) {
     cell.classList.toggle('done', t.states[i] === 'done');   /* leaf = completion */
     cell.classList.toggle('now', i === t.active);            /* bud = you are here */
   });
   var end = el.querySelector('.tgend');
   end.classList.toggle('open', allDocsDone());
-  el.querySelector('.tgpct').textContent = pct + '%';
   el.setAttribute('aria-label', 'Enrollment progress: ' + doneSections + ' of ' + TG_SECTIONS.length + ' steps complete, ' + pct + ' percent. Currently on ' + (t.active >= 0 ? TG_SECTIONS[t.active].label : 'the finish'));
-  /* stem = position: draw the grown stem to the current step's node */
+  /* stem = position, fractionally (v8 item 2): the tip sits at the current step's
+     node and creeps toward the next node as that step's fields complete. */
   var grow = el.querySelector('.tggrow');
-  var stemBox = el.querySelector('.tgstem').getBoundingClientRect();
-  var target = (t.active >= 0) ? el.querySelectorAll('.tgsec')[t.active].querySelector('.tgnode') : end.querySelector(allDocsDone() ? '.tgbloom' : '.tgbud');
-  var tb = target.getBoundingClientRect();
+  var stemEl = el.querySelector('.tgstem');
+  var stemBox = stemEl.getBoundingClientRect();
   if (stemBox.width > 0) {
-    var pos = Math.max(0, Math.min(100, ((tb.left + tb.width / 2) - stemBox.left) / stemBox.width * 100));
+    var pos;
+    var nodes = el.querySelectorAll('.tgsec .tgnode');
+    function centerPct(box) { return ((box.left + box.width / 2) - stemBox.left) / stemBox.width * 100; }
+    if (t.active < 0) {
+      pos = centerPct(end.getBoundingClientRect());
+    } else {
+      var here = centerPct(nodes[t.active].getBoundingClientRect());
+      var nextBox = (t.active < 6) ? nodes[t.active + 1].getBoundingClientRect() : end.getBoundingClientRect();
+      /* the tip never reaches the next node until the step actually finishes */
+      pos = here + Math.min(sectionFraction(t.active), 0.88) * (centerPct(nextBox) - here);
+    }
+    pos = Math.max(0, Math.min(100, pos));
     requestAnimationFrame(function(){ grow.style.strokeDashoffset = (100 - pos); });
+    /* the sun spark: one small glint at the tip when a field completes */
+    if (sparkPending && pos > tgLastPos + 0.05 && !reduceMotion) {
+      var spark = el.querySelector('.tgspark');
+      spark.style.left = (stemBox.left - el.getBoundingClientRect().left + stemBox.width * pos / 100) + 'px';
+      spark.style.top = (stemBox.top - el.getBoundingClientRect().top + stemBox.height / 2) + 'px';
+      spark.classList.remove('fire');
+      void spark.offsetWidth;
+      spark.classList.add('fire');
+    }
+    if (pos > tgLastPos) tgLastPos = pos;
+    sparkPending = false;
   }
 }
 window.addEventListener('resize', function(){ if (tgBuilt) renderTopGarden(); });
 
+/* ---- v8 item 9: the rail sprig, rendered live from the same 7 steps. One node per
+   step, a leaf on each COMPLETED step (alternating sides), fill to the same
+   fractional position as the stem. ---- */
+function renderSprigs() {
+  var t = tgStates();
+  var pct = overallPct();
+  var xs = [10, 27, 44, 61, 78, 95, 112];
+  var fillX = 6 + (120 * pct);
+  var h = '<line class="srail" x1="6" y1="14" x2="126" y2="14"/>' +
+    '<line class="sfill" x1="6" y1="14" x2="' + fillX.toFixed(1) + '" y2="14"/>';
+  t.states.forEach(function(st, i) {
+    var x = xs[i];
+    if (st === 'done') {
+      h += (i % 2 === 0)
+        ? '<path class="minileaf" d="M' + (x - 2) + ' 13 Q ' + (x - 6) + ' 6 ' + (x - 2) + ' 1 Q ' + (x + 4) + ' 5 ' + (x + 1) + ' 13 Z"/>'
+        : '<path class="minileaf" d="M' + (x - 2) + ' 15 Q ' + (x - 6) + ' 22 ' + (x - 2) + ' 27 Q ' + (x + 4) + ' 23 ' + (x + 1) + ' 15 Z"/>';
+      h += '<circle class="n now" cx="' + x + '" cy="14" r="3.2" style="animation:none"/>';
+    } else if (i === t.active) {
+      h += '<circle class="n now" cx="' + x + '" cy="14" r="4.2"/>';
+    } else {
+      h += '<circle class="n" cx="' + x + '" cy="14" r="3.2"/>';
+    }
+  });
+  var label = Math.round(pct * 100) + ' percent complete, ' + t.states.filter(function(s){ return s === 'done'; }).length + ' of 7 steps';
+  document.querySelectorAll('svg.railsprig').forEach(function(svg) {
+    svg.innerHTML = h;
+    svg.setAttribute('aria-label', label);
+  });
+}
+
 /* ---- shared render pass ---- */
 function renderState() {
+  refreshLiveCounts();
   var t = tgStates();
   var doneSections = t.states.filter(function(x){ return x === 'done'; }).length;
-  var pctv = Math.round(doneSections / TG_SECTIONS.length * 100) + '%';
+  var pctv = Math.round(overallPct() * 100) + '%';
   document.querySelectorAll('.pctnum').forEach(function(e){ e.textContent = pctv; });
   document.querySelectorAll('.pctsub').forEach(function(e){ e.textContent = (e.classList.contains('sub') ? '· ' : '') + doneSections + ' of 7 steps'; });
   document.querySelectorAll('.railprog .pct').forEach(function(e){ e.textContent = pctv; });
   chState.forEach(function(c) {
-    var full = c.done >= c.total;
+    var full = c.finished;
     var rail = document.getElementById('r-' + c.id);
     if (rail) {
       rail.querySelector('.st').outerHTML = full ? CHECK_SVG : Q_SVG;
-      rail.querySelector('.rsub').textContent = c.done + '/' + c.total + ' fields';
+      rail.querySelector('.rsub').textContent = c.done + '/' + c.total;
     }
     var card = document.getElementById('c-' + c.id);
     if (card) {
@@ -3778,8 +3904,9 @@ function renderState() {
   var jc = document.getElementById('jicCta');
   if (jc) jc.disabled = !jReady;
   var jn = document.getElementById('jicNext');
-  if (jn) jn.textContent = jReady ? 'Next: Health + routines · about 6 min'
-    : 'Add at least one pickup person with a first and last name';
+  if (jn) jn.textContent = chState[2].finished ? 'Done. Everything here is saved.'
+    : (jReady ? 'Next: Health + routines · about 6 min'
+    : 'Add at least one pickup person with a first and last name');
   var je = document.getElementById('jicEst');
   if (je) je.textContent = '· ' + chState[2].done + ' of ' + chState[2].total + ' fields done';
   /* v7 item 6: required-ness enforced where the underlying form requires it */
@@ -3787,8 +3914,9 @@ function renderState() {
   var hc = document.getElementById('healthCta');
   if (hc) hc.disabled = !hReady;
   var hn = document.getElementById('healthNext');
-  if (hn) hn.textContent = hReady ? 'Next: Permissions · about 1 min'
-    : healthMissing() + ' required ' + (healthMissing() === 1 ? 'field' : 'fields') + ' to go, marked *';
+  if (hn) hn.textContent = chState[3].finished ? 'Done. Everything here is saved.'
+    : (hReady ? 'Next: Permissions · about 1 min'
+    : healthMissing() + ' required ' + (healthMissing() === 1 ? 'field' : 'fields') + ' to go, marked *');
   var he = document.getElementById('healthEst');
   if (he) he.textContent = '· ' + healthFilled() + ' of ' + chState[3].total + ' fields done';
   var acks = document.querySelectorAll('.ack');
@@ -3796,9 +3924,10 @@ function renderState() {
   var pc = document.getElementById('permCta');
   if (pc) pc.disabled = ackDone < acks.length;
   var pn = document.getElementById('permNext');
-  if (pn) pn.textContent = ackDone < acks.length
+  if (pn) pn.textContent = chState[4].finished ? 'Done. Everything here is saved.'
+    : (ackDone < acks.length
     ? (acks.length - ackDone) + (acks.length - ackDone === 1 ? ' permission' : ' permissions') + ' to check'
-    : 'Last chapter. Next: your paperwork, filled out';
+    : 'Last chapter. Next: your paperwork, filled out');
   var pe = document.getElementById('permEst');
   if (pe) pe.textContent = '· ' + ackDone + ' of ' + acks.length + ' checked';
   /* welcome next-up lines */
@@ -3812,6 +3941,7 @@ function renderState() {
     : (allDocsDone() ? 'The doctor’s form, when it comes back' : 'Review and sign your documents'));
   renderDocs();
   renderTopGarden();
+  renderSprigs();
 }
 
 /* ---- v6 item 12: completed documents flip status and gain View + Download ---- */
@@ -3863,10 +3993,93 @@ function go(id) {
   if (id === 's-docs') countUp();
   if (id === 's-handbook') hbInit();
   if (id === 's-review') renderForm();
-  if (id === 's-finale') spawnConfetti();
+  if (id === 's-finale') { spawnConfetti(); chimeSign(); }
+  var chHere = chState.filter(function(c){ return c.screen === id; })[0];
+  if (chHere && chHere.finished) applyChapterLock(t);
   maskInputs();
   renderState();
 }
+
+/* ---- v8 item 1: a completed chapter opens locked. Every text field gets its own
+   unlock control; radio and checkbox groups unlock from the banner. Unlocked edits
+   save on blur (production: the save updates the database) and re-lock. ---- */
+function applyChapterLock(sec) {
+  if (sec.dataset.locked) return;
+  sec.dataset.locked = '1';
+  sec.querySelectorAll('.body input[type=text], .body input[type=tel]').forEach(function(inp) {
+    if (inp.closest('.lockwrap')) return;
+    var w = inp.parentNode;
+    w.classList.add('lockwrap');
+    inp.disabled = true;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'unlockbtn';
+    b.setAttribute('aria-label', 'Unlock this field to edit it');
+    b.innerHTML = UNLOCK_ICON;
+    var wh = document.createElement('span');
+    wh.className = 'savewhisper';
+    wh.textContent = 'Saved';
+    w.appendChild(b);
+    w.appendChild(wh);
+  });
+  sec.querySelectorAll('.body input[type=radio], .body input[type=checkbox]').forEach(function(inp) {
+    inp.disabled = true;
+  });
+  var body = sec.querySelector('.body');
+  var banner = document.createElement('div');
+  banner.className = 'lockbanner chlockbanner';
+  banner.innerHTML = '<svg viewBox="0 0 16 16" fill="none" style="width:18px;height:18px;flex-shrink:0"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>' +
+    '<span>' + (sec.dataset.locknote || 'This chapter is done and locked. Unlock any field to change it; changes save as you go.') + '</span>' +
+    '<button class="unlockall" type="button">Unlock all</button>';
+  var h1 = body.querySelector('h1.title');
+  body.insertBefore(banner, h1 ? h1.nextSibling : body.firstChild);
+  banner.querySelector('.unlockall').onclick = function() {
+    var editing = banner.classList.toggle('editingall');
+    sec.querySelectorAll('.body input').forEach(function(inp){ inp.disabled = !editing; });
+    if (!editing) { sparkPending = true; renderState(); }
+    banner.querySelector('span').textContent = editing
+      ? 'Editing. Every change saves the moment you leave a field.'
+      : (sec.dataset.locknote || 'This chapter is done and locked. Unlock any field to change it; changes save as you go.');
+    this.textContent = editing ? 'Done editing' : 'Unlock all';
+  };
+  var cta = sec.querySelector('.actionbar .cta');
+  if (cta && cta.textContent === 'Finish chapter') {
+    cta.textContent = 'Back to your chapters';
+    cta.disabled = false;
+    cta.onclick = function(){ go('s-welcome'); };
+    var nu = sec.querySelector('.actionbar .nextup');
+    if (nu) nu.textContent = 'Done. Everything here is saved.';
+  }
+}
+var UNLOCK_ICON = '<svg viewBox="0 0 16 16" fill="none"><path d="M11.5 2.5a2 2 0 012.8 2.8L6 13.6l-3.4.8.8-3.4 8.1-8.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function relock(w) {
+  var inp = w.querySelector('input');
+  inp.disabled = true;
+  w.classList.remove('editing');
+  var wh = w.querySelector('.savewhisper');
+  if (wh) { wh.classList.remove('show'); void wh.offsetWidth; wh.classList.add('show'); }
+  sparkPending = true;
+  renderState();
+}
+document.addEventListener('click', function(e) {
+  var b = e.target.closest('.unlockbtn');
+  if (!b) return;
+  var w = b.closest('.lockwrap');
+  var inp = w.querySelector('input');
+  if (inp.disabled) {
+    inp.disabled = false;
+    w.classList.add('editing');
+    inp.focus();
+  } else {
+    relock(w);
+  }
+});
+document.addEventListener('focusout', function(e) {
+  var w = e.target.closest && e.target.closest('.lockwrap');
+  if (w && !e.target.disabled && w.classList.contains('editing')) {
+    setTimeout(function(){ if (document.activeElement !== w.querySelector('input')) relock(w); }, 120);
+  }
+});
 /* signing surfaces stay locked until every chapter is complete (spec 13.3) */
 function goGate(id) {
   if (signLocked() && (id === 's-consent' || id === 's-handbook' || id === 's-review')) { go('s-docs'); return; }
@@ -3879,6 +4092,7 @@ document.addEventListener('click', function(e) {
 /* v6 item 3 (flow): Continue always leads to the next DATA chapter; the
    generate/paperwork screen appears only after the last chapter */
 function goNextChapter() {
+  chimeNext();
   var nxt = nextChapter();
   go(nxt ? nxt.screen : 's-docs');
 }
@@ -3887,24 +4101,16 @@ function finishChapter(n) {
   if (n === 3 && !pickupOk()) { renderState(); return; }
   if (n === 4 && !healthValid()) { renderState(); return; }
   if (n === 5) {
-    /* v7 item 6: required-ness enforced where the underlying form requires it */
-  var hReady = healthValid();
-  var hc = document.getElementById('healthCta');
-  if (hc) hc.disabled = !hReady;
-  var hn = document.getElementById('healthNext');
-  if (hn) hn.textContent = hReady ? 'Next: Permissions · about 1 min'
-    : healthMissing() + ' required ' + (healthMissing() === 1 ? 'field' : 'fields') + ' to go, marked *';
-  var he = document.getElementById('healthEst');
-  if (he) he.textContent = '· ' + healthFilled() + ' of ' + chState[3].total + ' fields done';
-  var acks = document.querySelectorAll('.ack');
+    var acks = document.querySelectorAll('.ack');
     if (Array.prototype.some.call(acks, function(a){ return !a.checked; })) { renderState(); return; }
   }
-  c.done = c.total;
+  c.finished = true;
+  chimeNext();
   renderState();
   var nxt = nextChapter();
   go(nxt ? nxt.screen : 's-docs');
 }
-function demoCompleteAll() { chState.forEach(function(c){ c.done = c.total; }); renderState(); go('s-docs'); }
+function demoCompleteAll() { chState.forEach(function(c){ c.finished = true; }); renderState(); go('s-docs'); }
 
 /* ---- fields ---- */
 function toggleEdit(rowId, btn) {
@@ -3997,6 +4203,153 @@ document.addEventListener('change', function(e) {
   if (e.target.classList && e.target.classList.contains('ack')) renderState();
 });
 
+/* ---- v8 item 5: sound, synthesized in WebAudio. No audio files. Two voices:
+   a peaceful single-bell chime when a signature completes (fundamental + one soft
+   partial, long exponential decay) and a shorter, quieter tone on Next presses.
+   A visible toggle turns all of it off; the toggle state would persist per family. ---- */
+var audioOn = true, actx = null;
+function bell(freq, dur, peak) {
+  if (!audioOn) return;
+  try {
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    var t0 = actx.currentTime;
+    [[1, 1], [2.76, .28], [5.4, .08]].forEach(function(p) {
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = 'sine';
+      o.frequency.value = freq * p[0];
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(peak * p[1], t0 + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(t0); o.stop(t0 + dur + 0.05);
+    });
+  } catch (e) {}
+}
+function chimeSign() { bell(659.25, 2.4, 0.075); }   /* E5: the zen bell, sparing */
+function chimeNext() { bell(440, 0.7, 0.028); }      /* A4: the soft page-turn tone */
+function toggleAudio(btn) {
+  audioOn = !audioOn;
+  document.querySelectorAll('.audiotog').forEach(function(b) {
+    b.setAttribute('aria-pressed', audioOn ? 'true' : 'false');
+    b.title = audioOn ? 'Sounds on' : 'Sounds off';
+    b.style.opacity = audioOn ? '' : '.45';
+    var l = b.querySelector('.audlbl');
+    if (l) l.textContent = audioOn ? 'Sounds on' : 'Sounds off';
+  });
+  if (audioOn) chimeNext();
+}
+
+/* ---- v8 item 1: the completed chapters render EVERY saved entry as a real,
+   locked field. Built from data so the count is the count. ---- */
+var CH1_GROUPS = [
+  ['Parent or guardian 1', [
+    ['First name', 'Maria', 'alpha'], ['Last name', 'Alvarez', 'alpha'],
+    ['Cell phone', '(916) 555-0134', 'tel'], ['Email', 'maria.alvarez@example.com'],
+    ['Employer', 'State of California · CalHR'], ['Work phone', '(916) 555-0134', 'tel']
+  ]],
+  ['__solo__', []],
+  ['Parent or guardian 2', [
+    ['First name', 'Jordan', 'alpha'], ['Last name', 'Alvarez', 'alpha'],
+    ['Cell phone', '(916) 555-0187', 'tel'], ['Email', 'jordan.alvarez@example.com'],
+    ['Employer', 'Sutter Health'], ['Work phone', '(916) 555-0187', 'tel']
+  ]],
+  ['Home', [
+    ['Street address', '1418 P Street'], ['City', 'Sacramento', 'alpha'], ['ZIP', '95814']
+  ]],
+  ['Household', [
+    ['Language spoken at home', 'English and Spanish', 'alpha'], ['Theo lives with', 'Both parents', 'alpha']
+  ]],
+  ['Coverage and contact', [
+    ['Insurance carrier', 'Western Health Advantage'], ['Policy number', 'WHA-204577'],
+    ['Employment rate tier', 'State employee'], ['Preferred contact', 'Text first, then email', 'alpha'],
+    ['Best time to reach you', 'After 3 p.m.']
+  ]]
+];
+var CH2_GROUPS = [
+  ['Theo', [
+    ['First name', 'Theo', 'alpha'], ['Last name', 'Alvarez', 'alpha'],
+    ['Goes by', 'Theo', 'alpha'], ['Date of birth', 'March 14, 2024'], ['First day', 'August 3, 2026']
+  ]],
+  ['Feeding', [
+    ['Solid foods', 'Yes, full table food'], ['Bottles or cups', 'Cups only, at meals'],
+    ['Usual breakfast', 'Oatmeal with fruit'], ['Breakfast time', '7:15 a.m.'],
+    ['Usual lunch', 'Provided by Growing Mindfully'], ['Lunch time', '11:30 a.m.'],
+    ['Usual dinner', 'Family dinner, varied'], ['Dinner time', '6:00 p.m.'],
+    ['Food dislikes', 'Broccoli'], ['Eating problems', 'None'], ['Drinks from', 'An open cup with help'],
+    ['Feeds himself', 'Mostly, with a spoon']
+  ]],
+  ['Sleep', [
+    ['Wakes up at', '6:30 a.m.'], ['Bedtime', '7:30 p.m.'],
+    ['Daily nap', 'One nap, 12:30 to 2:30'], ['Falls asleep by', 'Patting, white noise'],
+    ['Sleeps with', 'Gray elephant lovey'], ['Wakes during nap', 'Rarely; resettles with patting']
+  ]],
+  ['Language and development', [
+    ['Words Theo uses', 'About 40; two-word phrases starting'], ['Understands', 'Simple directions'],
+    ['Walked at', '11 months'], ['Began talking at', '14 months'],
+    ['Motor skills', 'Runs, climbs stairs with a hand'], ['Favorite activities', 'Blocks, water play, books'],
+    ['Working on', 'Sharing and taking turns']
+  ]],
+  ['Comfort and temperament', [
+    ['What comforts Theo', 'Being held, a song, his lovey'], ['Startles or fears', 'Loud sudden noises'],
+    ['Warm-up style', 'Watches first, joins in five minutes'], ['Big-feeling moments', 'Redirection works; likes a quiet corner'],
+    ['Separation style', 'A short wave at the door works best'], ['Comfort phrase', 'Mama comes back after nap', 'alpha']
+  ]],
+  ['Family and play', [
+    ['Siblings', 'None'], ['Pets at home', 'A cat, Mo'], ['Plays with other children', 'Weekly library playgroup'],
+    ['Favorite books', 'Goodnight Gorilla, trucks anything'], ['Languages heard at home', 'English and Spanish', 'alpha']
+  ]],
+  ['Care history', [
+    ['Previous care', 'Home with Maria; Denise two mornings'], ['Longest time apart', 'A full workday, does well'],
+    ['Plan for sick days', 'Maria works from home; Denise is backup']
+  ]],
+  ['Health notes you shared', [
+    ['Allergies', 'None known'], ['Medications', 'None'], ['Pediatric checkups', 'Current; last visit March 2026'],
+    ['Special needs or devices', 'None'], ['Anything else teachers should know', 'Points at birds; loves the window']
+  ]]
+];
+function buildLockedFields(groups, mountId) {
+  var mount = document.getElementById(mountId);
+  if (!mount) return;
+  var h = '';
+  groups.forEach(function(g) {
+    if (g[0] === '__solo__') {
+      h += '<div class="soloparent"><input type="checkbox" id="soloParent" onchange="soloToggle(this)">' +
+        '<label class="sptext" for="soloParent">Theo has one parent or guardian. Skip this section.</label></div>' +
+        '<p class="p2note" id="p2note">No problem. We\'ll leave this section out of Theo\'s paperwork.</p>' +
+        '<div id="parent2block">';
+      return;
+    }
+    if (g[0] === 'Parent or guardian 2') {
+      h += '<div class="grouplabel">' + g[0] + '</div><div class="fieldgrid">';
+    } else {
+      h += (g[0] === 'Home' && groups === CH1_GROUPS ? '</div>' : '') +
+        '<div class="grouplabel">' + g[0] + '</div><div class="fieldgrid">';
+    }
+    g[1].forEach(function(f) {
+      var type = f[2] === 'tel' ? 'tel' : 'text';
+      h += '<div class="lockwrap"><span class="flabel">' + f[0] + '</span>' +
+        '<input type="' + type + '"' + (f[2] === 'alpha' ? ' data-alpha' : '') +
+        (type === 'tel' ? ' inputmode="tel"' : '') + ' value="' + f[1].replace(/"/g, '&quot;') + '" disabled>' +
+        '<button type="button" class="unlockbtn" aria-label="Unlock ' + f[0] + ' to edit it">' + UNLOCK_ICON + '</button>' +
+        '<span class="savewhisper">Saved</span></div>';
+    });
+    h += '</div>';
+  });
+  mount.innerHTML = h;
+}
+buildLockedFields(CH1_GROUPS, 'ch1Fields');
+buildLockedFields(CH2_GROUPS, 'ch2Fields');
+
+/* v8 item 2: a completed field (blur with a value, or a check) advances the bar
+   its 1/Nth and earns one small glint at the stem tip. */
+document.addEventListener('change', function(e) {
+  if (e.target.matches && e.target.matches('.screen input')) {
+    if (e.target.type === 'checkbox' || e.target.type === 'radio' || e.target.value.trim()) sparkPending = true;
+    renderState();
+  }
+});
+
 /* ---- the inline handbook (v6 item 6). Production rule: render the canonical
    latest handbook and DETECT anchors by their labels, so version bumps never
    break the component. ---- */
@@ -4031,9 +4384,41 @@ function hbWire(doc) {
     '.pres-slot.filled{border-style:solid;background:#fff;cursor:default;' +
     "font-family:'Caveat',cursive;font-size:19pt;font-weight:600;color:#1F2A2E}" +
     '.pres-fill{font:600 11pt Manrope,sans-serif;color:#1F2A2E;' +
-    'background:linear-gradient(transparent 62%,rgba(155,185,158,.35) 62%);display:inline-block;margin:2px 0 6px}' +
-    '.pres-date{font:600 10.5pt Manrope,sans-serif;color:#1F2A2E;margin:2px 0 6px}';
+    'background:linear-gradient(transparent 62%,rgba(155,185,158,.35) 62%);display:inline-block;margin:2px 0 2px}' +
+    '.pres-fill[contenteditable=true]{outline:1.5px dashed #5FAEB6;outline-offset:2px;background:#fff}' +
+    '.pres-date{font:600 10.5pt Manrope,sans-serif;color:#1F2A2E;margin:2px 0 6px}' +
+    /* v8 item 3: every prefilled slot carries a small accuracy affordance */
+    '.pres-acc{display:flex;align-items:center;gap:10px;font:600 8pt Manrope,sans-serif;color:#6F7F84;margin:0 0 6px}' +
+    '.pres-acc label{display:inline-flex;align-items:center;gap:5px;cursor:pointer}' +
+    '.pres-acc input{width:12px;height:12px;accent-color:#6F8F70;margin:0}' +
+    '.pres-acc .pres-editaff{background:none;border:0;color:#3D8189;font:700 8pt Manrope,sans-serif;cursor:pointer;padding:0}' +
+    '.pres-acc.ok{color:#6F8F70}';
   doc.head.appendChild(st);
+  /* v8 item 3: attach "This is accurate" + inline edit to a prefilled slot */
+  function addAccuracy(field, fillEl) {
+    var acc = doc.createElement('div');
+    acc.className = 'pres-acc';
+    acc.innerHTML = '<label><input type="checkbox"> This is accurate</label>' +
+      '<button type="button" class="pres-editaff">Edit</button>';
+    fillEl.parentNode.insertBefore(acc, fillEl.nextSibling);
+    acc.querySelector('input').addEventListener('change', function() {
+      acc.classList.toggle('ok', this.checked);
+    });
+    acc.querySelector('.pres-editaff').addEventListener('click', function() {
+      fillEl.setAttribute('contenteditable', 'true');
+      fillEl.focus();
+      var r = doc.createRange(); r.selectNodeContents(fillEl); r.collapse(false);
+      var s = doc.defaultView.getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
+    fillEl.addEventListener('blur', function() {
+      if (fillEl.getAttribute('contenteditable') === 'true') {
+        fillEl.removeAttribute('contenteditable');
+        var c = acc.querySelector('input');
+        c.checked = true;
+        acc.classList.add('ok');
+      }
+    });
+  }
   /* anchor detection by label text, not position */
   var labels = doc.querySelectorAll('.flabel');
   var sigField = null, sigRow = null, childField = null;
@@ -4047,6 +4432,7 @@ function hbWire(doc) {
     cv.className = 'pres-fill';
     cv.textContent = 'Theo Alvarez';
     childField.insertBefore(cv, childField.firstChild);
+    addAccuracy(childField, cv);
   }
   /* v7 item 12: prefill EVERY handbook data field we hold or asked. Values are
      matched by label text plus the nearest preceding named label for the
@@ -4096,6 +4482,7 @@ function hbWire(doc) {
       v.className = 'pres-fill';
       v.textContent = val;
       field.insertBefore(v, field.firstChild);
+      addAccuracy(field, v);
     }
   });
   if (sigField) {
@@ -4132,6 +4519,7 @@ function hbSign() {
   if (hbPlaced) return;
   hbPlaced = true;
   hbPaint();
+  chimeSign();
   var chip = document.getElementById('placedChip');
   chip.textContent = '1 of 1 signed';
   chip.classList.add('alldone');
@@ -4147,6 +4535,7 @@ function hbNextSig() {
 function hbFinishSign() {
   if (!hbPlaced) { hbNextSig(); return; }
   docState.hb = true; /* v6 fix: completion registers and persists */
+  chimeNext();
   var btn = document.getElementById('hbFinish');
   btn.textContent = 'Signed and sealed';
   btn.classList.add('done');
@@ -4177,90 +4566,138 @@ function fdrow(cells) {
   });
   return h + '</div>';
 }
-function fdsect(t, note) {
-  return '<div class="fdsecthead">' + t + (note ? ' <i>' + note + '</i>' : '') + '</div>';
+function fdsect(t, note, left) {
+  return '<div class="fdsecthead"' + (left ? ' style="text-align:left"' : '') + '>' + t + (note ? ' <i>' + note + '</i>' : '') + '</div>';
 }
 function cb(on) { return on ? '&#9745;' : '&#9744;'; }
+/* ---- v8 item 4: LITERAL CDSS form rendering. Monochrome black-on-white inside the
+   paper frame, the real form's header, exact labels, dense boxed grid, and the true
+   form number + revision in the footer, compared against the blank state templates
+   (mini: ~/gm-bw-deep-harvest/_templates/). The gold signature slot is the single
+   interaction overlay permitted inside the frame (the DocuSign-tab pattern).
+   Production never recreates these forms: it fills the actual CDSS PDF templates
+   (pdf-lib AcroForm fill / coordinate overlay). ---- */
+var HDR_700 = '<div class="fdstate"><span>STATE OF CALIFORNIA<br>HEALTH AND HUMAN SERVICES AGENCY</span><span>CALIFORNIA DEPARTMENT OF SOCIAL SERVICES<br>COMMUNITY CARE LICENSING DIVISION</span></div>';
+var HDR_702 = '<div class="fdstate modern"><span>State of California - Health and Human Services Agency</span><span>California Department of Social Services</span></div>';
+var HDR_1LINE = '<div class="fdstate"><span>STATE OF CALIFORNIA - HEALTH AND HUMAN SERVICES AGENCY</span><span>CALIFORNIA DEPARTMENT OF SOCIAL SERVICES</span></div>';
+var HDR_995 = '<div class="fdstate"><span>STATE OF CALIFORNIA - HEALTH AND HUMAN SERVICES AGENCY</span><span>CALIFORNIA DEPARTMENT OF SOCIAL SERVICES<br>COMMUNITY CARE LICENSING DIVISION</span></div>';
+function fdtblrow(cells, isHead) {
+  var h = '<tr>';
+  cells.forEach(function(c) {
+    h += isHead ? '<th>' + c + '</th>' : '<td>' + (c || '&nbsp;') + '</td>';
+  });
+  return h + '</tr>';
+}
 var FORMS = [
-  { id: 'lic700', no: 'LIC 700 (8/08)', name: 'Identification and Emergency Information',
-    sub: 'Child care centers/family child care homes · To be completed by parent or authorized representative',
-    sig: true, sigLabel: 'Signature of parent/guardian or authorized representative',
+  { id: 'lic700', foot: 'LIC 700 (8/08)(CONFIDENTIAL)', pagesTotal: 1,
+    name: 'Identification and Emergency Information',
+    hdr: HDR_700,
+    head: '<div class="fdhead"><div class="fdmaintitle">IDENTIFICATION AND EMERGENCY INFORMATION' +
+      '<span class="t2">CHILD CARE CENTERS/FAMILY CHILD CARE HOMES</span></div>' +
+      '<div class="fdheadnote">To Be Completed by Parent or Authorized Representative</div></div>',
+    sig: true, sigLabel: 'SIGNATURE OF PARENT/GUARDIAN OR AUTHORIZED REPRESENTATIVE',
     body: function() {
-      return fdrow([{l:"Child's name · last", v:'Alvarez'},{l:'Middle'},{l:'First', v:'Theo'},{l:'Sex', v:'M'},{l:'Telephone', v:'(916) 555-0134'}]) +
-        fdrow([{l:'Address · number, street, city, state, zip', v:'1418 P Street, Sacramento, CA 95814', flex:3},{l:'Birthdate', v:'3/14/2024'}]) +
-        fdrow([{l:"Father's/guardian's name · last, middle, first", v:'Alvarez, Jordan', flex:2},{l:'Business telephone', v:'(916) 555-0187'}]) +
-        fdrow([{l:'Home address', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'Home telephone', v:'(916) 555-0187'}]) +
-        fdrow([{l:"Mother's/guardian's name · last, middle, first", v:'Alvarez, Maria', flex:2},{l:'Business telephone', v:'(916) 555-0134'}]) +
-        fdrow([{l:'Home address', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'Home telephone', v:'(916) 555-0134'}]) +
-        fdrow([{l:'Person responsible for child', v:'Maria Alvarez'},{l:'Home telephone', v:'(916) 555-0134'},{l:'Business telephone', v:'(916) 555-0134'}]) +
-        fdsect('Additional persons who may be called in an emergency') +
-        fdrow([{l:'Name', v:'Denise Alvarez'},{l:'Address', v:'Sacramento', flex:1.4},{l:'Telephone', v:'(916) 555-0173'},{l:'Relationship', v:'Grandmother'}]) +
-        fdrow([{l:'Name', v:'Sam Okafor'},{l:'Address', v:'Sacramento', flex:1.4},{l:'Telephone', v:'(916) 555-0148'},{l:'Relationship', v:'Family friend'}]) +
-        fdsect('Physician or dentist to be called in an emergency') +
-        fdrow([{l:'Physician', v:'Dr. Priya Nair'},{l:'Address', v:'Capitol Pediatrics, Sacramento', flex:1.4},{l:'Medical plan and number', v:'Western Health Advantage'},{l:'Telephone', v:'(916) 555-0122'}]) +
-        fdrow([{l:'Dentist'},{l:'Address', flex:1.4},{l:'Medical plan and number'},{l:'Telephone'}]) +
-        '<div class="fdtext">If physician cannot be reached, what action should be taken?&nbsp;&nbsp;' + cb(true) + ' <span class="fv">Call emergency hospital</span>&nbsp;&nbsp;' + cb(false) + ' Other, explain</div>' +
-        fdsect('Names of persons authorized to take child from the facility', '(child will not be allowed to leave with any other person without written authorization from parent or authorized representative)') +
-        fdrow([{l:'Name', v:'Maria Alvarez', flex:2},{l:'Relationship', v:'Parent'}]) +
-        fdrow([{l:'Name', v:'Jordan Alvarez', flex:2},{l:'Relationship', v:'Parent'}]) +
-        fdrow([{l:'Name', v:'Denise Alvarez', flex:2},{l:'Relationship', v:'Grandmother'}]) +
-        fdrow([{l:'Time child will be called for', v:'8:00 a.m. to 5:00 p.m., Monday to Friday', flex:1}]);
+      return fdrow([{l:"CHILD'S NAME &nbsp; LAST", v:'Alvarez'},{l:'MIDDLE'},{l:'FIRST', v:'Theo'},{l:'SEX', v:'M'},{l:'TELEPHONE', v:'(916) 555-0134'}]) +
+        fdrow([{l:'ADDRESS &nbsp; NUMBER &nbsp; STREET &nbsp; CITY &nbsp; STATE &nbsp; ZIP', v:'1418 P Street, Sacramento, CA 95814', flex:3},{l:'BIRTHDATE', v:'3/14/2024'}]) +
+        fdrow([{l:"FATHER'S/GUARDIAN'S/FATHER'S DOMESTIC PARTNER'S NAME &nbsp; LAST &nbsp; MIDDLE &nbsp; FIRST", v:'Alvarez, Jordan', flex:2},{l:'BUSINESS TELEPHONE', v:'(916) 555-0187'}]) +
+        fdrow([{l:'HOME ADDRESS &nbsp; NUMBER &nbsp; STREET &nbsp; CITY &nbsp; STATE &nbsp; ZIP', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'HOME TELEPHONE', v:'(916) 555-0187'}]) +
+        fdrow([{l:"MOTHER'S/GUARDIAN'S/MOTHER'S DOMESTIC PARTNER'S NAME &nbsp; LAST &nbsp; MIDDLE &nbsp; FIRST", v:'Alvarez, Maria', flex:2},{l:'BUSINESS TELEPHONE', v:'(916) 555-0134'}]) +
+        fdrow([{l:'HOME ADDRESS &nbsp; NUMBER &nbsp; STREET &nbsp; CITY &nbsp; STATE &nbsp; ZIP', v:'1418 P Street, Sacramento, CA 95814', flex:2},{l:'HOME TELEPHONE', v:'(916) 555-0134'}]) +
+        fdrow([{l:'PERSON RESPONSIBLE FOR CHILD &nbsp; LAST NAME &nbsp; MIDDLE &nbsp; FIRST', v:'Alvarez, Maria'},{l:'HOME TELEPHONE', v:'(916) 555-0134'},{l:'BUSINESS TELEPHONE', v:'(916) 555-0134'}]) +
+        fdsect('ADDITIONAL PERSONS WHO MAY BE CALLED IN AN EMERGENCY') +
+        '<table class="fdtable">' +
+        fdtblrow(['NAME','ADDRESS','TELEPHONE','RELATIONSHIP'], true) +
+        fdtblrow(['Denise Alvarez','2210 T Street, Sacramento, CA','(916) 555-0173','Grandmother']) +
+        fdtblrow(['Sam Okafor','Sacramento, CA','(916) 555-0148','Family friend']) +
+        fdtblrow(['','','','']) +
+        '</table>' +
+        fdsect('PHYSICIAN OR DENTIST TO BE CALLED IN AN EMERGENCY') +
+        fdrow([{l:'PHYSICIAN', v:'Dr. Priya Nair'},{l:'ADDRESS', v:'Capitol Pediatrics, Sacramento, CA', flex:1.4},{l:'MEDICAL PLAN AND NUMBER', v:'Western Health Advantage WHA-204577'},{l:'TELEPHONE', v:'(916) 555-0122'}]) +
+        fdrow([{l:'DENTIST'},{l:'ADDRESS', flex:1.4},{l:'MEDICAL PLAN AND NUMBER'},{l:'TELEPHONE'}]) +
+        '<div class="fdtext" style="font-size:9.5px">IF PHYSICIAN CANNOT BE REACHED, WHAT ACTION SHOULD BE TAKEN?<br>' +
+        cb(true) + ' CALL EMERGENCY HOSPITAL &nbsp;&nbsp; ' + cb(false) + ' OTHER &nbsp; EXPLAIN: ______________________________________________</div>' +
+        fdsect('NAMES OF PERSONS AUTHORIZED TO TAKE CHILD FROM THE FACILITY',
+          '(CHILD WILL NOT BE ALLOWED TO LEAVE WITH ANY OTHER PERSON WITHOUT WRITTEN AUTHORIZATION FROM PARENT OR AUTHORIZED REPRESENTATIVE)') +
+        '<table class="fdtable">' +
+        fdtblrow(['NAME','RELATIONSHIP'], true) +
+        fdtblrow(['Maria Alvarez','Parent']) +
+        fdtblrow(['Jordan Alvarez','Parent']) +
+        fdtblrow(['Denise Alvarez','Grandmother']) +
+        fdtblrow(['','']) +
+        '</table>' +
+        fdrow([{l:'TIME CHILD WILL BE CALLED FOR', v:'8:00 a.m. to 5:00 p.m., Monday to Friday', flex:1}]);
+    },
+    after: function() {
+      return fdsect('TO BE COMPLETED BY FACILITY DIRECTOR/ADMINISTRATOR/FAMILY CHILD CARE HOMES LICENSEE') +
+        fdrow([{l:'DATE OF ADMISSION'},{l:'DATE LEFT'}]);
     } },
-  { id: 'lic702', no: 'LIC 702 (10/19) (Confidential)', name: "Child's Preadmission Health History · Parent/Authorized Representative Report",
-    sub: 'State of California · Health and Human Services Agency · California Department of Social Services',
-    sig: true, sigLabel: 'Parent/authorized representative signature',
-    body: function() {
-      return fdrow([{l:"Child's name", v:'Theo Alvarez', flex:2},{l:'Sex', v:'M'},{l:'Birthdate', v:'3/14/2024'}]) +
-        fdrow([{l:'Parent / authorized representative name', v:'Maria Alvarez', flex:2},{l:'Does parent live in home with child?', v:'Yes'}]) +
-        fdrow([{l:'Parent / authorized representative name', v:'Jordan Alvarez', flex:2},{l:'Does parent live in home with child?', v:'Yes'}]) +
-        fdrow([{l:'Is / has child been under regular supervision of physician?', v:'Yes', flex:2},{l:'Date of last physical/medical examination', v:'March 2026'}]) +
-        fdsect('Developmental history', '(*for infants and preschool-age children only)') +
-        fdrow([{l:'Walked at*', v:'11 months'},{l:'Began talking at*', v:'14 months'},{l:'Toilet training started at*', v:'24 months'}]) +
-        fdsect('Past illnesses', 'check illnesses that child has had and specify approximate dates of illnesses') +
+  { id: 'lic702', foot: 'LIC 702 (10/19) (CONFIDENTIAL)', pagesTotal: 3,
+    name: "Child's Preadmission Health History",
+    hdr: HDR_702,
+    head: '<div class="fdhead"><div class="fdmaintitle">CHILD\'S PREADMISSION HEALTH HISTORY - PARENT/AUTHORIZED REPRESENTATIVE REPORT</div></div>',
+    sig: true, sigLabel: 'PARENT/AUTHORIZED REPRESENTATIVE SIGNATURE',
+    pageLabel: function(n, tot) { return 'Page ' + n + ' of ' + tot; },
+    pages: function() {
+      var p1 = fdrow([{l:"CHILD'S NAME", v:'Theo Alvarez', flex:2},{l:'SEX', v:'M'},{l:'BIRTHDATE', v:'3/14/2024'}]) +
+        fdrow([{l:'PARENT / AUTHORIZED REPRESENTATIVE NAME', v:'Maria Alvarez', flex:2},{l:'DOES PARENT / AUTHORIZED REPRESENTATIVE LIVE IN HOME WITH CHILD?', v:'Yes'}]) +
+        fdrow([{l:'PARENT / AUTHORIZED REPRESENTATIVE NAME', v:'Jordan Alvarez', flex:2},{l:'DOES PARENT / AUTHORIZED REPRESENTATIVE LIVE IN HOME WITH CHILD?', v:'Yes'}]) +
+        fdrow([{l:'IS / HAS CHILD BEEN UNDER REGULAR SUPERVISION OF PHYSICIAN?', v:'Yes', flex:2},{l:'DATE OF LAST PHYSICAL/ MEDICAL EXAMINATION', v:'March 2026'}]) +
+        fdsect('DEVELOPMENTAL HISTORY', '(*For infants and preschool-age children only)', true) +
+        fdrow([{l:'WALKED AT*', v:'11 &nbsp;MONTHS'},{l:'BEGAN TALKING AT*', v:'14 &nbsp;MONTHS'},{l:'TOILET TRAINING STARTED AT*', v:'24 &nbsp;MONTHS'}]) +
+        fdsect('PAST ILLNESSES - Check illnesses that child has had and specify approximate dates of illnesses:', null, true) +
         '<div class="fdchecks">' +
         '<span>' + cb(false) + ' Chicken Pox</span><span>' + cb(false) + ' Diabetes</span><span>' + cb(false) + ' Poliomyelitis</span>' +
         '<span>' + cb(false) + ' Asthma</span><span>' + cb(false) + ' Epilepsy</span><span>' + cb(false) + ' Ten-Day Measles (Rubeola)</span>' +
         '<span>' + cb(false) + ' Rheumatic Fever</span><span>' + cb(false) + ' Whooping Cough</span><span>' + cb(false) + ' Three-Day Measles (Rubella)</span>' +
-        '<span>' + cb(false) + ' Hay Fever</span><span>' + cb(false) + ' Mumps</span><span class="fv">None</span>' +
+        '<span>' + cb(false) + ' Hay Fever</span><span>' + cb(false) + ' Mumps</span><span>None</span>' +
         '</div>' +
-        fdrow([{l:'Specify any other serious or severe illnesses or accidents', v:'None', flex:1}]) +
-        fdrow([{l:'Does child have frequent colds?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'How many in last year?', v:'Two or three'},{l:'List any allergies staff should be aware of', v:'None known'}]) +
-        fdsect('Daily routines', '(*for infants and preschool-age children only)') +
-        fdrow([{l:'What time does child get up?*', v:'6:30 a.m.'},{l:'What time does child go to bed?*', v:'7:30 p.m.'},{l:'Does child sleep well?*', v:'Yes'}]) +
-        fdrow([{l:'Does child sleep during the day?*', v:'Yes'},{l:'When?*', v:'12:30 p.m.'},{l:'How long?*', v:'About two hours'}]) +
-        fdrow([{l:'Diet pattern · breakfast', v:'Oatmeal with fruit'},{l:'Lunch', v:'Provided by the center'},{l:'Dinner', v:'Family dinner, varied'}]) +
-        fdrow([{l:'Usual eating hours · breakfast', v:'7:15 a.m.'},{l:'Lunch', v:'11:30 a.m.'},{l:'Dinner', v:'6:00 p.m.'}]) +
-        fdrow([{l:'Any food dislikes?', v:'Broccoli'},{l:'Any eating problems?', v:'None'}]) +
-        fdrow([{l:'Is child toilet trained?*', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, at what stage?*', v:'Training in progress'},{l:'Are bowel movements regular?*', v:'Yes'},{l:'What is usual time?*', v:'After breakfast'}]) +
-        fdrow([{l:'Word used for "bowel movement"*', v:'Poop'},{l:'Word used for urination*', v:'Potty'}]) +
-        fdsect("Parent/authorized representative evaluation of child's health") +
-        fdrow([{l:"Is child presently under a doctor's care?", v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, name of doctor'},{l:'Does child take prescribed medication(s)?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, what kind and any side effects'}]) +
-        fdrow([{l:'Does child use any special device(s)?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, what kind'},{l:'Does child use any special device(s) at home?', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'If yes, what kind'}]) +
-        fdsect("Parent/authorized representative evaluation of child's personality") +
-        fdrow([{l:'How does child get along with parent, brothers, sisters, and other children?', v:'Warm and easygoing; plays alongside his cousins happily.', flex:1}]) +
-        fdrow([{l:'Has the child had group play experiences?', v:'Weekly library playgroup since age one.', flex:1}]) +
-        fdrow([{l:'Does the child have any special problems/fears/needs? (Explain.)', v:'Startles at loud sudden noises; settles quickly when held.', flex:1}]) +
-        fdrow([{l:'What is the plan for care when the child is ill?', v:'Maria works from home and keeps Theo; Denise is backup.', flex:1}]) +
-        fdrow([{l:'Reason for requesting day care placement', v:'Both parents returning to full-time work.', flex:1}]);
+        fdrow([{l:'SPECIFY ANY OTHER SERIOUS OR SEVERE ILLNESSES OR ACCIDENTS', v:'None', flex:1}]) +
+        fdrow([{l:'DOES CHILD HAVE FREQUENT COLDS? ' + cb(false) + ' YES ' + cb(true) + ' NO'},{l:'HOW MANY IN LAST YEAR?', v:'Two or three'},{l:'LIST ANY ALLERGIES STAFF SHOULD BE AWARE OF', v:'None known'}]);
+      var p2 = fdsect('DAILY ROUTINES', '(*For infants and preschool-age children only)', true) +
+        fdrow([{l:'WHAT TIME DOES CHILD GET UP?*', v:'6:30 a.m.'},{l:'WHAT TIME DOES CHILD GO TO BED?*', v:'7:30 p.m.'},{l:'DOES CHILD SLEEP WELL?*', v:'Yes'}]) +
+        fdrow([{l:'DOES CHILD SLEEP DURING THE DAY?*', v:'Yes'},{l:'WHEN?*', v:'12:30 p.m.'},{l:'HOW LONG?*', v:'About two hours'}]) +
+        fdrow([{l:'DIET PATTERN: (What does child usually eat for these meals?) &nbsp; BREAKFAST', v:'Oatmeal with fruit'},{l:'LUNCH', v:'Provided by the center'},{l:'DINNER', v:'Family dinner, varied'}]) +
+        fdrow([{l:'WHAT ARE USUAL EATING HOURS? &nbsp; BREAKFAST', v:'7:15 a.m.'},{l:'LUNCH', v:'11:30 a.m.'},{l:'DINNER', v:'6:00 p.m.'}]) +
+        fdrow([{l:'ANY FOOD DISLIKES?', v:'Broccoli'},{l:'ANY EATING PROBLEMS?', v:'None'}]) +
+        fdrow([{l:'IS CHILD TOILET TRAINED?* ' + cb(false) + ' YES ' + cb(true) + ' NO'},{l:'IF YES, AT WHAT STAGE:*', v:'Training in progress'},{l:'ARE BOWEL MOVEMENTS REGULAR?* ' + cb(true) + ' YES ' + cb(false) + ' NO'},{l:'WHAT IS USUAL TIME?*', v:'After breakfast'}]) +
+        fdrow([{l:'WORD USED FOR &quot;BOWEL MOVEMENT&quot;*', v:'Poop'},{l:'WORD USED FOR URINATION*', v:'Potty'}]) +
+        fdsect("PARENT / AUTHORIZED REPRESENTATIVE EVALUATION OF CHILD'S HEALTH", null, true) +
+        fdrow([{l:"IS CHILD PRESENTLY UNDER A DOCTOR'S CARE? " + cb(false) + ' YES ' + cb(true) + ' NO'},{l:'IF YES, NAME OF DOCTOR:'},{l:'DOES CHILD TAKE PRESCRIBED MEDICATION(S)? ' + cb(false) + ' YES ' + cb(true) + ' NO'},{l:'IF YES, WHAT KIND AND ANY SIDE EFFECTS:'}]) +
+        fdrow([{l:'DOES CHILD USE ANY SPECIAL DEVICE(S): ' + cb(false) + ' YES ' + cb(true) + ' NO'},{l:'IF YES, WHAT KIND:'},{l:'DOES CHILD USE ANY SPECIAL DEVICE(S) AT HOME? ' + cb(false) + ' YES ' + cb(true) + ' NO'},{l:'IF YES, WHAT KIND:'}]);
+      var p3 = fdsect("PARENT/ AUTHORIZED REPRESENTATIVE EVALUATION OF CHILD'S PERSONALITY", null, true) +
+        fdrow([{l:'HOW DOES CHILD GET ALONG WITH PARENT / AUTHORIZED REPRESENTATIVE, BROTHERS, SISTERS AND OTHER CHILDREN?', v:'Warm and easygoing; plays alongside his cousins happily.', flex:1}]) +
+        fdrow([{l:'HAS THE CHILD HAD GROUP PLAY EXPERIENCES?', v:'Weekly library playgroup since age one.', flex:1}]) +
+        fdrow([{l:'DOES THE CHILD HAVE ANY SPECIAL PROBLEMS/FEARS/NEEDS? (EXPLAIN.)', v:'Startles at loud sudden noises; settles quickly when held.', flex:1}]) +
+        fdrow([{l:'WHAT IS THE PLAN FOR CARE WHEN THE CHILD IS ILL?', v:'Maria works from home and keeps Theo; Denise is backup.', flex:1}]) +
+        fdrow([{l:'REASON FOR REQUESTING DAY CARE PLACEMENT', v:'Both parents returning to full-time work.', flex:1}]);
+      return [p1, p2, p3];
     } },
-  { id: 'lic627', no: 'LIC 627 (9/08) (Confidential)', name: 'Consent for Emergency Medical Treatment',
-    sub: 'Child care centers or family child care homes',
-    sig: true, sigLabel: 'Parent or authorized representative signature',
+  { id: 'lic627', foot: 'LIC 627 (9/08) (CONFIDENTIAL)', pagesTotal: 1,
+    name: 'Consent for Emergency Medical Treatment',
+    hdr: HDR_1LINE,
+    head: '<div class="fdhead"><div class="fdmaintitle">CONSENT FOR EMERGENCY MEDICAL TREATMENT-' +
+      '<span class="t2 mixed">Child Care Centers Or Family Child Care Homes</span></div></div>',
+    sig: true, sigLabel: 'PARENT OR AUTHORIZED REPRESENTATIVE SIGNATURE',
     body: function() {
-      return '<div class="fdtext" style="border-top:0;font-size:12.5px;line-height:1.7">AS THE PARENT OR AUTHORIZED REPRESENTATIVE, I HEREBY GIVE CONSENT TO ' +
-        '<span class="fdunder fv">Growing Mindfully (Present Pathways, Inc.)</span> <span style="font-size:8px;color:var(--ink-mute)">(FACILITY NAME)</span> ' +
-        'TO OBTAIN ALL EMERGENCY MEDICAL OR DENTAL CARE PRESCRIBED BY A DULY LICENSED PHYSICIAN (M.D.) OSTEOPATH (D.O.) OR DENTIST (D.D.S.) FOR ' +
-        '<span class="fdunder fv">Theo Alvarez</span> <span style="font-size:8px;color:var(--ink-mute)">(NAME)</span>. ' +
-        'THIS CARE MAY BE GIVEN UNDER WHATEVER CONDITIONS ARE NECESSARY TO PRESERVE THE LIFE, LIMB OR WELL BEING OF THE CHILD NAMED ABOVE.</div>' +
-        fdrow([{l:'Child has the following medication allergies', v:'None known', flex:1}]) +
-        fdrow([{l:'Home address', v:'1418 P Street, Sacramento, CA 95814', flex:1}]) +
-        fdrow([{l:'Home phone', v:'(916) 555-0134'},{l:'Work phone', v:'(916) 555-0134'}]);
+      return '<div class="fdtext" style="border-top:2px solid #111;font-size:11px;line-height:2">AS THE PARENT OR AUTHORIZED REPRESENTATIVE, I HEREBY GIVE CONSENT TO<br>' +
+        '<span class="fdunder">Growing Mindfully (Present Pathways, Inc.)</span> <span style="font-size:6.5px">(FACILITY NAME)</span> TO OBTAIN ALL EMERGENCY MEDICAL OR DENTAL CARE<br>' +
+        'PRESCRIBED BY A DULY LICENSED PHYSICIAN (M.D.) OSTEOPATH (D.O.) OR DENTIST (D.D.S.) FOR<br>' +
+        '<span class="fdunder">Theo Alvarez</span> <span style="font-size:6.5px">(NAME)</span> . THIS CARE MAY BE GIVEN UNDER<br>' +
+        'WHATEVER CONDITIONS ARE NECESSARY TO PRESERVE THE LIFE, LIMB OR WELL BEING OF THE CHILD<br>NAMED ABOVE.</div>' +
+        '<div class="fdtext" style="min-height:64px">CHILD HAS THE FOLLOWING MEDICATION ALLERGIES:<br><span style="font-size:11px">None known</span></div>' +
+        fdrow([{l:'HOME ADDRESS', v:'1418 P Street, Sacramento, CA 95814', flex:1}]) +
+        fdrow([{l:'HOME PHONE', v:'(916) 555-0134'},{l:'WORK PHONE', v:'(916) 555-0134'}]);
     } },
-  { id: 'lic613', no: 'LIC 613A (8/08)', name: 'Personal Rights · Child Care Centers',
-    sub: 'Personal rights, see Section 101223 for waiver conditions applicable to child care centers',
-    sig: true, sigLabel: 'Signature of the representative/parent/guardian',
+  { id: 'lic613', foot: 'LIC 613A (8/08)', pagesTotal: 1,
+    name: 'Personal Rights',
+    hdr: HDR_1LINE,
+    head: '<div class="fdhead"><div class="fdmaintitle">PERSONAL RIGHTS' +
+      '<span class="t2 mixed" style="font-size:10.5px;border-bottom:1px solid #111;padding-bottom:2px">Child Care Centers</span></div></div>',
+    sig: true, sigLabel: '(SIGNATURE OF THE REPRESENTATIVE/PARENT/GUARDIAN)',
+    extraSig: [{l:'(TITLE OF THE REPRESENTATIVE/PARENT/GUARDIAN)', v:'Parent'}],
     body: function() {
-      return '<div class="fdtext" style="border-top:0">(a) Child Care Centers. Each child receiving services from a Child Care Center shall have rights which include, but are not limited to, the following:' +
+      return '<div class="fdtext" style="border-top:0">Personal Rights, See Section 101223 for waiver conditions applicable to Child Care Centers.<br>' +
+        '(a) &nbsp;Child Care Centers. Each child receiving services from a Child Care Center shall have rights which include, but are not limited to, the following:' +
         '<ul><li>(1) To be accorded dignity in his/her personal relationships with staff and other persons.</li>' +
         '<li>(2) To be accorded safe, healthful and comfortable accommodations, furnishings and equipment to meet his/her needs.</li>' +
         '<li>(3) To be free from corporal or unusual punishment, infliction of pain, humiliation, intimidation, ridicule, coercion, threat, mental abuse, or other actions of a punitive nature, including but not limited to: interference with daily living functions, including eating, sleeping, or toileting; or withholding of shelter, clothing, medication or aids to physical functioning.</li>' +
@@ -4269,54 +4706,67 @@ var FORMS = [
         '<li>(6) Not to be locked in any room, building, or facility premises by day or night.</li>' +
         '<li>(7) Not to be placed in any restraining device, except a supportive restraint approved in advance by the licensing agency.</li></ul>' +
         'THE REPRESENTATIVE/PARENT/GUARDIAN HAS THE RIGHT TO BE INFORMED OF THE APPROPRIATE LICENSING AGENCY TO CONTACT REGARDING COMPLAINTS, WHICH IS:</div>' +
-        fdrow([{l:'Name', v:'California Department of Social Services', flex:1}]) +
-        fdrow([{l:'Address', v:'851 Traeger Ave (Ste 360)', flex:1}]) +
-        fdrow([{l:'City', v:'San Bruno'},{l:'Zip code', v:'94066'},{l:'Area code/telephone number', v:'650-266-8843'}]) +
-        '<div class="fdtext" style="text-align:center;letter-spacing:.1em;font-size:9px;color:var(--ink-mute)">DETACH HERE</div>' +
-        '<div class="fdtext"><b style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)">To: parent/guardian/child or authorized representative</b> · <b style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)">Place in child’s file</b><br>' +
-        'ACKNOWLEDGMENT: I/We have been personally advised of, and have received a copy of, the personal rights contained in the California Code of Regulations, Title 22, at the time of admission to:</div>' +
-        fdrow([{l:'Print the name of the facility', v:'Growing Mindfully (Present Pathways, Inc.)'},{l:'Print the address of the facility', v:'750 N Street, Sacramento, CA 95814'}]) +
-        fdrow([{l:'Print the name of the child', v:'Theo Alvarez', flex:1}]);
-    },
-    extraSig: [{l:'Title of the representative/parent/guardian', v:'Parent'}] },
-  { id: 'lic995', no: 'LIC 995 (9/08)', name: "Child Care Center · Notification of Parents' Rights",
-    sub: "Acknowledgement of notification of parents' rights · parent/authorized representative signature required",
-    sig: true, sigLabel: 'Signature (parent/authorized representative)',
-    body: function() {
-      return '<div class="fdtext" style="border-top:0"><b style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)">Parents’ rights</b> · As a Parent/Authorized Representative, you have the right to:' +
-        '<ul><li>1. Enter and inspect the child care center without advance notice whenever children are in care.</li>' +
-        '<li>2. File a complaint against the licensee with the licensing office and review the licensee’s public file kept by the licensing office.</li>' +
-        '<li>3. Review, at the child care center, reports of licensing visits and substantiated complaints against the licensee made during the last three years.</li>' +
-        '<li>4. Complain to the licensing office and inspect the child care center without discrimination or retaliation against you or your child.</li>' +
-        '<li>5. Request in writing that a parent not be allowed to visit your child or take your child from the child care center, provided you have shown a certified copy of a court order.</li>' +
-        '<li>6. Receive from the licensee the name, address and telephone number of the local licensing office.</li>' +
-        '<li>7. Be informed by the licensee, upon request, of the name and type of association to the child care center for any adult who has been granted a criminal record exemption, and that the name of the person may also be obtained by contacting the local licensing office.</li>' +
-        '<li>8. Receive, from the licensee, the Caregiver Background Check Process form.</li></ul></div>' +
-        fdrow([{l:'Licensing office name', v:'California Department of Social Services'},{l:'Licensing office address', v:'851 Traeger Ave (Ste 360), San Bruno, CA 94066'},{l:'Licensing office telephone', v:'650-266-8843'}]) +
-        '<div class="fdtext" style="text-align:center;letter-spacing:.1em;font-size:9px;color:var(--ink-mute)">DETACH HERE · GIVE UPPER PORTION TO PARENTS</div>' +
-        '<div class="fdtext">I, the parent/authorized representative of <span class="fdunder fv">Theo Alvarez</span>, have received a copy of the "CHILD CARE CENTER NOTIFICATION OF PARENTS’ RIGHTS" and the CAREGIVER BACKGROUND CHECK PROCESS form from the licensee.</div>' +
-        fdrow([{l:'Name of child care center', v:'Growing Mindfully (Present Pathways, Inc.)', flex:1}]);
+        fdrow([{l:'NAME', v:'California Department of Social Services', flex:1}]) +
+        fdrow([{l:'ADDRESS', v:'851 Traeger Ave (Ste 360)', flex:1}]) +
+        fdrow([{l:'CITY', v:'San Bruno'},{l:'ZIP CODE', v:'94066'},{l:'AREA CODE/TELEPHONE NUMBER', v:'650-266-8843'}]) +
+        '<div class="fddetach">DETACH HERE</div>' +
+        '<div class="fdtext"><b style="font-size:9px;font-weight:700">TO: &nbsp;PARENT/GUARDIAN/CHILD OR AUTHORIZED REPRESENTATIVE:</b>' +
+        '<span style="float:right;font-size:9px;font-weight:700;border-bottom:2px solid #111">PLACE IN CHILD\'S FILE</span><br>' +
+        'Upon satisfactory and full disclosure of the personal rights as explained, complete the following acknowledgment:<br><br>' +
+        '<b style="font-size:9.5px;font-weight:700">ACKNOWLEDGMENT:</b> I/We have been personally advised of, and have received a copy of, the personal rights contained in the California Code of Regulations, Title 22, at the time of admission to:</div>' +
+        fdrow([{l:'(PRINT THE NAME OF THE FACILITY)', v:'Growing Mindfully (Present Pathways, Inc.)'},{l:'(PRINT THE ADDRESS OF THE FACILITY)', v:'750 N Street, Sacramento, CA 95814'}]) +
+        fdrow([{l:'(PRINT THE NAME OF THE CHILD)', v:'Theo Alvarez', flex:1}]);
     } },
-  { id: 'nsp', no: 'Growing Mindfully · refreshed quarterly', name: 'Needs and Services Plan',
-    sub: 'Daily routine · filled from your answers, with room to actually read them',
-    sig: true, sigLabel: "Parent's signature",
+  { id: 'lic995', foot: 'LIC 995 (9/08)', pagesTotal: 1,
+    name: "Child Care Center Notification of Parents' Rights",
+    hdr: HDR_995,
+    head: '<div class="fdhead" style="text-align:center"><div class="fdmaintitle">CHILD CARE CENTER' +
+      '<span class="t2" style="border-bottom:1px solid #111;padding-bottom:3px">NOTIFICATION OF PARENTS\' RIGHTS</span></div></div>',
+    sig: true, sigLabel: 'Signature (Parent/Authorized Representative)',
     body: function() {
-      return fdrow([{l:"Child's name", v:'Theo Alvarez', flex:2},{l:'Date', v:'July 12, 2026'}]) +
-        fdrow([{l:'Parent name', v:'Maria Alvarez', flex:2},{l:'Cell', v:'(916) 555-0134'}]) +
-        fdsect('Daily routine') +
-        fdrow([{l:'Approximate arrival time', v:'8:00 a.m.'},{l:'Approximate daily departure time', v:'5:00 p.m.'}]) +
-        fdrow([{l:'Breakfast', v:'Oatmeal with fruit, at home', flex:2},{l:'Time', v:'7:15 a.m.'}]) +
-        fdrow([{l:'Lunch', v:'Provided by Growing Mindfully', flex:2},{l:'Time', v:'11:30 a.m.'}]) +
-        fdrow([{l:'Solid foods?', v:'Yes, full table food'},{l:'Number of bottles or cups daily', v:'Cups only, at meals'}]) +
-        fdrow([{l:'Bottle 1 · oz, formula/breast milk, time', v:'n/a'},{l:'Bottle 2', v:'n/a'},{l:'Bottle 3', v:'n/a'}]) +
-        fdrow([{l:'Sleeping habits at night', v:'Sleeps through, 7:30 p.m. to 6:30 a.m.', flex:1}]) +
-        fdrow([{l:'Bed time at night', v:'7:30 p.m.'},{l:'Daily nap times', v:'One nap, 12:30 to 2:30'}]) +
-        fdrow([{l:'Special instructions (blanket, lovey, etc.)', v:'Gray elephant lovey lives in his cubby for nap', flex:1}]) +
-        fdrow([{l:'Pacifier', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'When', v:'n/a', flex:2}]) +
-        fdrow([{l:'Allergies for diapering (Desitin, ointment, powder, wipes, etc.)', v:'None known', flex:1}]) +
-        fdrow([{l:'Please list all other allergies (food, medications, etc.)', v:'None known', flex:1}]) +
-        '<div class="fdtext">It is very important to us that we provide the best care possible for your child on an ongoing basis. To facilitate that goal, we will meet informally to discuss aspects of your child’s care as needed, and this form will be updated quarterly.</div>' +
-        fdrow([{l:'Growing Mindfully representative'},{l:'Date'}]);
+      return '<div class="fdtext" style="border-top:0"><b style="font-size:11px;font-weight:700">PARENTS\' RIGHTS</b><br>As a Parent/Authorized Representative, you have the right to:' +
+        '<ul style="list-style:none;margin-left:2px"><li>1. &nbsp;Enter and inspect the child care center without advance notice whenever children are in care.</li>' +
+        '<li>2. &nbsp;File a complaint against the licensee with the licensing office and review the licensee\'s public file kept by the licensing office.</li>' +
+        '<li>3. &nbsp;Review, at the child care center, reports of licensing visits and substantiated complaints against the licensee made during the last three years.</li>' +
+        '<li>4. &nbsp;Complain to the licensing office and inspect the child care center without discrimination or retaliation against you or your child.</li>' +
+        '<li>5. &nbsp;Request in writing that a parent not be allowed to visit your child or take your child from the child care center, provided you have shown a certified copy of a court order.</li>' +
+        '<li>6. &nbsp;Receive from the licensee the name, address and telephone number of the local licensing office.<br><br>' +
+        'Licensing Office Name: &nbsp;<span class="fdunder">California Department of Social Services</span><br>' +
+        'Licensing Office Address: &nbsp;<span class="fdunder">851 Traeger Ave (Ste 360)/San Bruno/CA/94066</span><br>' +
+        'Licensing Office Telephone #: &nbsp;<span class="fdunder">650-266-8843</span><br><br></li>' +
+        '<li>7. &nbsp;Be informed by the licensee, upon request, of the name and type of association to the child care center for any adult who has been granted a criminal record exemption, and that the name of the person may also be obtained by contacting the local licensing office.</li>' +
+        '<li>8. &nbsp;Receive, from the licensee, the Caregiver Background Check Process form.</li></ul>' +
+        '<b style="font-size:9px;font-weight:700"><i>NOTE: CALIFORNIA STATE LAW PROVIDES THAT THE LICENSEE MAY DENY ACCESS TO THE CHILD CARE CENTER TO A PARENT/AUTHORIZED REPRESENTATIVE IF THE BEHAVIOR OF THE PARENT/AUTHORIZED REPRESENTATIVE POSES A RISK TO CHILDREN IN CARE.</i></b><br>' +
+        '<b style="font-size:9px;font-weight:700"><i>For the Department of Justice &quot;Registered Sex Offender&quot; database, go to www.meganslaw.ca.gov</i></b></div>' +
+        '<div class="fddetach">' + 'LIC 995 (9/08) &nbsp;&nbsp;&nbsp;&nbsp; (Detach Here - Give Upper Portion to Parents)</div>' +
+        '<div class="fdtext" style="border-top:0;text-align:center"><b style="font-size:12px;font-weight:700;letter-spacing:.2em">ACKNOWLEDGEMENT OF NOTIFICATION OF PARENTS\' RIGHTS</b><br>' +
+        '<b style="font-size:9.5px;font-weight:700"><i>(Parent/Authorized Representative Signature Required)</i></b></div>' +
+        '<div class="fdtext" style="border-top:0">I, the parent/authorized representative of <span class="fdunder">Theo Alvarez</span>, have received a copy of the &quot;CHILD CARE CENTER NOTIFICATION OF PARENTS\' RIGHTS&quot; and the CAREGIVER BACKGROUND CHECK PROCESS form from the licensee.<br><br>' +
+        '<div style="text-align:center"><span class="fdunder" style="min-width:280px;text-align:center">Growing Mindfully (Present Pathways, Inc.)</span><br><span style="font-size:6.5px">NAME OF CHILD CARE CENTER</span></div></div>';
+    } },
+  { id: 'nsp', foot: 'GROWING MINDFULLY · NEEDS AND SERVICES PLAN · REFRESHED QUARTERLY', pagesTotal: 1,
+    name: 'Needs and Services Plan',
+    hdr: '<div class="fdstate"><span>GROWING MINDFULLY (PRESENT PATHWAYS, INC.)</span><span>750 N STREET, SACRAMENTO, CA 95814</span></div>',
+    head: '<div class="fdhead"><div class="fdmaintitle">NEEDS AND SERVICES PLAN' +
+      '<span class="t2 mixed" style="font-size:9.5px;font-weight:400">Daily routine, filled from your answers, with room to actually read them</span></div></div>',
+    sig: true, sigLabel: "PARENT'S SIGNATURE",
+    body: function() {
+      return fdrow([{l:"CHILD'S NAME", v:'Theo Alvarez', flex:2},{l:'DATE', v:'July 12, 2026'}]) +
+        fdrow([{l:'PARENT NAME', v:'Maria Alvarez', flex:2},{l:'CELL', v:'(916) 555-0134'}]) +
+        fdsect('DAILY ROUTINE') +
+        fdrow([{l:'APPROXIMATE ARRIVAL TIME', v:'8:00 a.m.'},{l:'APPROXIMATE DAILY DEPARTURE TIME', v:'5:00 p.m.'}]) +
+        fdrow([{l:'BREAKFAST', v:'Oatmeal with fruit, at home', flex:2},{l:'TIME', v:'7:15 a.m.'}]) +
+        fdrow([{l:'LUNCH', v:'Provided by Growing Mindfully', flex:2},{l:'TIME', v:'11:30 a.m.'}]) +
+        fdrow([{l:'SOLID FOODS?', v:'Yes, full table food'},{l:'NUMBER OF BOTTLES OR CUPS DAILY', v:'Cups only, at meals'}]) +
+        fdrow([{l:'BOTTLE 1 · OZ, FORMULA/BREAST MILK, TIME', v:'n/a'},{l:'BOTTLE 2', v:'n/a'},{l:'BOTTLE 3', v:'n/a'}]) +
+        fdrow([{l:'SLEEPING HABITS AT NIGHT', v:'Sleeps through, 7:30 p.m. to 6:30 a.m.', flex:1}]) +
+        fdrow([{l:'BED TIME AT NIGHT', v:'7:30 p.m.'},{l:'DAILY NAP TIMES', v:'One nap, 12:30 to 2:30'}]) +
+        fdrow([{l:'SPECIAL INSTRUCTIONS (BLANKET, LOVEY, ETC.)', v:'Gray elephant lovey lives in his cubby for nap', flex:1}]) +
+        fdrow([{l:'PACIFIER', v:cb(false) + ' Yes &nbsp;' + cb(true) + ' No'},{l:'WHEN', v:'n/a', flex:2}]) +
+        fdrow([{l:'ALLERGIES FOR DIAPERING (DESITIN, OINTMENT, POWDER, WIPES, ETC.)', v:'None known', flex:1}]) +
+        fdrow([{l:'PLEASE LIST ALL OTHER ALLERGIES (FOOD, MEDICATIONS, ETC.)', v:'None known', flex:1}]) +
+        '<div class="fdtext">It is very important to us that we provide the best care possible for your child on an ongoing basis. To facilitate that goal, we will meet informally to discuss aspects of your child\'s care as needed, and this form will be updated quarterly.</div>' +
+        fdrow([{l:'GROWING MINDFULLY REPRESENTATIVE'},{l:'DATE'}]);
     } },
 ];
 
@@ -4324,23 +4774,30 @@ var revTarget = null;
 function pendingForms() { return FORMS.filter(function(f){ return !docState[f.id]; }); }
 var revSigned = false;
 function formDocHTML(f, signed) {
-  var h = '<div class="formdoc">' +
-    '<div class="fdstate"><span>State of California<br>Health and Human Services Agency</span>' +
-    '<span>California Department of Social Services<br>Community Care Licensing</span></div>' +
-    '<div class="fdtitle">' + f.name + '</div>' +
-    '<div class="fdsub">' + f.sub + '</div>' + f.body();
-  if (f.sig) {
-    h += '<div class="fdsig"><div class="sigcol">' +
-      (signed
-        ? '<span class="slot filled" style="min-width:190px">' + sigName + '</span>'
-        : '<button class="slot" id="revSlot" onclick="revSign(this)" style="min-width:190px">Tap to sign</button>') +
-      '<span class="siglab">' + (f.sigLabel || 'Signature of parent, guardian, or authorized representative') + '</span></div>';
-    (f.extraSig || []).forEach(function(x) {
-      h += '<div class="sigcol"><span class="datefill">' + (x.v || '') + '</span><span class="siglab">' + x.l + '</span></div>';
-    });
-    h += '<div class="sigcol"><span class="datefill" id="revDate">' + (signed ? TODAY : '') + '</span><span class="siglab">Date</span></div></div>';
-  }
-  h += '<div class="fdfoot"><span>' + f.no + '</span><span>Filled by Presence from your answers · Page 1 of 1</span></div></div>';
+  /* v8 item 4: one .formdoc frame per REAL page of the form; the state header on
+     every page, the title block on page one, the signature on its true page, and
+     the exact form number + revision in every footer. Nothing branded inside. */
+  var pages = f.pages ? f.pages() : [f.body()];
+  var h = '';
+  pages.forEach(function(pg, i) {
+    var last = (i === pages.length - 1);
+    h += '<div class="formdoc">' + f.hdr + (i === 0 ? f.head : '') + pg;
+    if (f.sig && last) {
+      h += '<div class="fdsig"><div class="sigcol">' +
+        (signed
+          ? '<span class="slot filled" style="min-width:190px">' + sigName + '</span>'
+          : '<button class="slot" id="revSlot" onclick="revSign(this)" style="min-width:190px">Tap to sign</button>') +
+        '<span class="siglab">' + (f.sigLabel || 'SIGNATURE OF PARENT/GUARDIAN OR AUTHORIZED REPRESENTATIVE') + '</span></div>';
+      (f.extraSig || []).forEach(function(x) {
+        h += '<div class="sigcol"><span class="datefill">' + (x.v || '') + '</span><span class="siglab">' + x.l + '</span></div>';
+      });
+      h += '<div class="sigcol"><span class="datefill" id="revDate">' + (signed ? TODAY : '') + '</span><span class="siglab">DATE</span></div></div>';
+    }
+    if (f.after && last) h += f.after();
+    h += '<div class="fdfoot"><span>' + f.foot + '</span><span>' +
+      (pages.length > 1 ? (f.pageLabel ? f.pageLabel(i + 1, pages.length) : 'PAGE ' + (i + 1) + ' OF ' + pages.length) : '') +
+      '</span></div></div>';
+  });
   return h;
 }
 function renderForm() {
@@ -4369,6 +4826,7 @@ function renderForm() {
 function revSign(el) {
   if (revSigned) return;
   revSigned = true;
+  chimeSign();
   el.classList.add('filled');
   el.textContent = sigName;
   var d = document.getElementById('revDate');
@@ -4389,6 +4847,7 @@ function confirmDoc() {
     return;
   }
   docState[f.id] = true;
+  chimeNext();
   renderState();
   if (allDocsDone()) { go('s-finale'); return; }
   if (!pendingForms().length) { go(docState.hb ? 's-finale' : 's-consent'); return; }
@@ -4419,34 +4878,49 @@ function downloadDoc(id) {
 function printDocHTML(title, bodyHtml) {
   return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + title + '</title>' +
     '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet">' +
-    '<style>:root{--ink:#1F2A2E;--ink-soft:#3F5359;--ink-mute:#6F7F84;--radius:6px}' +
-    'body{font-family:Manrope,system-ui,sans-serif;background:#fff;color:#1F2A2E;margin:0;padding:28px;font-size:13px}' +
+    '<style>' +
+    'body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;margin:0;padding:28px;font-size:13px}' +
     '.sheet{max-width:7.6in;margin:0 auto}' +
     '.printbar{display:flex;justify-content:flex-end;margin-bottom:14px}' +
-    '.printbtn{border:1.5px solid #3D8189;background:#fff;color:#3D8189;border-radius:6px;font:700 13px Manrope,sans-serif;padding:9px 16px;cursor:pointer}' +
-    '.formdoc{border:1px solid rgba(31,42,46,.35)}' +
-    '.fdstate{display:flex;justify-content:space-between;gap:10px;padding:10px 14px 2px;font-size:7.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84;line-height:1.5}' +
+    '.printbtn{border:1.5px solid #3D8189;background:#fff;color:#3D8189;border-radius:6px;font:700 13px Manrope,Arial,sans-serif;padding:9px 16px;cursor:pointer}' +
+    '.formdoc{border:1px solid #111;font-family:Arial,Helvetica,sans-serif;color:#111}' +
+    '.formdoc + .formdoc{margin-top:18px}' +
+    '.fdstate{display:flex;justify-content:space-between;gap:10px;padding:8px 12px 4px;font-size:6.5px;letter-spacing:.04em;text-transform:uppercase;color:#111;line-height:1.5}' +
     '.fdstate span:last-child{text-align:right}' +
-    '.fdtitle{text-align:center;font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:4px 14px 1px}' +
-    '.fdsub{text-align:center;font-size:9px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#6F7F84;padding:0 14px 10px}' +
-    '.fdrow{display:flex;border-top:1px solid rgba(31,42,46,.35)}' +
-    '.fdcell{flex:1;min-width:0;padding:4px 8px 6px}' +
-    '.fdcell + .fdcell{border-left:1px solid rgba(31,42,46,.35)}' +
-    '.fdcell b{display:block;font-size:7px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-    '.fdcell span{font-size:12.5px;font-weight:600}' +
-    '.fv{background:linear-gradient(transparent 62%,rgba(155,185,158,.35) 62%)}' +
-    '.fdtext{font-size:11.5px;line-height:1.55;color:#3F5359;padding:8px 14px;border-top:1px solid rgba(31,42,46,.35)}' +
+    '.fdstate.modern{font-size:9px;text-transform:none;letter-spacing:0;border-bottom:2px solid #111;padding-bottom:4px}' +
+    '.fdhead{padding:2px 12px 6px}' +
+    '.fdmaintitle{font-size:14px;font-weight:700;color:#000;line-height:1.25}' +
+    '.fdmaintitle .t2{display:block}' +
+    '.fdheadnote{font-size:9.5px;font-weight:700;color:#000;margin-top:2px}' +
+    '.fdrow{display:flex;border-top:1px solid #111}' +
+    '.fdcell{flex:1;min-width:0;padding:3px 6px 5px}' +
+    '.fdcell + .fdcell{border-left:1px solid #111}' +
+    '.fdcell b{display:block;font-size:6.5px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;color:#111;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.fdcell span{font-size:11.5px;font-weight:400;color:#000}' +
+    '.fv{background:none;color:#000}' +
+    '.fdsecthead{border-top:2px solid #111;color:#000;font-size:9px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;text-align:center;padding:4px 12px 3px}' +
+    '.fdsecthead i{color:#111;font-weight:400;font-size:8px}' +
+    '.fdchecks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px 14px;border-top:1px solid #111;color:#000;font-size:10.5px;padding:6px 12px 8px}' +
+    '.fdtext{font-size:10.5px;line-height:1.6;color:#000;padding:7px 12px;border-top:1px solid #111}' +
     '.fdtext ul{margin:4px 0 4px 16px}' +
-    '.fdsig{display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap;padding:12px 14px 10px;border-top:1px solid rgba(31,42,46,.35)}' +
-    '.fdsig .siglab{display:block;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6F7F84;margin-top:3px}' +
-    '.datefill{display:inline-block;font-size:12px;border-bottom:1px solid #6F7F84;min-width:100px;padding:3px 2px;min-height:22px}' +
-    '.fdfoot{display:flex;justify-content:space-between;padding:6px 14px 9px;font-size:7.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84;border-top:1px solid rgba(31,42,46,.35)}' +
-    '.slot{display:inline-flex;align-items:center;justify-content:center;border:1.5px solid rgba(31,42,46,.35);background:#fff;border-radius:6px;padding:8px 14px;min-width:190px;font-family:Caveat,cursive;font-size:19px;font-weight:600}' +
+    '.fdunder{display:inline-block;border-bottom:1px solid #000;min-width:120px;padding:0 4px 1px;color:#000}' +
+    '.fdtable{width:100%;border-collapse:collapse;border-top:1px solid #111}' +
+    '.fdtable th{font-size:10px;font-weight:400;color:#000;text-align:center;border:1px solid #111;border-top:0;padding:4px 6px}' +
+    '.fdtable th:first-child,.fdtable td:first-child{border-left:0}' +
+    '.fdtable th:last-child,.fdtable td:last-child{border-right:0}' +
+    '.fdtable td{font-size:10.5px;color:#000;border:1px solid #111;padding:4px 6px;height:17px}' +
+    '.fddetach{border-top:1px dashed #111;text-align:center;font-size:7.5px;letter-spacing:.08em;color:#111;padding:4px 12px 3px;text-transform:uppercase}' +
+    '.fdbox{border:1.5px solid #111;margin:6px 12px 8px;padding:6px 10px;font-size:10.5px;color:#000;line-height:1.6}' +
+    '.fdsig{display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap;padding:12px 12px 10px;border-top:1px solid #111}' +
+    '.fdsig .siglab{display:block;font-size:6.5px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;color:#111;margin-top:3px}' +
+    '.datefill{display:inline-block;font-size:12px;color:#000;border-bottom:1px solid #000;min-width:100px;padding:3px 2px;min-height:22px}' +
+    '.fdfoot{display:flex;justify-content:space-between;padding:6px 12px 9px;font-size:7.5px;letter-spacing:.02em;text-transform:uppercase;color:#111;border-top:1px solid #111}' +
+    '.slot{display:inline-flex;align-items:center;justify-content:center;border:1.5px solid #111;background:#fff;border-radius:6px;padding:8px 14px;min-width:190px;font-family:Caveat,cursive;font-size:19px;font-weight:600;color:#000}' +
     '.slot:empty{min-height:26px}' +
     '.imtable{width:100%;border-collapse:collapse;margin:4px 0}' +
-    '.imtable th,.imtable td{border:1px solid rgba(31,42,46,.35);font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:#3F5359;padding:5px 6px;text-align:left}' +
+    '.imtable th,.imtable td{border:1px solid #111;font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:#000;padding:5px 6px;text-align:left}' +
     '.imtable td{height:16px}' +
-    '.blank{display:inline-block;border-bottom:1px solid #6F7F84;min-width:180px;min-height:14px}' +
+    '.blank{display:inline-block;border-bottom:1px solid #000;min-width:180px;min-height:14px}' +
     '@media print{.printbar{display:none}body{padding:0}}' +
     '</style></head><body><div class="sheet">' +
     '<div class="printbar"><button class="printbtn" onclick="window.print()">Print or save as PDF</button></div>' +
@@ -4463,51 +4937,143 @@ function openPrintDoc(title, bodyHtml) {
    prefilled (child, birthdate, center), Part B structured and blank for the
    physician. Never blank, never a placeholder. ---- */
 function lic701HTML() {
-  var h = '<div class="formdoc">' +
-    '<div class="fdstate"><span>State of California<br>Health and Human Services Agency</span>' +
-    '<span>California Department of Social Services<br>Community Care Licensing</span></div>' +
-    '<div class="fdtitle">Physician&#8217;s Report - Child Care Centers</div>' +
-    '<div class="fdsub">(Child&#8217;s pre-admission health evaluation)</div>' +
-    '<div class="fdtext" style="border-top:0"><b style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84">Part A · Parent’s consent (to be completed by parent)</b><br>' +
-    '<span class="fv">Theo Alvarez</span> (name of child), born <span class="fv">March 14, 2024</span> (birth date), is being studied for readiness to enter ' +
-    '<span class="fv">Growing Mindfully (Present Pathways, Inc.), 750 N Street, Sacramento, CA 95814</span> (name of child care center/school). ' +
-    'This child care center provides a program which extends from <span class="fv">7:00 a.m.</span> to <span class="fv">6:00 p.m.</span>, <span class="fv">five (5)</span> days a week.<br><br>' +
-    'Please provide a report on the above-named child using the form below. I hereby authorize release of medical information contained in this report to the above-named child care center.<br><br>' +
-    '<span class="blank"></span>&nbsp;&nbsp;<span style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84">Signature of parent, guardian, or authorized representative</span>' +
-    '&nbsp;&nbsp;&nbsp;<span class="blank" style="min-width:90px"></span>&nbsp;&nbsp;<span style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84">Today’s date</span></div>' +
-    '<div class="fdtext"><b style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84">Part B · Physician’s report (to be completed by physician)</b><br>Problems of which you should be aware:</div>';
-  h += fdrow([{l:'Hearing'},{l:'Allergies · medicine'}]) +
-    fdrow([{l:'Vision'},{l:'Allergies · insect stings'}]) +
-    fdrow([{l:'Developmental'},{l:'Allergies · food'}]) +
-    fdrow([{l:'Language / speech'},{l:'Asthma'}]) +
-    fdrow([{l:'Dental'},{l:'Other, including behavioral concerns'}]) +
-    fdrow([{l:'Comments / explanations', flex:2}]) +
-    fdrow([{l:'Medication prescribed / special routines / restrictions for this child', flex:2}]);
-  h += '<div class="fdtext"><b style="font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:#6F7F84">Immunization history</b> (fill out or enclose the California Immunization Record, PM-298)' +
-    '<table class="imtable"><tr><th>Vaccine</th><th>1st</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th></tr>' +
-    '<tr><td>Polio (OPV or IPV)</td><td></td><td></td><td></td><td></td><td></td></tr>' +
-    '<tr><td>DTP / DTaP / DT / Td</td><td></td><td></td><td></td><td></td><td></td></tr>' +
-    '<tr><td>MMR (measles, mumps, rubella)</td><td></td><td></td><td></td><td></td><td></td></tr>' +
-    '<tr><td>Hib meningitis (haemophilus b)</td><td></td><td></td><td></td><td></td><td></td></tr>' +
-    '<tr><td>Hepatitis B</td><td></td><td></td><td></td><td></td><td></td></tr>' +
-    '<tr><td>Varicella (chickenpox)</td><td></td><td></td><td></td><td></td><td></td></tr></table>' +
-    'Screening of TB risk factors:&nbsp;&nbsp;&#9633; Risk factors not present; TB skin test not required.&nbsp;&nbsp;&#9633; Risk factors present; Mantoux TB skin test performed.<br>' +
-    'I have &#9633; / have not &#9633; reviewed the above information with the parent/guardian.</div>' +
-    fdrow([{l:'Physician'},{l:'Date of physical exam'}]) +
-    fdrow([{l:'Address'},{l:'Date this form completed'}]) +
-    fdrow([{l:'Telephone'},{l:'Signature · physician &#9633; · physician’s assistant &#9633; · nurse practitioner &#9633;'}]) +
-    '<div class="fdfoot"><span>LIC 701 (8/08) (Confidential)</span><span>Part A prefilled by Presence · Page 1 of 2</span></div></div>';
+  /* v8 item 4: the literal LIC 701 (8/08), both pages, monochrome. Part A prefilled
+     by Presence; Part B structured and blank for the physician. */
+  var HDR = '<div class="fdstate"><span>STATE OF CALIFORNIA<br>HEALTH AND HUMAN SERVICES AGENCY</span><span>CALIFORNIA DEPARTMENT OF SOCIAL SERVICES<br>COMMUNITY CARE LICENSING</span></div>';
+  var h = '<div class="formdoc">' + HDR +
+    '<div class="fdhead"><div class="fdmaintitle">PHYSICIAN\'S REPORT - CHILD CARE CENTERS' +
+    '<span class="t2" style="font-weight:400;font-size:11px">(CHILD\'S PRE-ADMISSION HEALTH EVALUATION)</span></div></div>' +
+    '<div class="fdsecthead">PART A - PARENT\'S CONSENT <i>(TO BE COMPLETED BY PARENT)</i></div>' +
+    '<div class="fdtext" style="border-top:0;line-height:2">' +
+    '<span class="fdunder" style="min-width:220px">Theo Alvarez</span> <span style="font-size:6.5px">(NAME OF CHILD)</span>, born ' +
+    '<span class="fdunder" style="min-width:150px">March 14, 2024</span> <span style="font-size:6.5px">(BIRTH DATE)</span> is being studied for readiness to enter<br>' +
+    '<span class="fdunder" style="min-width:260px">Growing Mindfully (Present Pathways, Inc.)</span> <span style="font-size:6.5px">(NAME OF CHILD CARE CENTER/SCHOOL)</span>. This Child Care Center/School provides a program which extends from <span class="fdunder" style="min-width:40px">7</span> : <span class="fdunder" style="min-width:40px">00</span><br>' +
+    'a.m./p.m. to <span class="fdunder" style="min-width:50px">6:00</span> a.m./p.m., <span class="fdunder" style="min-width:70px">five (5)</span> days a week.<br><br>' +
+    'Please provide a report on above-named child using the form below. I hereby authorize release of medical information contained in this report to the above-named Child Care Center.<br><br>' +
+    '<span class="blank" style="min-width:280px"></span>&nbsp;&nbsp;<span style="font-size:6.5px">(SIGNATURE OF PARENT, GUARDIAN, OR CHILD\'S AUTHORIZED REPRESENTATIVE)</span>' +
+    '&nbsp;&nbsp;&nbsp;<span class="blank" style="min-width:90px"></span>&nbsp;&nbsp;<span style="font-size:6.5px">(TODAY\'S DATE)</span></div>' +
+    '<div class="fdsecthead">PART B - PHYSICIAN\'S REPORT <i>(TO BE COMPLETED BY PHYSICIAN)</i></div>' +
+    '<div class="fdtext" style="border-top:0">Problems of which you should be aware:</div>' +
+    fdrow([{l:'HEARING:'},{l:'ALLERGIES: MEDICINE:'}]) +
+    fdrow([{l:'VISION:'},{l:'INSECT STINGS:'}]) +
+    fdrow([{l:'DEVELOPMENTAL:'},{l:'FOOD:'}]) +
+    fdrow([{l:'LANGUAGE/SPEECH:'},{l:'ASTHMA:'}]) +
+    fdrow([{l:'DENTAL:'},{l:''}]) +
+    fdrow([{l:'OTHER (INCLUDE BEHAVIORAL CONCERNS):', flex:1}]) +
+    fdrow([{l:'COMMENTS/EXPLANATIONS:', flex:1}]) +
+    fdrow([{l:'MEDICATION PRESCRIBED/SPECIAL ROUTINES/RESTRICTIONS FOR THIS CHILD:', flex:1}]) +
+    '<div class="fdtext" style="border-top:2px solid #111"><b style="font-size:11px;font-weight:700">IMMUNIZATION HISTORY:</b> (Fill out or enclose California Immunization Record, PM-298.)' +
+    '<table class="imtable"><tr><th style="width:34%">VACCINE</th><th>1st</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th></tr>' +
+    '<tr><td>POLIO (OPV OR IPV)</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td></tr>' +
+    '<tr><td>DTP/DTaP/DT/Td <span style="font-size:6px">(DIPHTHERIA, TETANUS AND [ACELLULAR] PERTUSSIS OR TETANUS AND DIPHTHERIA ONLY)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td></tr>' +
+    '<tr><td>MMR <span style="font-size:6px">(MEASLES, MUMPS, AND RUBELLA)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td><td></td><td></td></tr>' +
+    '<tr><td>HIB MENINGITIS <span style="font-size:6px">(REQUIRED FOR CHILD CARE ONLY) (HAEMOPHILUS B)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td></tr>' +
+    '<tr><td>HEPATITIS B</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td><td></td></tr>' +
+    '<tr><td>VARICELLA <span style="font-size:6px">(CHICKENPOX)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td><td></td><td></td></tr></table>' +
+    '<div class="fdbox" style="margin:6px 0 4px;max-width:420px"><b style="font-size:9.5px;font-weight:700">SCREENING OF TB RISK FACTORS</b> (listing on reverse side)<br>' +
+    '&#9633; Risk factors not present; TB skin test not required.<br>' +
+    '&#9633; Risk factors present; Mantoux TB skin test performed (unless previous positive skin test documented).<br>' +
+    '&nbsp;&nbsp;&nbsp;___ Communicable TB disease not present.</div>' +
+    'I have &#9633; &nbsp; have not &#9633; &nbsp; reviewed the above information with the parent/guardian.<br><br>' +
+    'Physician: <span class="blank" style="min-width:230px"></span> &nbsp; Date of Physical Exam: <span class="blank" style="min-width:130px"></span><br>' +
+    'Address: <span class="blank" style="min-width:240px"></span> &nbsp; Date This Form Completed: <span class="blank" style="min-width:120px"></span><br>' +
+    'Telephone: <span class="blank" style="min-width:225px"></span> &nbsp; Signature <span class="blank" style="min-width:180px"></span><br>' +
+    '<span style="float:right">&#9633; Physician &nbsp; &#9633; Physician\'s Assistant &nbsp; &#9633; Nurse Practitioner</span><br></div>' +
+    '<div class="fdfoot"><span>LIC 701 (8/08) (Confidential)</span><span>PAGE 1 OF 2</span></div></div>' +
+    '<div class="formdoc">' +
+    '<div class="fdtext" style="border-top:0"><b style="font-size:10.5px;font-weight:700">RISK FACTORS FOR TB IN CHILDREN:</b>' +
+    '<ul style="list-style:none;margin-left:2px">' +
+    '<li>* &nbsp;Have a family member or contacts with a history of confirmed or suspected TB.</li>' +
+    '<li>* &nbsp;Are in foreign-born families and from high-prevalence countries (Asia, Africa, Central and South America).</li>' +
+    '<li>* &nbsp;Live in out-of-home placements.</li>' +
+    '<li>* &nbsp;Have, or are suspected to have, HIV infection.</li>' +
+    '<li>* &nbsp;Live with an adult with HIV seropositivity.</li>' +
+    '<li>* &nbsp;Live with an adult who has been incarcerated in the last five years.</li>' +
+    '<li>* &nbsp;Live among, or are frequently exposed to, individuals who are homeless, migrant farm workers, users of street drugs, or residents in nursing homes.</li>' +
+    '<li>* &nbsp;Have abnormalities on chest X-ray suggestive of TB.</li>' +
+    '<li>* &nbsp;Have clinical evidence of TB.</li></ul>' +
+    'Consult with your local health department\'s TB control program on any aspects of TB prevention and treatment.</div>' +
+    '<div class="fdfoot"><span>LIC 701 (8/08) (Confidential)</span><span>PAGE 2 of 2</span></div></div>';
   return h;
 }
 function openLic701() {
   openPrintDoc("Physician's Report · LIC 701 · Theo Alvarez", lic701HTML());
   lic701Downloaded = true;
-  var u1 = document.getElementById('lic701Upload');
-  if (u1) u1.classList.add('show');
-  var u2 = document.getElementById('lic701UploadDash');
-  if (u2) u2.classList.add('show');
   var m = document.getElementById('d-701-meta');
-  if (m) m.textContent = 'Downloaded ' + TODAY + ' · due September 2. Nothing else is blocked while you wait.';
+  if (m) m.textContent = 'Downloaded ' + TODAY + ' · due by August 17, the end of Theo\'s second week. Nothing else is blocked while you wait.';
+}
+
+/* ---- v8 item 8: the signature certificate is a real document row (view/download),
+   built from the evidence spine per spec section 10. ---- */
+var CERT_NAMES = { hb: 'Parent handbook', lic700: 'LIC 700 · Identification and emergency',
+  lic702: 'LIC 702 · Health history', lic627: 'LIC 627 · Medical consent',
+  lic613: 'LIC 613A · Personal rights', lic995: "LIC 995 · Parents' rights",
+  nsp: 'Needs and services plan' };
+var CERT_SHAS = { agreement: 'e1b47d09a2c6', hb: 'a3f9c2e81b04', lic700: '7c50d1f42ae9',
+  lic702: 'b98e33071cd5', lic627: '412fa8c96d03', lic613: 'cd7204b1e85f',
+  lic995: '90ab35e7f214', nsp: '58c1d6a0942b' };
+function certDocHTML() {
+  var rows = '<tr><td>Enrollment agreement</td><td>Jun 30</td><td class="mono">' + CERT_SHAS.agreement + '</td></tr>';
+  var count = 1;
+  DOCLIST.forEach(function(d) {
+    if (docState[d.id]) {
+      rows += '<tr><td>' + CERT_NAMES[d.id] + '</td><td>Jul 12</td><td class="mono">' + CERT_SHAS[d.id] + '</td></tr>';
+      count++;
+    }
+  });
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Certificate of Signature · Theo Alvarez</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">' +
+    '<style>body{font-family:Manrope,system-ui,sans-serif;background:#FBF7EE;color:#1F2A2E;margin:0;padding:34px;font-size:13px;print-color-adjust:exact;-webkit-print-color-adjust:exact}' +
+    '.cert{max-width:7.2in;margin:0 auto;background:#fff;border:1px solid rgba(31,42,46,.14);padding:.9in .8in;position:relative}' +
+    '.cmark{text-align:center;margin-bottom:8px}' +
+    '.ckick{text-align:center;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#3F5359;margin-bottom:16px}' +
+    'h1{font-family:Newsreader,Georgia,serif;font-weight:450;font-size:30pt;text-align:center;margin:0 0 4px;letter-spacing:-.015em}' +
+    '.csub{font-family:Newsreader,Georgia,serif;font-style:italic;font-size:14pt;text-align:center;color:#3F5359;margin-bottom:22px}' +
+    'hr{border:0;border-top:.5pt solid #C9A86A;margin:18px 0}' +
+    '.ledger{display:grid;grid-template-columns:130px 1fr;gap:7px 18px;font-size:12.5px;margin:0 auto;max-width:430px}' +
+    '.ledger b{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6F7F84}' +
+    'table{width:100%;border-collapse:collapse;margin:14px 0 4px;font-size:12px}' +
+    'th{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6F7F84;text-align:left;padding:6px 8px;border-bottom:.5pt solid #C9A86A}' +
+    'td{padding:7px 8px;border-bottom:.5pt solid rgba(31,42,46,.12)}' +
+    '.mono{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#3F5359}' +
+    '.verify{font-size:8.5pt;color:#6F7F84;line-height:1.6;margin-top:16px}' +
+    '.cfoot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:26px;font-size:10.5px;color:#3F5359}' +
+    '.printbar{display:flex;justify-content:flex-end;max-width:7.2in;margin:0 auto 14px}' +
+    '.printbtn{border:1.5px solid #3D8189;background:#fff;color:#3D8189;border-radius:6px;font:700 13px Manrope,sans-serif;padding:9px 16px;cursor:pointer}' +
+    '@media print{.printbar{display:none}body{background:#fff;padding:0}.cert{border:0;padding:.4in .2in}}' +
+    '</style></head><body>' +
+    '<div class="printbar"><button class="printbtn" onclick="window.print()">Print or save as PDF</button></div>' +
+    '<div class="cert">' +
+    '<div class="cmark"><svg width="46" height="46" viewBox="0 0 60 60"><path d="M30 46 Q 16 30 30 10 Q 44 30 30 46 Z" fill="#9BB99E"/><path d="M30 44 C 29 32 31 22 30 13" stroke="#C9A86A" stroke-width="1.4" fill="none"/></svg></div>' +
+    '<div class="ckick">Growing Mindfully</div>' +
+    '<h1>Certificate of Signature</h1>' +
+    '<div class="csub">Enrollment documents for Theo Alvarez</div>' +
+    '<hr>' +
+    '<div class="ledger">' +
+    '<b>Signed by</b><span>Maria Alvarez</span>' +
+    '<b>Relationship</b><span>Parent</span>' +
+    '<b>Signed on</b><span>July 12, 2026, 3:41 PM PT</span>' +
+    '<b>Documents</b><span>' + count + (count === 1 ? ' document' : ' documents') + ' (listed below)</span>' +
+    '</div>' +
+    '<table><tr><th>Document</th><th>Signed</th><th>SHA-256 (first 12)</th></tr>' + rows + '</table>' +
+    '<hr>' +
+    '<div class="verify">Each signature above was captured with a timestamped record of the document exactly as shown, the signature image, and the signing device. Verify any document by emailing hello@growingmindfully.org with the code beside it.</div>' +
+    '<div class="cfoot"><span>750 N Street, Sacramento<br>growingmindfully.org</span>' +
+    '<svg width="58" height="58" viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="#C9A86A" stroke-width="2"/><circle cx="30" cy="30" r="22.5" fill="none" stroke="#C9A86A" stroke-width=".8" opacity=".6"/><path d="M30 43 Q 19 30 30 14 Q 41 30 30 43 Z" fill="#C9A86A"/></svg></div>' +
+    '</div></body></html>';
+}
+function viewCert() {
+  var w = window.open('', '_blank');
+  if (!w) return;
+  w.document.write(certDocHTML());
+  w.document.close();
+}
+function downloadCert() {
+  var blob = new Blob([certDocHTML()], { type: 'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Signature-Certificate-Theo-Alvarez.html';
+  a.click();
 }
 
 /* ---- v7 item 4: age-band conditional blocks (Needs and Services data).
@@ -4554,21 +5120,22 @@ function spawnConfetti() {
   var COLORS = ['#9BB99E', '#6F8F70', '#C9A86A', '#E8C9B5'];
   var LEAF = '<path d="M3 16 C 1 9 4 3 10 1 C 12 6 10 13 4 15 Z" fill="{c}"/>';
   var PETAL = '<path d="M6 16 Q 2 8 6 1 Q 10 8 6 16 Z" fill="{c}"/>';
-  for (var i = 0; i < 30; i++) {
+  /* v8 item 5: denser petals at the finale, still only brand colors */
+  for (var i = 0; i < 78; i++) {
     var c = COLORS[i % COLORS.length];
     var shape = (i % 2 === 0 ? LEAF : PETAL).replace('{c}', c);
-    var size = 9 + Math.random() * 9;
+    var size = 8 + Math.random() * 11;
     var el = document.createElement('div');
     el.className = 'cpiece';
     el.innerHTML = '<svg width="' + size + '" height="' + (size * 1.3) + '" viewBox="0 0 12 17">' + shape + '</svg>';
     el.style.left = (Math.random() * 100) + 'vw';
     el.style.setProperty('--spin', (Math.random() > .5 ? '' : '-') + (360 + Math.random() * 420) + 'deg');
-    el.style.animationDuration = (2.6 + Math.random() * 1.8) + 's';
-    el.style.animationDelay = (Math.random() * 1.1) + 's';
+    el.style.animationDuration = (2.6 + Math.random() * 2.2) + 's';
+    el.style.animationDelay = (Math.random() * 1.9) + 's';
     wrap.appendChild(el);
   }
   document.body.appendChild(wrap);
-  setTimeout(function(){ wrap.remove(); }, 6000);
+  setTimeout(function(){ wrap.remove(); }, 7500);
 }
 
 /* ---- the generate-moment counter ---- */
