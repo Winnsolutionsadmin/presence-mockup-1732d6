@@ -804,6 +804,18 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   text-align: center; cursor: pointer; }
 .upright .upbtn:hover { background: rgba(155,185,158,.14); }
 .upright .upbtn svg { width: 18px; height: 18px; }
+/* v8.1: an uploaded item settles into a quiet done state */
+.upright .upbtn.added { border-style: solid; border-color: var(--sage-deep);
+  background: rgba(155,185,158,.16); color: var(--sage-deep); cursor: default; }
+
+/* v8.1: the calm attention banner when an unlocked edit empties a required field */
+.attnbanner { position: fixed; left: 50%; bottom: 84px;
+  transform: translateX(-50%) translateY(8px); background: var(--card);
+  border: 1.5px solid var(--gold); border-radius: var(--radius); color: var(--ink-soft);
+  font-size: 13.5px; font-weight: 600; padding: 12px 18px; box-shadow: var(--shadow-lift);
+  opacity: 0; pointer-events: none; z-index: 90;
+  transition: opacity .3s ease, transform .3s ease; max-width: 86vw; text-align: center; }
+.attnbanner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ---- v8 item 5: the audio toggle ---- */
 .audiotog { background: none; border: 0; color: var(--ink-mute); padding: 8px;
@@ -933,8 +945,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <button class="ritem signlock" data-go="s-review" id="r-nsp"><span class="st st-question">?</span> Needs and services plan <span class="rsub">Sign</span></button>
     <div class="rgroup"><span class="stepno">Step 7</span> Your doctor</div>
     <!-- v8 item 7: immunization sits ABOVE the doctor's report; it is the day-1 gate -->
-    <button class="ritem" data-go="s-dash"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Day 1</span></button>
-    <button class="ritem" data-go="s-dash">
+    <button class="ritem" data-go="s-dash" id="r-imm"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Day 1</span></button>
+    <button class="ritem" data-go="s-dash" id="r-701">
       <span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
       LIC 701 · Doctor's report <span class="rsub">Aug 17</span>
     </button>
@@ -1424,7 +1436,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="rname">Immunization record <span class="duechip firm">Due by enrollment</span></div>
         <div class="rmeta">California requires it on file before Theo's first morning. A photo or screenshot from your patient portal works.</div>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="markUploaded('imm')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         Add photo</span></div>
     </div>
@@ -1438,7 +1450,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           Download for your doctor
         </button>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="markUploaded('lic701')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         Add photo</span></div>
     </div>
@@ -1701,7 +1713,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         </div>
         <div class="rmeta">California requires it on file before Theo's first morning. A photo of the record from your doctor or patient portal.</div>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="markUploaded('imm')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         Add photo</span></div>
     </div>
@@ -1714,7 +1726,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="rmeta" id="d-701-meta">Part A is filled in. Take it to Theo's doctor; due by the end of Theo's second week. Nothing else is blocked while you wait.</div>
         <div class="rowactions"><button class="raction" onclick="openLic701()">Download for your doctor</button></div>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" onclick="alert('Mockup: the camera or file picker opens here.')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="markUploaded('lic701')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         Add photo</span></div>
     </div>
@@ -3674,8 +3686,24 @@ var chState = [
   { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 34, mins: 6, finished: false },
   { id: 'ch5', name: 'Permissions',       screen: 's-permissions', done: 0,  total: 4,  mins: 1, finished: false }
 ];
+/* v8.1: solo-parent excludes the Parent 2 fields from chapter 1's total AND done,
+   everywhere the counts surface (rail, cards, fractions); unchecking restores them. */
+var CH1_BASE_TOTAL = chState[0].total;
+function soloOn() {
+  var cb = document.getElementById('soloParent');
+  return !!(cb && cb.checked);
+}
+function p2FieldCount() {
+  return document.querySelectorAll('#parent2block input[type=text], #parent2block input[type=tel]').length;
+}
+function ch1Filled() {
+  var n = countFilled('#ch1Fields');
+  if (soloOn()) n -= countFilled('#parent2block');
+  return n;
+}
 function refreshLiveCounts() {
-  chState[0].done = chState[0].finished ? Math.max(countFilled('#ch1Fields'), 0) : countFilled('#ch1Fields');
+  chState[0].total = CH1_BASE_TOTAL - (soloOn() ? p2FieldCount() : 0);
+  chState[0].done = Math.min(ch1Filled(), chState[0].total);
   chState[1].done = countFilled('#ch2Fields');
   chState[2].done = chState[2].finished ? chState[2].total : jicFilled();
   chState[3].done = chState[3].finished ? chState[3].total : healthFilled();
@@ -3708,6 +3736,9 @@ var DOCLIST = [
   { id: 'nsp',    rail: 'r-nsp',    gen: 'g-nsp',    dash: 'd-nsp',    doneLabel: 'Signed',    pend: '24/24 filled' }
 ];
 var lic701Downloaded = false;
+/* v8.1: step 7 (your doctor) is demo-completable; each upload is half the step */
+var doctorState = { imm: false, lic701: false };
+function doctorDone() { return doctorState.imm && doctorState.lic701; }
 
 var CHECK_SVG = '<span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
 var Q_SVG = '<span class="st st-question">?</span>';
@@ -3724,7 +3755,8 @@ function nextChapter() { return chState.filter(function(c){ return !c.finished; 
 function sectionFraction(i) {
   if (i < 5) { var c = chState[i]; return c.finished ? 1 : Math.min(c.done / c.total, 1); }
   if (i === 5) return docsDoneCount() / DOCLIST.length;
-  return 0; /* your doctor: waits on the report */
+  /* v8.1: your doctor contributes fractionally from its two items */
+  return ((doctorState.imm ? 1 : 0) + (doctorState.lic701 ? 1 : 0)) / 2;
 }
 function overallPct() {
   var sum = 0;
@@ -3746,7 +3778,7 @@ function tgStates() {
   var st = [];
   for (var i = 0; i < 5; i++) st.push(chState[i].finished ? 'done' : 'dormant');
   st.push(allDocsDone() ? 'done' : 'dormant');
-  st.push('dormant'); /* your doctor: waiting until the report comes back */
+  st.push(doctorDone() ? 'done' : 'dormant'); /* v8.1: leaf when both uploads are in */
   var actIdx = -1;
   for (var j = 0; j < st.length; j++) { if (st[j] !== 'done') { actIdx = j; break; } }
   return { states: st, active: actIdx };
@@ -3789,7 +3821,7 @@ function renderTopGarden() {
     cell.classList.toggle('now', i === t.active);            /* bud = you are here */
   });
   var end = el.querySelector('.tgend');
-  end.classList.toggle('open', allDocsDone());
+  end.classList.toggle('open', allDocsDone() && doctorDone()); /* v8.1: bloom only at true 100 percent */
   el.setAttribute('aria-label', 'Enrollment progress: ' + doneSections + ' of ' + TG_SECTIONS.length + ' steps complete, ' + pct + ' percent. Currently on ' + (t.active >= 0 ? TG_SECTIONS[t.active].label : 'the finish'));
   /* stem = position, fractionally (v8 item 2): the tip sits at the current step's
      node and creeps toward the next node as that step's fields complete. */
@@ -4036,7 +4068,7 @@ function applyChapterLock(sec) {
   banner.querySelector('.unlockall').onclick = function() {
     var editing = banner.classList.toggle('editingall');
     sec.querySelectorAll('.body input').forEach(function(inp){ inp.disabled = !editing; });
-    if (!editing) { sparkPending = true; renderState(); }
+    if (!editing) { sparkPending = true; revalidateChapter(sec); renderState(); }
     banner.querySelector('span').textContent = editing
       ? 'Editing. Every change saves the moment you leave a field.'
       : (sec.dataset.locknote || 'This chapter is done and locked. Unlock any field to change it; changes save as you go.');
@@ -4059,7 +4091,58 @@ function relock(w) {
   var wh = w.querySelector('.savewhisper');
   if (wh) { wh.classList.remove('show'); void wh.offsetWidth; wh.classList.add('show'); }
   sparkPending = true;
+  revalidateChapter(w.closest('.screen')); /* v8.1: an edit can un-finish a chapter */
   renderState();
+}
+/* ---- v8.1: finished is no longer sticky. On relock after an unlocked edit, the
+   chapter re-validates; if a required field is now empty, finished flips false,
+   signLocked() relocks the sign section, and a calm banner says which chapter
+   needs attention. Fixing the field re-finishes the chapter. ---- */
+function chapterValid(i) {
+  if (i === 0) return ch1Filled() >= chState[0].total;
+  if (i === 1) return countFilled('#ch2Fields') >= chState[1].total;
+  if (i === 2) return pickupOk();
+  if (i === 3) return healthValid();
+  if (i === 4) {
+    var acks = document.querySelectorAll('.ack');
+    return Array.prototype.every.call(acks, function(a){ return a.checked; });
+  }
+  return true;
+}
+function revalidateChapter(sec) {
+  if (!sec) return;
+  var ch = chState.filter(function(c){ return c.screen === sec.id; })[0];
+  if (!ch) return;
+  refreshLiveCounts();
+  var ok = chapterValid(chState.indexOf(ch));
+  if (ch.finished && !ok) {
+    ch.finished = false;
+    sec.dataset.needsAttention = '1';
+    showAttention('A required field in ' + ch.name + ' needs attention.');
+  } else if (!ch.finished && ok && sec.dataset.needsAttention) {
+    delete sec.dataset.needsAttention;
+    ch.finished = true;
+    hideAttention();
+  }
+}
+var attnTimer = null;
+function showAttention(msg) {
+  var el = document.getElementById('attnBanner');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'attnBanner';
+    el.className = 'attnbanner';
+    el.setAttribute('role', 'status');
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(attnTimer);
+  attnTimer = setTimeout(hideAttention, 6000);
+}
+function hideAttention() {
+  var el = document.getElementById('attnBanner');
+  if (el) el.classList.remove('show');
 }
 document.addEventListener('click', function(e) {
   var b = e.target.closest('.unlockbtn');
@@ -4111,6 +4194,29 @@ function finishChapter(n) {
   go(nxt ? nxt.screen : 's-docs');
 }
 function demoCompleteAll() { chState.forEach(function(c){ c.finished = true; }); renderState(); go('s-docs'); }
+/* v8.1: the step 7 uploads are demo-completable. Production opens the real camera or
+   file picker; here the button marks the item uploaded so the journey can honestly
+   reach 100 percent and the plant can bloom. */
+function markUploaded(key) {
+  if (doctorState[key]) return;
+  doctorState[key] = true;
+  document.querySelectorAll('[data-upload="' + key + '"]').forEach(function(b) {
+    b.classList.add('added');
+    b.innerHTML = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4.2 4L16 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Added';
+    b.onclick = null;
+    b.removeAttribute('role');
+    b.removeAttribute('tabindex');
+  });
+  var rail = document.getElementById(key === 'imm' ? 'r-imm' : 'r-701');
+  if (rail) {
+    rail.querySelector('.st').outerHTML = CHECK_SVG;
+    var sub = rail.querySelector('.rsub');
+    if (sub) sub.textContent = 'Added';
+  }
+  chimeNext();
+  sparkPending = true;
+  renderState();
+}
 
 /* ---- fields ---- */
 function toggleEdit(rowId, btn) {
@@ -4123,6 +4229,7 @@ function toggleEdit(rowId, btn) {
 function soloToggle(cb) {
   document.getElementById('parent2block').classList.toggle('collapsed', cb.checked);
   document.getElementById('p2note').classList.toggle('show', cb.checked);
+  renderState(); /* v8.1: the counts follow the toggle, both ways */
 }
 function pickupOk() {
   var rows = document.querySelectorAll('#pickupRows .prow');
@@ -4224,7 +4331,7 @@ function bell(freq, dur, peak) {
       o.connect(g); g.connect(actx.destination);
       o.start(t0); o.stop(t0 + dur + 0.05);
     });
-  } catch (e) {}
+  } catch (e) { console.debug('Presence mockup: WebAudio bell unavailable.', e); }
 }
 function chimeSign() { bell(659.25, 2.4, 0.075); }   /* E5: the zen bell, sparing */
 function chimeNext() { bell(440, 0.7, 0.028); }      /* A4: the soft page-turn tone */
@@ -4368,7 +4475,7 @@ function hbInit() {
         hbWire(d);
         return;
       }
-    } catch (e) {}
+    } catch (e) { console.debug('Presence mockup: handbook iframe not readable yet; retrying.', e); }
     setTimeout(tryWire, 120);
   }
   fr.onload = tryWire;
@@ -4546,8 +4653,27 @@ function hbFinishSign() {
     if (allDocsDone()) { go('s-finale'); } else { go('s-review'); }
   }, 900);
 }
+/* v8.1: once the handbook iframe is wired (prefills, applied signature, accuracy
+   checks live in the iframe DOM), the family's copy is the LIVE document, serialized.
+   The pristine hbSource template is only the not-yet-wired fallback. */
+function hbCurrentHTML() {
+  try {
+    if (hbDoc && hbDoc.documentElement) {
+      /* checked is a property, not an attribute: reflect it so the accuracy
+         checkboxes survive serialization */
+      hbDoc.querySelectorAll('input[type=checkbox]').forEach(function(c) {
+        if (c.checked) c.setAttribute('checked', 'checked');
+        else c.removeAttribute('checked');
+      });
+      return '<!DOCTYPE html>\n' + hbDoc.documentElement.outerHTML;
+    }
+  } catch (e) {
+    console.debug('Presence mockup: live handbook not readable; falling back to the template.', e);
+  }
+  return document.getElementById('hbSource').innerHTML;
+}
 function downloadHandbook() {
-  var blob = new Blob([document.getElementById('hbSource').innerHTML], { type: 'text/html' });
+  var blob = new Blob([hbCurrentHTML()], { type: 'text/html' });
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'GM-Parent-Handbook-v2.7.html';
@@ -4856,7 +4982,7 @@ function confirmDoc() {
 }
 function viewDoc(id) {
   if (id === 'hb') {
-    var blob = new Blob([document.getElementById('hbSource').innerHTML], { type: 'text/html' });
+    var blob = new Blob([hbCurrentHTML()], { type: 'text/html' }); /* v8.1: the live signed copy */
     window.open(URL.createObjectURL(blob), '_blank');
     return;
   }
