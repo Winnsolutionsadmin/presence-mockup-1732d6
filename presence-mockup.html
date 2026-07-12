@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.2 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -19,7 +19,11 @@
    accuracy affordances on every prefilled slot, WebAudio zen chimes + audio toggle,
    deadline semantics (immunization due by enrollment, LIC 701 due by August 17),
    the certificate as a real document row, a live 7-step rail sprig, the lotus
-   mark ending the progress stem, and denser petal confetti at the finale. */
+   mark ending the progress stem, and denser petal confetti at the finale.
+   v8.2: the Needs and Services Plan is a family DRAFT per Title 22; the director
+   completes and co-signs it with the family at the pre-admission interview, so the
+   ceremony confirms draft accuracy only (DRAFT stamp, no family signature, quiet
+   draft chip after confirm, never the gold seal). */
 :root {
   --paper: #FBF7EE; --paper-deep: #F0E9D8; --card: #FFFDF8;
   --ink: #1F2A2E; --ink-soft: #3F5359; --ink-mute: #6F7F84;
@@ -622,7 +626,22 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 
 /* ---- v6: real form documents (the confirm ceremony renders the actual form) ---- */
 .formdoc { background: #fff; border: 1px solid rgba(31,42,46,.18); border-radius: var(--radius);
-  box-shadow: var(--shadow-lift); overflow: hidden; margin-bottom: 4px; }
+  box-shadow: var(--shadow-lift); overflow: hidden; margin-bottom: 4px; position: relative; }
+/* ---- v8.2: NSP draft framing (Title 22: the director completes and co-signs the
+   plan WITH the family at the pre-admission interview; family confirm = draft
+   accuracy only). The stamp is monochrome document-gray, never brand color. ---- */
+.fddraft { position: absolute; top: 12px; right: 12px; z-index: 1; pointer-events: none;
+  font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 800;
+  letter-spacing: .32em; text-transform: uppercase; color: rgba(31,42,46,.32);
+  border: 2px solid rgba(31,42,46,.28); border-radius: 3px; padding: 4px 5px 4px 12px;
+  transform: rotate(-7deg); }
+.draftchip[hidden] { display: none !important; }
+.draftchip { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px;
+  font-weight: 700; letter-spacing: .02em; padding: 3px 10px; border-radius: 999px;
+  background: var(--paper-deep); color: var(--ink-soft);
+  border: 1px solid rgba(111,127,132,.35); vertical-align: middle; margin-left: 8px; }
+.st-draft { background: var(--paper-deep); color: var(--ink-soft);
+  border: 1px solid rgba(111,127,132,.35); }
 .fdstate { display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px 2px;
   font-size: 7.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
   color: var(--ink-mute); line-height: 1.5; }
@@ -942,7 +961,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <button class="ritem signlock" data-go="s-review" id="r-lic627"><span class="st st-question">?</span> LIC 627 · Medical consent <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-lic613"><span class="st st-question">?</span> LIC 613A · Personal rights <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-lic995"><span class="st st-question">?</span> LIC 995 · Parents' rights <span class="rsub">Sign</span></button>
-    <button class="ritem signlock" data-go="s-review" id="r-nsp"><span class="st st-question">?</span> Needs and services plan <span class="rsub">Sign</span></button>
+    <button class="ritem signlock" data-go="s-review" id="r-nsp"><span class="st st-question">?</span> Needs and services plan <span class="rsub">Confirm draft</span></button>
     <div class="rgroup"><span class="stepno">Step 7</span> Your doctor</div>
     <!-- v8 item 7: immunization sits ABOVE the doctor's report; it is the day-1 gate -->
     <button class="ritem" data-go="s-dash" id="r-imm"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Day 1</span></button>
@@ -1416,7 +1435,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">2/2 filled</span></div>
     </button>
     <button class="gendoc-anim docrow" style="animation-delay:.75s" id="g-nsp" onclick="goGate('s-review')">
-      <div class="rmain"><div class="rname">Needs and services plan</div><div class="rmeta">Your routines answers, on one page with room to read them</div></div>
+      <div class="rmain"><div class="rname">Needs and services plan</div><div class="rmeta">Your routines answers, drafted for your director interview</div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">24/24 filled</span></div>
     </button>
     </div>
@@ -1577,15 +1596,15 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Your paperwork
     </button>
-    <span class="kicker step-in">Review and confirm · <span id="revPos">1 of 5 forms</span></span>
+    <span class="kicker step-in">Review and confirm · <span id="revPos">1 of 5 forms</span><span class="draftchip" id="revDraftChip" hidden>Draft for your director interview</span></span>
     <h1 class="title step-in d1" style="font-size:26px">This is the real form, filled out for you.</h1>
     <p class="lede step-in d1" style="font-size:14.5px" id="revLede">Read it exactly as it will be filed.</p>
     <div class="step-in d2" id="formStage"></div>
     <div class="confirmbox step-in d3">
-      <div class="ctext">I have reviewed this document, the information on it is factually correct, and I authorize Growing Mindfully to use it for Theo's enrollment file.</div>
+      <div class="ctext" id="confirmText">I have reviewed this document, the information on it is factually correct, and I authorize Growing Mindfully to use it for Theo's enrollment file.</div>
     </div>
     <p class="legal step-in d3" id="reviewLegal">Confirming is recorded with a timestamp and the exact document you saw, like a signature.</p>
-    <p class="legal step-in d3" style="margin-top:2px">When you confirm, this exact information is filed onto the official state form.</p>
+    <p class="legal step-in d3" style="margin-top:2px" id="revFiledLine">When you confirm, this exact information is filed onto the official state form.</p>
   </div>
   <div class="actionbar">
     <div class="nextup" id="reviewNext">4 more forms after this one</div>
@@ -1619,7 +1638,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       </svg>
       <h1 class="title step-in d1" style="font-size:32px;margin-top:10px">That's all for now!</h1>
       <p class="finalecopy step-in d2">Please complete your doctor evaluation form no later than your second week of attendance (but earlier is fine, too!)</p>
-      <p class="lede step-in d3" style="font-size:14px">7 steps · 7 documents signed · 63 answers we typed for you.</p>
+      <p class="finalecopy step-in d2">Your director will complete Theo's needs and services plan with you before his first day.</p>
+      <p class="lede step-in d3" style="font-size:14px">7 steps · 6 documents signed · 1 draft confirmed · 63 answers we typed for you.</p>
       <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">We emailed you links to every completed document. They also live in your documents, always.</p>
       <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">Your signature certificate is in your documents.</p>
       <p class="hand step-in d3" style="font-size:19px;color:var(--sage-deep)">See you Monday, August 3.</p>
@@ -1674,7 +1694,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">2/2 filled</span></div>
     </button>
     <button class="docrow step-in d1" id="d-nsp" onclick="goGate('s-review')">
-      <div class="rmain"><div class="rname">Needs and services plan</div><div class="rmeta">Review and sign · about 1 min</div>
+      <div class="rmain"><div class="rname">Needs and services plan</div><div class="rmeta">Review your draft · about 1 min</div>
         <div class="rowactions"></div></div>
       <div class="cstat"><span class="st st-question">?</span><span class="cfields">24/24 filled</span></div>
     </button>
@@ -3733,7 +3753,11 @@ var DOCLIST = [
   { id: 'lic627', rail: 'r-lic627', gen: 'g-lic627', dash: 'd-lic627', doneLabel: 'Signed',    pend: '5/5 filled' },
   { id: 'lic613', rail: 'r-lic613', gen: 'g-lic613', dash: 'd-lic613', doneLabel: 'Signed',    pend: '2/2 filled' },
   { id: 'lic995', rail: 'r-lic995', gen: 'g-lic995', dash: 'd-lic995', doneLabel: 'Signed',    pend: '2/2 filled' },
-  { id: 'nsp',    rail: 'r-nsp',    gen: 'g-nsp',    dash: 'd-nsp',    doneLabel: 'Signed',    pend: '24/24 filled' }
+  /* v8.2: the NSP is a family DRAFT per Title 22; the director completes and
+     co-signs it with the family at the pre-admission interview. Confirming the
+     draft still counts as this document's completion (the family's part IS done). */
+  { id: 'nsp',    rail: 'r-nsp',    gen: 'g-nsp',    dash: 'd-nsp',    doneLabel: 'Draft confirmed',
+    doneMeta: 'Draft confirmed · director interview next', draft: true, pend: '24/24 filled' }
 ];
 var lic701Downloaded = false;
 /* v8.1: step 7 (your doctor) is demo-completable; each upload is half the step */
@@ -3743,6 +3767,8 @@ function doctorDone() { return doctorState.imm && doctorState.lic701; }
 var CHECK_SVG = '<span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
 var Q_SVG = '<span class="st st-question">?</span>';
 var LOCK_SVG = '<span class="st st-lock"><svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px"><path d="M4.5 7.5V5.5a3.5 3.5 0 117 0v2m-8 0h9v5a1.5 1.5 0 01-1.5 1.5h-6a1.5 1.5 0 01-1.5-1.5v-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
+/* v8.2: quiet pencil chip for a confirmed DRAFT; the gold seal never applies here */
+var DRAFT_SVG = '<span class="st st-draft"><svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px"><path d="M3.2 12.8l.6-2.6 6.6-6.6a1.1 1.1 0 011.6 0l.4.4a1.1 1.1 0 010 1.6l-6.6 6.6-2.6.6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>';
 
 function chaptersDone() { return chState.filter(function(c){ return c.finished; }).length; }
 function signLocked() { return chState.some(function(c){ return !c.finished; }); }
@@ -3965,7 +3991,7 @@ function renderState() {
   /* welcome next-up lines */
   var nxt = nextChapter();
   var nextText = nxt ? ('Next up: ' + nxt.name + ' · about ' + nxt.mins + ' min')
-    : (allDocsDone() ? 'Everything is signed.' : 'Next up: review and sign your documents');
+    : (allDocsDone() ? 'Everything is signed or confirmed.' : 'Next up: review and sign your documents');
   var wn = document.getElementById('welcomeNext');
   if (wn) wn.textContent = nextText;
   var hm = document.getElementById('hmetaNext');
@@ -3986,10 +4012,11 @@ function renderDocs() {
       var el = document.getElementById(d[kind]);
       if (!el) return;
       if (done) {
-        if (el.querySelector('.st-question') || el.querySelector('.st-lock')) el.querySelector('.st').outerHTML = CHECK_SVG;
-        var sub = el.querySelector('.rsub'); if (sub) sub.textContent = 'Jul 12';
+        /* v8.2: a confirmed draft gets the quiet pencil chip, never the check or seal */
+        if (el.querySelector('.st-question') || el.querySelector('.st-lock')) el.querySelector('.st').outerHTML = d.draft ? DRAFT_SVG : CHECK_SVG;
+        var sub = el.querySelector('.rsub'); if (sub) sub.textContent = d.draft ? 'Draft confirmed' : 'Jul 12';
         var cf = el.querySelector('.cfields'); if (cf) cf.textContent = d.doneLabel;
-        var meta = el.querySelector('.rmeta'); if (meta) meta.textContent = d.doneLabel + ' ' + TODAY;
+        var meta = el.querySelector('.rmeta'); if (meta) meta.textContent = d.doneMeta || (d.doneLabel + ' ' + TODAY);
         var acts = el.querySelector('.rowactions');
         if (acts && !acts.dataset.done) {
           acts.dataset.done = '1';
@@ -4870,12 +4897,15 @@ var FORMS = [
         '<div class="fdtext" style="border-top:0">I, the parent/authorized representative of <span class="fdunder">Theo Alvarez</span>, have received a copy of the &quot;CHILD CARE CENTER NOTIFICATION OF PARENTS\' RIGHTS&quot; and the CAREGIVER BACKGROUND CHECK PROCESS form from the licensee.<br><br>' +
         '<div style="text-align:center"><span class="fdunder" style="min-width:280px;text-align:center">Growing Mindfully (Present Pathways, Inc.)</span><br><span style="font-size:6.5px">NAME OF CHILD CARE CENTER</span></div></div>';
     } },
-  { id: 'nsp', foot: 'GROWING MINDFULLY · NEEDS AND SERVICES PLAN · REFRESHED QUARTERLY', pagesTotal: 1,
+  /* v8.2 (Title 22): the family produces a DRAFT only. The director completes and
+     co-signs the plan WITH the family at the pre-admission interview, before day 1;
+     no family signature is captured here, and the draft never presents as final. */
+  { id: 'nsp', foot: 'GROWING MINDFULLY · NEEDS AND SERVICES PLAN · DRAFT · COMPLETED AT YOUR DIRECTOR INTERVIEW', pagesTotal: 1,
     name: 'Needs and Services Plan',
     hdr: '<div class="fdstate"><span>GROWING MINDFULLY (PRESENT PATHWAYS, INC.)</span><span>750 N STREET, SACRAMENTO, CA 95814</span></div>',
     head: '<div class="fdhead"><div class="fdmaintitle">NEEDS AND SERVICES PLAN' +
-      '<span class="t2 mixed" style="font-size:9.5px;font-weight:400">Daily routine, filled from your answers, with room to actually read them</span></div></div>',
-    sig: true, sigLabel: "PARENT'S SIGNATURE",
+      '<span class="t2 mixed" style="font-size:9.5px;font-weight:400">Daily routine, drafted from your answers; you and your director finish it together</span></div></div>',
+    sig: false, draft: true, sigLabel: "PARENT'S SIGNATURE",
     body: function() {
       return fdrow([{l:"CHILD'S NAME", v:'Theo Alvarez', flex:2},{l:'DATE', v:'July 12, 2026'}]) +
         fdrow([{l:'PARENT NAME', v:'Maria Alvarez', flex:2},{l:'CELL', v:'(916) 555-0134'}]) +
@@ -4907,17 +4937,22 @@ function formDocHTML(f, signed) {
   var h = '';
   pages.forEach(function(pg, i) {
     var last = (i === pages.length - 1);
-    h += '<div class="formdoc">' + f.hdr + (i === 0 ? f.head : '') + pg;
-    if (f.sig && last) {
+    /* v8.2: a draft form carries a monochrome DRAFT stamp inside every page frame */
+    h += '<div class="formdoc">' + (f.draft ? '<div class="fddraft" aria-hidden="true">Draft</div>' : '') + f.hdr + (i === 0 ? f.head : '') + pg;
+    if ((f.sig || f.draft) && last) {
       h += '<div class="fdsig"><div class="sigcol">' +
-        (signed
-          ? '<span class="slot filled" style="min-width:190px">' + sigName + '</span>'
-          : '<button class="slot" id="revSlot" onclick="revSign(this)" style="min-width:190px">Tap to sign</button>') +
-        '<span class="siglab">' + (f.sigLabel || 'SIGNATURE OF PARENT/GUARDIAN OR AUTHORIZED REPRESENTATIVE') + '</span></div>';
+        (f.draft
+          /* v8.2: the signature line stays EMPTY on a draft, even after confirm;
+             it is signed with the director at the interview, never in this flow */
+          ? '<span class="datefill" style="min-width:190px"></span>'
+          : (signed
+            ? '<span class="slot filled" style="min-width:190px">' + sigName + '</span>'
+            : '<button class="slot" id="revSlot" onclick="revSign(this)" style="min-width:190px">Tap to sign</button>')) +
+        '<span class="siglab">' + (f.sigLabel || 'SIGNATURE OF PARENT/GUARDIAN OR AUTHORIZED REPRESENTATIVE') + (f.draft ? ' · SIGNED WITH YOUR DIRECTOR AT THE INTERVIEW' : '') + '</span></div>';
       (f.extraSig || []).forEach(function(x) {
         h += '<div class="sigcol"><span class="datefill">' + (x.v || '') + '</span><span class="siglab">' + x.l + '</span></div>';
       });
-      h += '<div class="sigcol"><span class="datefill" id="revDate">' + (signed ? TODAY : '') + '</span><span class="siglab">DATE</span></div></div>';
+      h += '<div class="sigcol"><span class="datefill" id="revDate">' + (!f.draft && signed ? TODAY : '') + '</span><span class="siglab">DATE</span></div></div>';
     }
     if (f.after && last) h += f.after();
     h += '<div class="fdfoot"><span>' + f.foot + '</span><span>' +
@@ -4937,17 +4972,31 @@ function renderForm() {
   var railRow = document.getElementById('r-' + f.id);
   if (railRow) railRow.classList.add('on');
   document.getElementById('revPos').textContent = (FORMS.length - pending.length + 1) + ' of ' + FORMS.length + ' forms';
-  document.getElementById('revLede').textContent = f.sig
+  /* v8.2: a DRAFT form (the NSP) reads as draft accuracy, never sign-as-final */
+  document.getElementById('revDraftChip').hidden = !f.draft;
+  document.getElementById('revLede').textContent = f.draft
+    ? 'Read your draft exactly as your director will see it. You and your director complete and sign the final plan together at your interview, before Theo\'s first day.'
+    : (f.sig
     ? 'Read it exactly as it will be filed. It needs your signature at the bottom, then your confirmation.'
-    : 'Read it exactly as it will be filed. No signature on this one; it just needs your confirmation.';
+    : 'Read it exactly as it will be filed. No signature on this one; it just needs your confirmation.');
   document.getElementById('formStage').innerHTML = formDocHTML(f, false);
+  document.getElementById('confirmText').textContent = f.draft
+    ? 'I have reviewed this draft and the information on it is accurate. I will complete and sign the final plan with the director at our pre-admission interview.'
+    : 'I have reviewed this document, the information on it is factually correct, and I authorize Growing Mindfully to use it for Theo\'s enrollment file.';
   var btn = document.getElementById('confirmBtn');
-  btn.textContent = f.sig ? 'Sign and confirm' : 'Confirm and authorize';
+  btn.textContent = f.draft ? 'This draft is accurate. I will complete it with the director.' : (f.sig ? 'Sign and confirm' : 'Confirm and authorize');
   btn.disabled = !!f.sig;
-  document.getElementById('reviewNext').textContent = f.sig
+  document.getElementById('reviewNext').textContent = f.draft
+    ? 'Your part takes a minute · your director finishes this plan with you'
+    : (f.sig
     ? 'Tap the gold signature line first'
-    : (pending.length - 1) + (pending.length - 1 === 1 ? ' more form' : ' more forms') + ' after this one';
-  document.getElementById('reviewLegal').textContent = 'Confirming is recorded with a timestamp and the exact document you saw, like a signature.';
+    : (pending.length - 1) + (pending.length - 1 === 1 ? ' more form' : ' more forms') + ' after this one');
+  document.getElementById('reviewLegal').textContent = f.draft
+    ? 'Confirming records this draft with a timestamp. It is not filed and it is not final.'
+    : 'Confirming is recorded with a timestamp and the exact document you saw, like a signature.';
+  document.getElementById('revFiledLine').textContent = f.draft
+    ? 'Your director completes and co-signs this plan with you at your interview, before Theo\'s first day.'
+    : 'When you confirm, this exact information is filed onto the official state form.';
 }
 function revSign(el) {
   if (revSigned) return;
@@ -5009,8 +5058,9 @@ function printDocHTML(title, bodyHtml) {
     '.sheet{max-width:7.6in;margin:0 auto}' +
     '.printbar{display:flex;justify-content:flex-end;margin-bottom:14px}' +
     '.printbtn{border:1.5px solid #3D8189;background:#fff;color:#3D8189;border-radius:6px;font:700 13px Manrope,Arial,sans-serif;padding:9px 16px;cursor:pointer}' +
-    '.formdoc{border:1px solid #111;font-family:Arial,Helvetica,sans-serif;color:#111}' +
+    '.formdoc{border:1px solid #111;font-family:Arial,Helvetica,sans-serif;color:#111;position:relative}' +
     '.formdoc + .formdoc{margin-top:18px}' +
+    '.fddraft{position:absolute;top:12px;right:12px;z-index:1;pointer-events:none;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:800;letter-spacing:.32em;text-transform:uppercase;color:rgba(17,17,17,.32);border:2px solid rgba(17,17,17,.28);border-radius:3px;padding:4px 5px 4px 12px;transform:rotate(-7deg)}' +
     '.fdstate{display:flex;justify-content:space-between;gap:10px;padding:8px 12px 4px;font-size:6.5px;letter-spacing:.04em;text-transform:uppercase;color:#111;line-height:1.5}' +
     '.fdstate span:last-child{text-align:right}' +
     '.fdstate.modern{font-size:9px;text-transform:none;letter-spacing:0;border-bottom:2px solid #111;padding-bottom:4px}' +
@@ -5143,7 +5193,10 @@ function certDocHTML() {
   var count = 1;
   DOCLIST.forEach(function(d) {
     if (docState[d.id]) {
-      rows += '<tr><td>' + CERT_NAMES[d.id] + '</td><td>Jul 12</td><td class="mono">' + CERT_SHAS[d.id] + '</td></tr>';
+      /* v8.2: the NSP is a confirmed DRAFT, never certified as signed; the final
+         plan is co-signed with the director at the pre-admission interview */
+      rows += '<tr><td>' + CERT_NAMES[d.id] + (d.draft ? ' (draft)' : '') + '</td><td>' +
+        (d.draft ? 'Jul 12 · draft confirmed' : 'Jul 12') + '</td><td class="mono">' + CERT_SHAS[d.id] + '</td></tr>';
       count++;
     }
   });
