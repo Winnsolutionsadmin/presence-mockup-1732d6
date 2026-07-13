@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.9 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.10 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -79,6 +79,10 @@ button { font-family: var(--sans); cursor: pointer; }
 .st-check { background: var(--sage-deep); color: #fff; }
 .st-question { background: var(--paper-deep); color: var(--ink-mute);
   border: 1px solid rgba(111,127,132,.35); }
+/* v8.10 (Jarred): a bare "?" reads as an error. Pending documents show their
+   number instead; "?" is reserved for a genuine issue. Numbered chip is calm teal. */
+.st-num { background: rgba(95,174,182,.14); color: var(--teal-deep);
+  border: 1px solid rgba(61,129,137,.34); font: 700 11px var(--sans); }
 .st-bang { background: rgba(201,168,106,.25); color: #8A6E38; border: 1px solid rgba(201,168,106,.5); }
 .st-wait { background: rgba(122,168,196,.18); color: var(--dusty-deep); border: 1px solid rgba(122,168,196,.4); }
 .st-x { background: rgba(191,106,74,.15); color: var(--earth); border: 1px solid rgba(191,106,74,.4); }
@@ -783,6 +787,24 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .ontrack .otline { font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 600;
   color: var(--sage-deep); letter-spacing: -.01em; }
 .ontrack .otsub { font-size: 13px; color: var(--ink-soft); line-height: 1.55; margin-top: 2px; }
+/* v8.10 (Jarred): the done-vs-to-do counter bar on the dashboard */
+.dashsummary { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center;
+  border-radius: 6px; padding: 10px 14px; margin: 2px 0 12px; font-size: 13.5px; }
+.dashsummary:empty { display: none; }
+.dashsummary.todo { background: rgba(201,168,106,.12); border: 1px solid rgba(201,168,106,.4); }
+.dashsummary.done { background: rgba(155,185,158,.18); border: 1px solid rgba(111,143,112,.38); }
+.dashsummary .dschk { color: var(--ink-soft); }
+.dashsummary .dschk strong { color: var(--sage-deep); }
+.dashsummary .dstodo { color: #8A6E38; }
+.dashsummary .dstodo strong { color: #7A5E28; }
+/* v8.10 (Jarred): immunization attestation-initial */
+.imsattest { display: flex; align-items: center; gap: 9px; margin-top: 9px; font-size: 12.5px;
+  color: var(--ink-soft); line-height: 1.4; }
+.imsinit { font: 700 12px var(--sans); color: var(--teal-deep); background: rgba(95,174,182,.14);
+  border: 1.5px dashed rgba(61,129,137,.5); border-radius: 5px; padding: 3px 13px; cursor: pointer;
+  letter-spacing: .04em; flex-shrink: 0; }
+.imsinit.done { font-family: var(--hand); font-size: 18px; letter-spacing: 0; border-style: solid;
+  border-color: transparent; background: transparent; color: var(--ink); padding: 0 4px; cursor: default; }
 .healthgroup { margin-bottom: 18px; }
 .healthgroup .grouplabel { margin-top: 0; }
 /* v8.7 item 1: single column on phones (a 390px viewport gives ~140px per
@@ -1794,6 +1816,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="otsub" id="onTrackSub">Nothing here needs you. Your directors get everything to print, file, and confirm; a copy is saved to your records.</div>
       </div>
     </div>
+    <!-- v8.10 (Jarred): an at-a-glance done-vs-to-do summary with counts; painted by dashSummary() -->
+    <div class="dashsummary step-in d1" id="dashSummary"></div>
     <p class="lede step-in d1" style="font-size:14.5px;margin-bottom:14px">Every required document, and where it stands. Anything finished opens to view, and downloads beside it.</p>
 
     <div class="docgroups">
@@ -1868,6 +1892,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           </span>
         </div>
         <div class="rmeta">California requires it on file before Theo's first morning. A photo of the record from your doctor or patient portal.</div>
+        <!-- v8.10 (Jarred): a parent attestation-initial on the immunization, for legal protection -->
+        <div class="imsattest" id="imsAttest">
+          <button class="imsinit" id="imsInitBtn" type="button" onclick="imsInitial();event.stopPropagation()">Initial</button>
+          <span class="imsattx">I confirm this is Theo's current, complete immunization record.</span>
+        </div>
       </div>
       <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="markUploaded('imm')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
@@ -4281,7 +4310,7 @@ function renderDocs() {
       if (!el) return;
       if (done) {
         /* v8.2: a confirmed draft gets the quiet pencil chip, never the check or seal */
-        if (el.querySelector('.st-question') || el.querySelector('.st-lock')) el.querySelector('.st').outerHTML = d.draft ? DRAFT_SVG : CHECK_SVG;
+        if (el.querySelector('.st-question') || el.querySelector('.st-lock') || el.querySelector('.st-num')) el.querySelector('.st').outerHTML = d.draft ? DRAFT_SVG : CHECK_SVG;
         var sub = el.querySelector('.rsub'); if (sub) sub.textContent = d.draft ? 'Draft confirmed' : 'Jul 12';
         var cf = el.querySelector('.cfields'); if (cf) cf.textContent = d.doneLabel;
         var meta = el.querySelector('.rmeta'); if (meta) meta.textContent = d.doneMeta || (d.doneLabel + ' ' + TODAY);
@@ -4309,6 +4338,42 @@ function renderDocs() {
     if (os) os.textContent = doctorDone()
       ? 'Nothing needs you. Your directors get everything to print, file, and confirm; a copy is saved to your records.'
       : 'All your signing is done, and nothing is blocked. Your directors get everything to print, file, and confirm; a copy is saved to your records. Only the doctor items remain.';
+  }
+  numberBadges();
+  dashSummary();
+}
+
+/* v8.10 (Jarred): document status circles show the document's NUMBER while pending,
+   not a bare "?" (which read as an error). Signed items already carry the check;
+   a genuine issue would still use st-question. Numbers are stable and per-document. */
+function numberBadges() {
+  DOCLIST.forEach(function(d, i) {
+    ['rail', 'gen', 'dash'].forEach(function(kind) {
+      var el = document.getElementById(d[kind]);
+      if (!el) return;
+      var q = el.querySelector('.st-question');
+      if (q) { q.textContent = (i + 1); q.classList.remove('st-question'); q.classList.add('st-num'); }
+    });
+  });
+}
+
+/* v8.10 (Jarred): the dashboard states plainly what is done vs what still needs the
+   family, with counts, so "complete vs to-do" is unmistakable at a glance. */
+function dashSummary() {
+  var el = document.getElementById('dashSummary');
+  if (!el) return;
+  var docsDone = DOCLIST.filter(function(d){ return docState[d.id]; }).length;
+  var todo = [];
+  if (!doctorState.imm) todo.push('immunization photo');
+  if (!doctorState.lic701) todo.push("doctor's report");
+  var doneTxt = '<strong>' + docsDone + ' of ' + DOCLIST.length + '</strong> documents signed and confirmed';
+  if (todo.length) {
+    el.className = 'dashsummary todo step-in d1';
+    el.innerHTML = '<span class="dschk">' + doneTxt + '</span>' +
+      '<span class="dstodo"><strong>Still needs you:</strong> ' + todo.join(', ') + '</span>';
+  } else {
+    el.className = 'dashsummary done step-in d1';
+    el.innerHTML = '<span class="dschk">' + doneTxt + ' &middot; nothing else needs you</span>';
   }
 }
 
@@ -4524,6 +4589,26 @@ function markUploaded(key) {
   renderState();
 }
 
+/* v8.10 (Jarred): the immunization attestation-initial. The parent taps to confirm the
+   uploaded record is current and complete - a protective, timestamped acknowledgment.
+   Plays the agreed initial chime and stamps the family's initials on the line. */
+var imsInitialed = false;
+function imsInitial() {
+  if (imsInitialed) return;
+  imsInitialed = true;
+  chimeInitial();
+  var b = document.getElementById('imsInitBtn');
+  if (b) {
+    var parts = (sigName || 'Maria Alvarez').trim().split(/\s+/);
+    var ini = (parts[0] || 'M').charAt(0) + (parts[parts.length - 1] || 'A').charAt(0);
+    b.textContent = ini.toUpperCase();
+    b.classList.add('done');
+    try { burstFromEl(b); } catch (e) {}
+  }
+  var tx = document.querySelector('#imsAttest .imsattx');
+  if (tx) tx.textContent = 'Confirmed - this is Theo\'s current, complete immunization record.';
+}
+
 /* ---- fields ---- */
 function toggleEdit(rowId, btn) {
   var row = document.getElementById(rowId);
@@ -4709,6 +4794,26 @@ function chimeVictory() {
 }
 /* v8.6 item 2: toggleAudio, buildSoundMenu, toggleSoundMenu, and setSoundVoice are
    removed with their buttons. Audio has no off switch and no voice selector. */
+
+/* v8.10 (Jarred): the audio was wired but the first chime was getting dropped -
+   an AudioContext created lazily inside a click starts suspended, and its resume()
+   is async, so the first scheduled tone (initial/sign) fired before the context was
+   running and was silently swallowed by the browser autoplay policy. This primes and
+   resumes the context on the very first user gesture anywhere, and plays one inaudible
+   tick to fully unlock it (iOS Safari needs the silent buffer). After this, every
+   agreed chime - initial, sign, ascension, victory - plays reliably. */
+function primeAudio() {
+  try {
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    var b = actx.createBuffer(1, 1, 22050);
+    var s = actx.createBufferSource();
+    s.buffer = b; s.connect(actx.destination); s.start(0);
+  } catch (e) { console.debug('Presence mockup: audio prime unavailable.', e); }
+}
+['pointerdown', 'touchstart', 'keydown'].forEach(function(ev) {
+  window.addEventListener(ev, primeAudio, { once: true, passive: true });
+});
 
 /* ---- v8 item 1: the completed chapters render EVERY saved entry as a real,
    locked field. Built from data so the count is the count. ---- */
@@ -5736,7 +5841,7 @@ function fillNode(e) {
     el = document.createElement('span');
     el.className = 'fillval' + (e.wrap ? ' wrap' : '');
     el.textContent = e.v || '';
-    var size = e.s || 8.5;
+    var size = e.s || 9.6; /* v8.10 (Jarred): larger, more legible entry text; long values still shrink-to-fit below */
     /* long values shrink to their field width, like pdf-lib auto-size does */
     var est = (e.v || '').length * size * 0.52;
     if (!e.wrap && est > e.w) size = Math.max(6, size * e.w / est);
