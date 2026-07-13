@@ -4238,11 +4238,11 @@ function go(id) {
   if (id === 's-review') renderForm();
   if (id === 's-finale') {
     /* v8.4 item 7: rebuild the real teal lotus so the bloom replays on every entry.
-       v8.3 rule holds: the finale is visual only; sound belongs to signatures
-       (the ascension already played on Finish signing). */
+       v8.8: the finale plays the VICTORY sound (Jarred) as the lotus blooms. */
     var fl = document.getElementById('finaleLotus');
     if (fl) fl.innerHTML = LOTUS_CHECK_MORPH;
     spawnConfetti();
+    try { chimeVictory(); } catch (e) { console.debug('victory sound unavailable', e); }
   }
   var chHere = chState.filter(function(c){ return c.screen === id; })[0];
   if (chHere && chHere.finished) applyChapterLock(t);
@@ -4568,6 +4568,17 @@ function chimeAscension() {
     var last = i === run.length - 1;
     bell(f, (last ? 2.6 : 0.9) * Math.max(v.durMul, .55), last ? 0.055 : 0.032, i * 0.15, v);
   });
+}
+/* v8.8 (Jarred): the finale victory sound. The full rising-chime ascension, then a
+   sustained major triad (C6 E6 G6) that blooms with the lotus. Plays once on finale entry. */
+function chimeVictory() {
+  var v = soundVoiceDef();
+  var run = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
+  run.forEach(function(f, i) { bell(f, 0.85 * Math.max(v.durMul, .55), 0.03, i * 0.135, v); });
+  var t = run.length * 0.135 + 0.04;
+  bell(1046.5, 3.0, 0.05, t, v);          /* C6 */
+  bell(1318.51, 3.0, 0.035, t + 0.03, v); /* E6 */
+  bell(1567.98, 3.0, 0.03, t + 0.06, v);  /* G6 - the resolve chord */
 }
 /* v8.6 item 2: toggleAudio, buildSoundMenu, toggleSoundMenu, and setSoundVoice are
    removed with their buttons. Audio has no off switch and no voice selector. */
