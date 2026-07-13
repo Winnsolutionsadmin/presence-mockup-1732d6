@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.3 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.4 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -23,7 +23,16 @@
    v8.2: the Needs and Services Plan is a family DRAFT per Title 22; the director
    completes and co-signs it with the family at the pre-admission interview, so the
    ceremony confirms draft accuracy only (DRAFT stamp, no family signature, quiet
-   draft chip after confirm, never the gold seal). */
+   draft chip after confirm, never the gold seal).
+   v8.4: the finale bloom is the REAL secure-your-space teal lotus (ported verbatim
+   from public/overlay/overlay.js; 5 outer + 5 inner petals, checkmark from center);
+   every CDSS download serves the NATIVE fillable PDF (public/docs/cdss-native/);
+   a petal burst flies from the exact point each signature/initial lands (the
+   accuracy checkboxes are gone); a sound selector offers four placement voices
+   (rising chime, xylophone up/down, soft bell) and Finish signing plays a rising
+   ascension in the chosen voice; the CTA anchors to the content column's left edge
+   at every desktop width; the handbook download appears only once fully signed and
+   serves the live signed copy; the NSP status chip aligns with the check column. */
 :root {
   --paper: #FBF7EE; --paper-deep: #F0E9D8; --card: #FFFDF8;
   --ink: #1F2A2E; --ink-soft: #3F5359; --ink-mute: #6F7F84;
@@ -394,8 +403,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .docrow .rmeta { font-size: 12px; color: var(--ink-mute); margin-top: 1px; }
 .docrow .raction { background: none; border: 0; padding: 3px 0 0; font-size: 12.5px;
   font-weight: 700; color: var(--teal-deep); display: block; text-align: left; }
+/* v8.4 item 8: fixed-width status column so every row's icon sits on the SAME axis;
+   a wide label (Draft confirmed) overhangs the column symmetrically instead of
+   pushing its icon out of line with the checks above it. */
 .docrow .cstat { display: flex; flex-direction: column; align-items: center; gap: 3px;
-  flex-shrink: 0; min-width: 58px; }
+  flex-shrink: 0; width: 58px; min-width: 58px; }
 .docrow .cfields { font-size: 10.5px; font-weight: 600; color: var(--ink-mute); white-space: nowrap; }
 .docrow.doctor { border-left: 3px solid var(--blush); }
 .docrow.certrow { border-left: 3px solid var(--gold); }
@@ -468,9 +480,17 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   .body { max-width: 680px; padding: 36px 32px 8px; margin: 0 auto; }
   .actionbar { position: static; transform: none; max-width: 680px; margin: 0 auto;
     padding: 28px 32px 0; background: none; }
-  .actionbar .cta { max-width: 460px; margin: 0 auto; }
-  .actionbar .quietlink { max-width: 460px; margin: 10px auto 0; }
-  .nextup { text-align: center; }
+  /* v8.4 item 2: the CTA anchors to the CONTENT COLUMN's left edge at every desktop
+     width (it was centered in the pane, so it drifted relative to the left-aligned
+     content as the window resized). Screens with narrower centered columns match
+     their action column to the body column below; the finale, whose content is
+     centered, keeps a centered CTA. */
+  .actionbar .cta { max-width: 460px; margin: 0; }
+  .actionbar .quietlink { max-width: 460px; margin: 10px 0 0; text-align: left; }
+  .nextup { text-align: left; }
+  #s-consent .actionbar { max-width: 620px; }
+  #s-review .actionbar { max-width: 760px; }
+  #s-finale .actionbar .cta { margin: 0 auto; }
   .hidedesk { display: none; }
   /* header band: same headline + meta card at every tier; the big garden is mobile's */
   .hband .mobonly { display: none; }
@@ -678,6 +698,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .hbframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; flex: 1; }
 .hbtools { display: flex; align-items: center; justify-content: space-between; gap: 10px;
   margin-top: 10px; flex-wrap: wrap; }
+/* v8.4 item 5: the Next button holds the toolbar's right edge while the download is
+   hidden, and leaves entirely once every slot is placed (the download takes over).
+   The explicit [hidden] rules matter: both buttons carry their own display values. */
+.hbtools .nextsig { margin-left: auto; }
+.nextsig[hidden], .pagerbtn[hidden] { display: none !important; }
 .nextsig { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--gold);
   background: rgba(201,168,106,.1); border-radius: var(--radius); color: #8A6E38;
   font-size: 13.5px; font-weight: 700; padding: 10px 18px; }
@@ -769,6 +794,108 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   8% { opacity: .9; }
   100% { transform: translateY(108vh) rotate(var(--spin)); opacity: .75; }
 }
+
+/* ---- v8.4 item 3: a small petal burst FROM the exact point a signature or initial
+   lands. The finale's particle style, scaled down and localized to the slot. ---- */
+.slotburst { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 95; pointer-events: none; }
+.slotburst .bpiece { position: absolute; left: 0; top: 0; margin: -6px 0 0 -6px;
+  will-change: transform, opacity; animation: bfly var(--t) cubic-bezier(.16,.6,.34,1) var(--dl) both; }
+@keyframes bfly {
+  0% { transform: translate(0,0) rotate(0deg) scale(.4); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--spin)) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .slotburst { display: none; } }
+
+/* ---- v8.4 item 7: the finale bloom is the REAL secure-your-space lotus, ported
+   VERBATIM from public/overlay/overlay.js (the marketing site's second-section
+   bloom): 5 outer + 5 inner petals, teal radial gradient, gently spins open,
+   folds back to the core, then the check draws FROM the center. Jarred has asked
+   repeatedly to match the website bloom; do NOT change the petal count. ---- */
+.finalewrap .gmwl-cm { width: 120px; height: 120px; }
+.gmwl-cm { position: relative; width: 96px; height: 96px; margin: 6px auto 16px; }
+.gmwl-cm-lotus, .gmwl-cm-check { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gmwl-cm-lotus { transform-origin: 50% 50%; animation: gmwlCmSpin 4.4s cubic-bezier(.4,0,.2,1) forwards; }
+@keyframes gmwlCmSpin {
+  0%   { transform: rotate(-10deg) scale(.84); }
+  12%  { transform: rotate(8deg)   scale(1.05); }
+  18%  { transform: rotate(16deg)  scale(1); }
+  40%  { transform: rotate(98deg)  scale(1.03); }
+  60%  { transform: rotate(174deg) scale(1); }
+  78%  { transform: rotate(198deg) scale(.9); }
+  100% { transform: rotate(206deg) scale(.88); }
+}
+.gmwl-cm-petal { fill: url(#gmwlCmGrad); transform-origin: 0 0;
+  animation: gmwlCmPetal 4.4s cubic-bezier(.33,0,.2,1) forwards; }
+.gmwl-cm-petal-inner { fill: url(#gmwlCmGradInner); opacity: .9; transform-origin: 0 0;
+  animation: gmwlCmPetalIn 4.4s cubic-bezier(.33,0,.2,1) forwards; }
+.gmwl-cm-bud { transform-origin: 0 0; transform: scale(0); opacity: 0;
+  animation: gmwlCmBud 4.4s ease-out forwards; }
+@keyframes gmwlCmPetal {
+  0%   { transform: rotate(var(--r)) scale(0);    opacity: 0; }
+  11%  { transform: rotate(var(--r)) scale(1.05); opacity: 1; }
+  16%  { transform: rotate(var(--r)) scale(1);    opacity: 1; }
+  60%  { transform: rotate(var(--r)) scale(1);    opacity: 1; }
+  79%  { transform: rotate(var(--r)) scale(.05);  opacity: .35; }
+  100% { transform: rotate(var(--r)) scale(0);    opacity: 0; }
+}
+@keyframes gmwlCmPetalIn {
+  0%   { transform: rotate(var(--r)) scale(0);    opacity: 0; }
+  13%  { transform: rotate(var(--r)) scale(1.03); opacity: .92; }
+  16%  { transform: rotate(var(--r)) scale(1);    opacity: .9; }
+  60%  { transform: rotate(var(--r)) scale(1);    opacity: .9; }
+  79%  { transform: rotate(var(--r)) scale(.04);  opacity: .3; }
+  100% { transform: rotate(var(--r)) scale(0);    opacity: 0; }
+}
+@keyframes gmwlCmBud {
+  0%, 8% { transform: scale(0);   opacity: 0; }
+  16%    { transform: scale(1);   opacity: 1; }
+  72%    { transform: scale(1.1); opacity: 1; }
+  84%    { transform: scale(.18); opacity: 0; }
+  100%   { transform: scale(.18); opacity: 0; }
+}
+.gmwl-cm-core { transform-origin: 0 0; animation: gmwlCmCoreOut 4.4s ease-in forwards; }
+@keyframes gmwlCmCoreOut {
+  0%, 70% { transform: scale(1);   opacity: 1; }
+  82%     { transform: scale(.1);  opacity: 0; }
+  100%    { transform: scale(.1);  opacity: 0; }
+}
+.gmwl-cm-check { opacity: 1; }
+.gmwl-cm-tick {
+  stroke: #2a4231; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 42; stroke-dashoffset: 42; transform-origin: 26px 26px;
+  animation: gmwlCmTick .6s cubic-bezier(.2,.7,.2,1) 3.5s forwards;
+}
+@keyframes gmwlCmTick {
+  0%   { stroke-dashoffset: 42; transform: scale(.2); }
+  100% { stroke-dashoffset: 0; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gmwl-cm-lotus { animation: none; transform: scale(.9); }
+  .gmwl-cm-petal, .gmwl-cm-petal-inner { animation: none; opacity: 0; transform: rotate(var(--r)) scale(0); }
+  .gmwl-cm-bud { animation: none; opacity: 0; transform: scale(.18); }
+  .gmwl-cm-core { animation: none; opacity: 0; transform: scale(.1); }
+  .gmwl-cm-tick { animation: none; stroke-dashoffset: 0; transform: scale(1); }
+}
+
+/* ---- v8.4 item 4: the sound-options menu. A quiet popover off the audio toggle:
+   four placement voices, selection previews and persists (localStorage). ---- */
+.sndmenu { position: fixed; z-index: 120; background: var(--card);
+  border: 1px solid rgba(31,42,46,.12); border-radius: var(--radius);
+  box-shadow: var(--shadow-lift); padding: 6px; min-width: 196px; display: none; }
+.sndmenu.on { display: block; }
+.sndmenu .smtitle { font-size: 10px; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-mute); padding: 6px 10px 4px; }
+.sndmenu .smopt { display: flex; align-items: center; gap: 9px; width: 100%;
+  background: none; border: 0; border-radius: var(--radius); padding: 8px 10px;
+  font-size: 13px; font-weight: 600; color: var(--ink-soft); text-align: left; }
+.sndmenu .smopt:hover { background: var(--paper-deep); }
+.sndmenu .smopt .smdot { width: 15px; height: 15px; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid rgba(111,127,132,.45); display: inline-grid; place-items: center; }
+.sndmenu .smopt[aria-checked="true"] { color: var(--ink); }
+.sndmenu .smopt[aria-checked="true"] .smdot { border-color: var(--sage-deep); }
+.sndmenu .smopt[aria-checked="true"] .smdot::after { content: ""; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--sage-deep); }
 
 /* ---- v8 item 1: completed-chapter review · full field view, locked, unlock to edit ---- */
 .lockwrap { position: relative; }
@@ -978,9 +1105,12 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </button>
   </nav>
   <div class="railfoot">Questions? A director answers same day.<br>hello@growingmindfully.org
-    <button class="audiotog" onclick="toggleAudio(this)" aria-pressed="true" title="Sounds on">
+    <!-- v8.4 item 1: icon only, no label. v8.4 item 4: the note opens the voice menu. -->
+    <button class="audiotog" onclick="toggleAudio(this)" aria-pressed="true" aria-label="Sound" title="Turn sound off">
       <svg viewBox="0 0 16 16" fill="none" class="aud-on"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6H2.5z" fill="currentColor"/><path d="M10.5 5.5a3.4 3.4 0 010 5M12 3.8a5.8 5.8 0 010 8.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      <span class="audlbl">Sounds on</span>
+    </button>
+    <button class="audiotog sndopts" onclick="toggleSoundMenu(this)" aria-haspopup="true" aria-label="Signature sound options" title="Signature sound options">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M6 12.5V4l6-1.5V11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4.4" cy="12.6" r="1.7" fill="currentColor"/><circle cx="10.4" cy="11.1" r="1.7" fill="currentColor"/></svg>
     </button>
   </div>
 </aside>
@@ -994,8 +1124,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <img class="word" src="data:image/png;base64,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" alt="Growing Mindfully">
   </span>
   <span style="display:inline-flex;align-items:center;gap:2px">
-    <button class="audiotog" onclick="toggleAudio(this)" aria-pressed="true" title="Sounds on">
+    <button class="audiotog" onclick="toggleAudio(this)" aria-pressed="true" aria-label="Sound" title="Turn sound off">
       <svg viewBox="0 0 16 16" fill="none"><path d="M2.5 6v4h2.6L8.5 13V3L5.1 6H2.5z" fill="currentColor"/><path d="M10.5 5.5a3.4 3.4 0 010 5M12 3.8a5.8 5.8 0 010 8.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <button class="audiotog sndopts" onclick="toggleSoundMenu(this)" aria-haspopup="true" aria-label="Signature sound options" title="Signature sound options">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M6 12.5V4l6-1.5V11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4.4" cy="12.6" r="1.7" fill="currentColor"/><circle cx="10.4" cy="11.1" r="1.7" fill="currentColor"/></svg>
     </button>
     <span class="appname"><span class="over">Presence</span><br>Portal</span>
   </span>
@@ -1504,9 +1637,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="pagefoot"><span>Growing Mindfully · Parent Handbook v2.7</span><span>Revised July 3, 2026</span></div>
         </div>
         <div class="hbtools">
-          <button class="pagerbtn" onclick="downloadHandbook()">
+          <!-- v8.4 item 5: the download appears ONLY once every slot is placed, and it
+               serves the family's fully signed copy (the live iframe, serialized). -->
+          <button class="pagerbtn" id="hbDownloadBtn" onclick="downloadHandbook()" hidden>
             <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Download the handbook
+            Download your signed handbook
           </button>
           <button class="nextsig" id="nextSigBtn" onclick="hbNextSig()">
             Next signature or initial
@@ -1578,25 +1713,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   data-stage="done" data-time="see you August 3">
   <div class="body">
     <div class="finalewrap">
-      <svg class="finalebloom step-in" width="170" height="140" viewBox="0 0 170 140" role="img" aria-label="The enrollment garden in bloom">
-        <ellipse cx="85" cy="132" rx="38" ry="6" fill="#F0E9D8"/>
-        <path d="M85 130 C 83 112 87 100 85 88" stroke="#6F8F70" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-        <g transform="translate(85 62)">
-          <g fill="#9BB99E" opacity=".92">
-            <path d="M0 26 Q -7 6 0 -26 Q 7 6 0 26 Z"/>
-            <path d="M0 26 Q -7 6 0 -26 Q 7 6 0 26 Z" transform="rotate(45)"/>
-            <path d="M0 26 Q -7 6 0 -26 Q 7 6 0 26 Z" transform="rotate(90)"/>
-            <path d="M0 26 Q -7 6 0 -26 Q 7 6 0 26 Z" transform="rotate(135)"/>
-          </g>
-          <g fill="#6F8F70" opacity=".55">
-            <path d="M0 20 Q -5 4 0 -20 Q 5 4 0 20 Z" transform="rotate(22.5)"/>
-            <path d="M0 20 Q -5 4 0 -20 Q 5 4 0 20 Z" transform="rotate(67.5)"/>
-            <path d="M0 20 Q -5 4 0 -20 Q 5 4 0 20 Z" transform="rotate(112.5)"/>
-            <path d="M0 20 Q -5 4 0 -20 Q 5 4 0 20 Z" transform="rotate(157.5)"/>
-          </g>
-          <circle r="8" fill="#C9A86A"/>
-        </g>
-      </svg>
+      <!-- v8.4 item 7: the REAL secure-your-space teal lotus bloom (overlay.js, verbatim
+           geometry: 5 outer + 5 inner petals; the check draws from the folded core).
+           Injected on entry by go() so the bloom replays every time. -->
+      <div class="finalelotus step-in" id="finaleLotus" role="img" aria-label="The lotus blooms and settles into a check: everything is signed"></div>
       <h1 class="title step-in d1" style="font-size:32px;margin-top:10px">That's all for now!</h1>
       <p class="finalecopy step-in d2">Please complete your doctor evaluation form no later than your second week of attendance (but earlier is fine, too!)</p>
       <p class="finalecopy step-in d2">Your director will complete Theo's needs and services plan with you before his first day.</p>
@@ -3663,7 +3783,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 </script>
 
 <script>
-/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md (v8.3). */
+/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md (v8.4). */
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var sigName = 'Maria Alvarez';
 var TODAY = 'July 12, 2026';
@@ -3741,6 +3861,38 @@ var Q_SVG = '<span class="st st-question">?</span>';
 var LOCK_SVG = '<span class="st st-lock"><svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px"><path d="M4.5 7.5V5.5a3.5 3.5 0 117 0v2m-8 0h9v5a1.5 1.5 0 01-1.5 1.5h-6a1.5 1.5 0 01-1.5-1.5v-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
 /* v8.2: quiet pencil chip for a confirmed DRAFT; the gold seal never applies here */
 var DRAFT_SVG = '<span class="st st-draft"><svg viewBox="0 0 16 16" fill="none" style="width:11px;height:11px"><path d="M3.2 12.8l.6-2.6 6.6-6.6a1.1 1.1 0 011.6 0l.4.4a1.1 1.1 0 010 1.6l-6.6 6.6-2.6.6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>';
+
+/* ---- v8.4 item 7: the finale bloom, ported VERBATIM from public/overlay/overlay.js
+   (the secure-your-space lotus -> check morph). Shared lotus petal geometry: EXACTLY
+   the main website's second-section .bloom-lotus, 5 outer + 5 inner petals. Jarred
+   has asked repeatedly to match the website bloom and NOT to "improve" the petal
+   count (a 16-petal version was rejected hard). Do not change these. ---- */
+var LOTUS_OUTER_D = 'M0,0 C-7,-12 -7,-26 0,-36 C7,-26 7,-12 0,0 Z';
+var LOTUS_INNER_D = 'M0,0 C-5,-9 -5,-19 0,-26 C5,-19 5,-9 0,0 Z';
+var LOTUS_OUTER_ANGLES = [0, 72, 144, 216, 288];
+var LOTUS_INNER_ANGLES = [36, 108, 180, 252, 324];
+function cmPetal(cls, deg, d) {
+  return '<path class="' + cls + '" style="--r:' + deg + 'deg;transform:rotate(' + deg + 'deg)" d="' + d + '"/>';
+}
+var CM_PETALS =
+  LOTUS_OUTER_ANGLES.map(function(a){ return cmPetal('gmwl-cm-petal', a, LOTUS_OUTER_D); }).join('') +
+  LOTUS_INNER_ANGLES.map(function(a){ return cmPetal('gmwl-cm-petal-inner', a, LOTUS_INNER_D); }).join('');
+var LOTUS_CHECK_MORPH =
+  '<div class="gmwl-cm" aria-hidden="true">' +
+    '<svg class="gmwl-cm-lotus" viewBox="-50 -50 100 100"><defs>' +
+      '<radialGradient id="gmwlCmGrad" cx="0" cy="0" r="40" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0%" stop-color="#B6E4DD" stop-opacity="0.98"/>' +
+        '<stop offset="55%" stop-color="#5FAEB6" stop-opacity="0.85"/>' +
+        '<stop offset="100%" stop-color="#3D8189" stop-opacity="0.4"/></radialGradient>' +
+      '<radialGradient id="gmwlCmGradInner" cx="0" cy="0" r="26" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0%" stop-color="#DFF3EE"/><stop offset="100%" stop-color="#5FAEB6" stop-opacity="0.7"/></radialGradient>' +
+      '<radialGradient id="gmwlCmCore" cx="0" cy="0" r="6" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0%" stop-color="#C9A86A"/><stop offset="100%" stop-color="#3D8189"/></radialGradient></defs>' +
+    CM_PETALS +
+    '<circle class="gmwl-cm-bud" cx="0" cy="0" r="6" fill="url(#gmwlCmCore)"/>' +
+    '<circle class="gmwl-cm-core" cx="0" cy="0" r="3.5" fill="url(#gmwlCmCore)"/></svg>' +
+    '<svg class="gmwl-cm-check" viewBox="0 0 52 52"><path class="gmwl-cm-tick" fill="none" d="M15 27 l7.5 7.5 l15 -17"/></svg>' +
+  '</div>';
 
 function chaptersDone() { return chState.filter(function(c){ return c.finished; }).length; }
 function signLocked() { return chState.some(function(c){ return !c.finished; }); }
@@ -3980,8 +4132,11 @@ function renderDocs() {
         var acts = el.querySelector('.rowactions');
         if (acts && !acts.dataset.done) {
           acts.dataset.done = '1';
+          /* v8.4 item 9: downloads are native PDFs only. The NSP draft has no CDSS
+             native form (the final plan is completed with the director), so a draft
+             row offers View only, never an HTML download. */
           acts.innerHTML = '<button class="raction" onclick="event.stopPropagation();viewDoc(\'' + d.id + '\')">View</button>' +
-            '<button class="raction" onclick="event.stopPropagation();downloadDoc(\'' + d.id + '\')">Download</button>';
+            (d.draft ? '' : '<button class="raction" onclick="event.stopPropagation();downloadDoc(\'' + d.id + '\')">Download</button>');
         }
         if (kind !== 'rail') el.onclick = function(){ viewDoc(d.id); };
       }
@@ -4022,7 +4177,14 @@ function go(id) {
   if (id === 's-docs') countUp();
   if (id === 's-handbook') hbInit();
   if (id === 's-review') renderForm();
-  if (id === 's-finale') { spawnConfetti(); } /* v8.3: the finale is visual only; sound belongs to signatures */
+  if (id === 's-finale') {
+    /* v8.4 item 7: rebuild the real teal lotus so the bloom replays on every entry.
+       v8.3 rule holds: the finale is visual only; sound belongs to signatures
+       (the ascension already played on Finish signing). */
+    var fl = document.getElementById('finaleLotus');
+    if (fl) fl.innerHTML = LOTUS_CHECK_MORPH;
+    spawnConfetti();
+  }
   var chHere = chState.filter(function(c){ return c.screen === id; })[0];
   if (chHere && chHere.finished) applyChapterLock(t);
   maskInputs();
@@ -4292,25 +4454,44 @@ function maskInputs() { maskPhones(); maskAlpha(); }
 document.addEventListener('input', function(e) {
   if (e.target.closest && e.target.closest('#pickupRows')) renderState();
 });
-/* ---- v8.3 item 3: sound, synthesized in WebAudio, plays ONLY when a signature or
-   initial is placed. No chime on Next, clicks, or navigation; those are silent.
-   The signature voice is a soft two-note rising resolve (C5 then E5, a major third):
-   quietly victorious, short, low volume. Initials get a single soft E5, shorter
-   still, so a run of initial taps never becomes a bell choir. The visible toggle
-   turns it all off, and prefers-reduced-motion mutes it entirely. ---- */
+/* ---- v8.3 item 3 + v8.4 item 4: sound, synthesized in WebAudio, plays ONLY when a
+   signature or initial is placed. No chime on Next, clicks, or navigation; those are
+   silent. v8.4 adds a small voice menu (the note button beside the audio toggle):
+   four placement voices, all calm and low volume; the choice previews on select and
+   persists in localStorage. Signatures get a two-note motif in the chosen voice;
+   initials get a single shorter note, so a run of initial taps never becomes a bell
+   choir. Finish signing plays a rising pentatonic ASCENSION built from the chosen
+   voice. The visible toggle turns it all off; prefers-reduced-motion mutes it. ---- */
 var audioOn = true, actx = null;
-function bell(freq, dur, peak, delay) {
+var SOUND_VOICES = [
+  { id: 'chime', name: 'Rising chime',   partials: [[1, 1], [2.76, .28], [5.4, .08]], attack: .012, durMul: 1,
+    freqMul: 1,   sign: [523.25, 659.25], initial: 659.25 },
+  { id: 'xylup', name: 'Xylophone up',   partials: [[1, 1], [3.93, .4], [9.23, .1]],  attack: .003, durMul: .5,
+    freqMul: 1,   sign: [523.25, 659.25], initial: 659.25 },
+  { id: 'xyldn', name: 'Xylophone down', partials: [[1, 1], [3.93, .4], [9.23, .1]],  attack: .003, durMul: .5,
+    freqMul: 1,   sign: [659.25, 523.25], initial: 523.25 },
+  { id: 'bell',  name: 'Soft bell',      partials: [[1, 1], [2.0, .5], [3.01, .22]],  attack: .02,  durMul: 1.5,
+    freqMul: .75, sign: [523.25, 659.25], initial: 659.25 }
+];
+var soundVoice = 'chime';
+try {
+  var _sv = localStorage.getItem('presenceSoundVoice');
+  if (_sv && SOUND_VOICES.some(function(v){ return v.id === _sv; })) soundVoice = _sv;
+} catch (e) { console.debug('Presence mockup: localStorage unavailable; voice resets per visit.', e); }
+function soundVoiceDef() { return SOUND_VOICES.filter(function(v){ return v.id === soundVoice; })[0]; }
+function bell(freq, dur, peak, delay, v) {
   if (!audioOn || reduceMotion) return;
+  v = v || soundVoiceDef();
   try {
     if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
     if (actx.state === 'suspended') actx.resume();
     var t0 = actx.currentTime + (delay || 0);
-    [[1, 1], [2.76, .28], [5.4, .08]].forEach(function(p) {
+    v.partials.forEach(function(p) {
       var o = actx.createOscillator(), g = actx.createGain();
       o.type = 'sine';
-      o.frequency.value = freq * p[0];
+      o.frequency.value = freq * v.freqMul * p[0];
       g.gain.setValueAtTime(0.0001, t0);
-      g.gain.exponentialRampToValueAtTime(peak * p[1], t0 + 0.012);
+      g.gain.exponentialRampToValueAtTime(peak * p[1], t0 + v.attack);
       g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
       o.connect(g); g.connect(actx.destination);
       o.start(t0); o.stop(t0 + dur + 0.05);
@@ -4318,19 +4499,78 @@ function bell(freq, dur, peak, delay) {
   } catch (e) { console.debug('Presence mockup: WebAudio bell unavailable.', e); }
 }
 function chimeSign() {
-  bell(523.25, 1.1, 0.045);        /* C5: the gentle lift */
-  bell(659.25, 2.2, 0.06, 0.16);   /* E5: the resolve, a major third up */
+  var v = soundVoiceDef();
+  bell(v.sign[0], 1.1 * v.durMul, 0.045, 0, v);       /* the gentle lift */
+  bell(v.sign[1], 2.2 * v.durMul, 0.06, 0.16, v);     /* the resolve */
 }
-function chimeInitial() { bell(659.25, 0.9, 0.03); } /* one soft E5 per initial */
+function chimeInitial() { var v = soundVoiceDef(); bell(v.initial, 0.9 * v.durMul, 0.03, 0, v); }
+/* v8.4 item 4: the Finish-signing ascension. A rising pentatonic run (C5 D5 E5 G5 C6)
+   in the chosen voice; the last note lingers. Always ascending, whatever the voice. */
+function chimeAscension() {
+  var v = soundVoiceDef();
+  var run = [523.25, 587.33, 659.25, 783.99, 1046.5];
+  run.forEach(function(f, i) {
+    var last = i === run.length - 1;
+    bell(f, (last ? 2.6 : 0.9) * Math.max(v.durMul, .55), last ? 0.055 : 0.032, i * 0.15, v);
+  });
+}
 function toggleAudio(btn) {
   audioOn = !audioOn;
   document.querySelectorAll('.audiotog').forEach(function(b) {
+    if (b.classList.contains('sndopts')) return;
     b.setAttribute('aria-pressed', audioOn ? 'true' : 'false');
-    b.title = audioOn ? 'Sounds on' : 'Sounds off';
+    b.title = audioOn ? 'Turn sound off' : 'Turn sound on';
     b.style.opacity = audioOn ? '' : '.45';
-    var l = b.querySelector('.audlbl');
-    if (l) l.textContent = audioOn ? 'Sounds on' : 'Sounds off';
   });
+}
+/* v8.4 item 4: the voice menu. One shared popover, anchored to whichever note
+   button opened it; closes on outside click or Escape. */
+function buildSoundMenu() {
+  var m = document.getElementById('soundMenu');
+  if (m) return m;
+  m = document.createElement('div');
+  m.id = 'soundMenu';
+  m.className = 'sndmenu';
+  m.setAttribute('role', 'menu');
+  m.setAttribute('aria-label', 'Signature sound');
+  var h = '<div class="smtitle">Signature sound</div>';
+  SOUND_VOICES.forEach(function(v) {
+    h += '<button type="button" class="smopt" role="menuitemradio" data-voice="' + v.id + '"' +
+      ' aria-checked="' + (v.id === soundVoice ? 'true' : 'false') + '"' +
+      ' onclick="setSoundVoice(\'' + v.id + '\')"><span class="smdot"></span>' + v.name + '</button>';
+  });
+  m.innerHTML = h;
+  document.body.appendChild(m);
+  document.addEventListener('click', function(e) {
+    if (!m.classList.contains('on')) return;
+    if (e.target.closest && (e.target.closest('#soundMenu') || e.target.closest('.sndopts'))) return;
+    m.classList.remove('on');
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') m.classList.remove('on');
+  });
+  return m;
+}
+function toggleSoundMenu(btn) {
+  var m = buildSoundMenu();
+  if (m.classList.contains('on')) { m.classList.remove('on'); return; }
+  m.classList.add('on');
+  var r = btn.getBoundingClientRect();
+  var mw = m.offsetWidth, mh = m.offsetHeight;
+  var left = Math.max(10, Math.min(window.innerWidth - mw - 10, r.left - 8));
+  var top = r.top > mh + 14 ? r.top - mh - 8 : r.bottom + 8;
+  m.style.left = left + 'px';
+  m.style.top = top + 'px';
+}
+function setSoundVoice(id) {
+  soundVoice = id;
+  try { localStorage.setItem('presenceSoundVoice', id); }
+  catch (e) { console.debug('Presence mockup: voice not persisted.', e); }
+  var m = document.getElementById('soundMenu');
+  if (m) m.querySelectorAll('.smopt').forEach(function(b) {
+    b.setAttribute('aria-checked', b.dataset.voice === id ? 'true' : 'false');
+  });
+  chimeSign(); /* preview the choice */
 }
 
 /* ---- v8 item 1: the completed chapters render EVERY saved entry as a real,
@@ -4481,12 +4721,8 @@ function hbWire(doc) {
     'background:linear-gradient(transparent 62%,rgba(155,185,158,.35) 62%);display:inline-block;margin:2px 0 2px}' +
     '.pres-fill[contenteditable=true]{outline:1.5px dashed #5FAEB6;outline-offset:2px;background:#fff}' +
     '.pres-date{font:600 10.5pt Manrope,sans-serif;color:#1F2A2E;margin:2px 0 6px}' +
-    /* v8 item 3: every prefilled slot carries a small accuracy affordance */
-    '.pres-acc{display:flex;align-items:center;gap:10px;font:600 8pt Manrope,sans-serif;color:#6F7F84;margin:0 0 6px}' +
-    '.pres-acc label{display:inline-flex;align-items:center;gap:5px;cursor:pointer}' +
-    '.pres-acc input{width:12px;height:12px;accent-color:#6F8F70;margin:0}' +
-    '.pres-acc .pres-editaff{background:none;border:0;color:#3D8189;font:700 8pt Manrope,sans-serif;cursor:pointer;padding:0}' +
-    '.pres-acc.ok{color:#6F8F70}' +
+    /* v8.4 item 3: the per-slot "This is accurate" checkboxes are GONE (Jarred).
+       Placement delight moved to the localized petal burst + chime instead. */
     /* v8.3 item 4: per-section initials. Every prefilled or consent section carries
        a tappable initials slot, in document order; the adopted initials fill it. */
     '.pres-initrow{display:flex;align-items:center;gap:10px;justify-content:flex-end;margin:10px 0 4px}' +
@@ -4497,31 +4733,9 @@ function hbWire(doc) {
     '.pres-init.filled{border-style:solid;background:#fff;cursor:default;' +
     "font-family:'Caveat',cursive;font-size:14pt;font-weight:600;color:#1F2A2E;padding:2px 12px}";
   doc.head.appendChild(st);
-  /* v8 item 3: attach "This is accurate" + inline edit to a prefilled slot */
-  function addAccuracy(field, fillEl) {
-    var acc = doc.createElement('div');
-    acc.className = 'pres-acc';
-    acc.innerHTML = '<label><input type="checkbox"> This is accurate</label>' +
-      '<button type="button" class="pres-editaff">Edit</button>';
-    fillEl.parentNode.insertBefore(acc, fillEl.nextSibling);
-    acc.querySelector('input').addEventListener('change', function() {
-      acc.classList.toggle('ok', this.checked);
-    });
-    acc.querySelector('.pres-editaff').addEventListener('click', function() {
-      fillEl.setAttribute('contenteditable', 'true');
-      fillEl.focus();
-      var r = doc.createRange(); r.selectNodeContents(fillEl); r.collapse(false);
-      var s = doc.defaultView.getSelection(); s.removeAllRanges(); s.addRange(r);
-    });
-    fillEl.addEventListener('blur', function() {
-      if (fillEl.getAttribute('contenteditable') === 'true') {
-        fillEl.removeAttribute('contenteditable');
-        var c = acc.querySelector('input');
-        c.checked = true;
-        acc.classList.add('ok');
-      }
-    });
-  }
+  /* v8.4 item 3: the v8 "This is accurate" checkbox affordance is removed entirely
+     (Jarred). Prefilled values are corrected upstream in the chapters; the moment
+     of delight belongs to placement (petal burst + chime), not to checkboxes. */
   /* anchor detection by label text, not position */
   var labels = doc.querySelectorAll('.flabel');
   var sigField = null, sigRow = null, childField = null;
@@ -4535,7 +4749,6 @@ function hbWire(doc) {
     cv.className = 'pres-fill';
     cv.textContent = 'Theo Alvarez';
     childField.insertBefore(cv, childField.firstChild);
-    addAccuracy(childField, cv);
   }
   /* v7 item 12: prefill EVERY handbook data field we hold or asked. Values are
      matched by label text plus the nearest preceding named label for the
@@ -4585,7 +4798,6 @@ function hbWire(doc) {
       v.className = 'pres-fill';
       v.textContent = val;
       field.insertBefore(v, field.firstChild);
-      addAccuracy(field, v);
     }
   });
   /* v8.3 item 4: initials slots, in document order. One per prefilled-data section
@@ -4665,6 +4877,7 @@ function hbPlaceInitial(slot) {
   slot.el.classList.add('filled');
   slot.el.textContent = initialsOf(sigName) || 'MA';
   chimeInitial();
+  burstFromEl(slot.el, document.getElementById('hbFrame')); /* v8.4 item 3 */
   hbUpdateProgress();
 }
 function hbAllPlaced() { return hbSlots.length > 0 && hbSlots.every(function(s){ return s.placed || (s.kind === 'sig' && hbPlaced); }); }
@@ -4690,6 +4903,13 @@ function hbUpdateProgress() {
   var fin = document.getElementById('hbFinish');
   var done = total > 0 && placed === total;
   if (fin) fin.disabled = !done;
+  /* v8.4 item 5: once every slot is placed there is nothing to jump to, so the
+     "Next signature or initial" button leaves; the download arrives in its place
+     and serves the fully signed live document. */
+  var nsb = document.getElementById('nextSigBtn');
+  if (nsb) nsb.hidden = done;
+  var dlb = document.getElementById('hbDownloadBtn');
+  if (dlb) dlb.hidden = !done;
   var nu = document.getElementById('hbNextup');
   if (nu) nu.textContent = done
     ? 'Signed and initialed. Finish below whenever you are ready.'
@@ -4704,6 +4924,7 @@ function hbSign() {
   if (sigSlot) sigSlot.placed = true;
   hbPaint();
   chimeSign();
+  if (hbSlotEl) burstFromEl(hbSlotEl, document.getElementById('hbFrame')); /* v8.4 item 3 */
   hbUpdateProgress();
 }
 /* Next signature or initial: jumps to the first unplaced slot, in document order */
@@ -4716,6 +4937,7 @@ function hbNextSig() {
 function hbFinishSign() {
   if (!hbAllPlaced()) { hbNextSig(); return; }
   docState.hb = true; /* v6 fix: completion registers and persists */
+  chimeAscension(); /* v8.4 item 4: a rising run in the chosen voice */
   var btn = document.getElementById('hbFinish');
   btn.textContent = 'Signed and sealed';
   btn.classList.add('done');
@@ -4726,14 +4948,14 @@ function hbFinishSign() {
     if (allDocsDone()) { go('s-finale'); } else { go('s-review'); }
   }, 900);
 }
-/* v8.1: once the handbook iframe is wired (prefills, applied signature, accuracy
-   checks live in the iframe DOM), the family's copy is the LIVE document, serialized.
-   The pristine hbSource template is only the not-yet-wired fallback. */
+/* v8.1: once the handbook iframe is wired (prefills, applied signature, placed
+   initials live in the iframe DOM), the family's copy is the LIVE document,
+   serialized. The pristine hbSource template is only the not-yet-wired fallback. */
 function hbCurrentHTML() {
   try {
     if (hbDoc && hbDoc.documentElement) {
-      /* checked is a property, not an attribute: reflect it so the accuracy
-         checkboxes survive serialization */
+      /* checked is a property, not an attribute: reflect any checkbox state so it
+         survives serialization */
       hbDoc.querySelectorAll('input[type=checkbox]').forEach(function(c) {
         if (c.checked) c.setAttribute('checked', 'checked');
         else c.removeAttribute('checked');
@@ -5048,6 +5270,7 @@ function revSign(el) {
   if (revSigned) return;
   revSigned = true;
   chimeSign();
+  burstFromEl(el); /* v8.4 item 3: the burst flies from the signature line itself */
   el.classList.add('filled');
   el.textContent = sigName;
   var d = document.getElementById('revDate');
@@ -5083,15 +5306,28 @@ function viewDoc(id) {
   var f = FORMS.filter(function(x){ return x.id === id; })[0];
   if (f) openPrintDoc(f.name, formDocHTML(f, docState[id]));
 }
+/* ---- v8.4 items 6 + 9: every CDSS form download serves the NATIVE fillable PDF
+   (repo: public/docs/cdss-native/, served beside this mockup), never an HTML
+   facsimile. Production fills the AcroForm fields with pdf-lib before serving;
+   the mockup serves the native current-revision forms. The on-screen View stays
+   the readable review copy; only downloads changed. ---- */
+var NATIVE_PDFS = { lic700: 'LIC700.pdf', lic702: 'LIC702.pdf', lic627: 'LIC627.pdf',
+  lic613: 'LIC613A.pdf', lic995: 'LIC995.pdf' };
 function downloadDoc(id) {
   if (id === 'hb') { downloadHandbook(); return; }
   var f = FORMS.filter(function(x){ return x.id === id; })[0];
   if (!f) return;
-  var blob = new Blob([printDocHTML(f.name, formDocHTML(f, docState[id]))], { type: 'text/html' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = f.id.toUpperCase() + '-Theo-Alvarez.html';
-  a.click();
+  var pdf = NATIVE_PDFS[id];
+  if (pdf) {
+    var a = document.createElement('a');
+    a.href = pdf;
+    a.download = pdf;
+    a.click();
+    return;
+  }
+  /* the NSP draft has no CDSS native form and never downloads as HTML; it opens
+     to view only (renderDocs offers no Download on draft rows) */
+  viewDoc(id);
 }
 
 /* ---- print/save surface shared by forms and the LIC 701 ---- */
@@ -5268,6 +5504,53 @@ function healthFilled() {
 document.addEventListener('input', function(e) {
   if (e.target.closest && e.target.closest('#s-health')) renderState();
 });
+
+/* ---- v8.4 item 3: a small petal burst FROM the exact point a signature or initial
+   just landed. The finale's particle vocabulary (brand petals + leaves, never neon),
+   scaled down and localized to the slot. Reduced motion skips it entirely. ---- */
+function burstAt(x, y) {
+  if (reduceMotion) return;
+  var wrap = document.createElement('div');
+  wrap.className = 'slotburst';
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.style.left = x + 'px';
+  wrap.style.top = y + 'px';
+  var COLORS = ['#9BB99E', '#6F8F70', '#C9A86A', '#E8C9B5'];
+  var LEAF = '<path d="M3 16 C 1 9 4 3 10 1 C 12 6 10 13 4 15 Z" fill="{c}"/>';
+  var PETAL = '<path d="M6 16 Q 2 8 6 1 Q 10 8 6 16 Z" fill="{c}"/>';
+  for (var i = 0; i < 14; i++) {
+    var c = COLORS[i % COLORS.length];
+    var shape = (i % 2 === 0 ? PETAL : LEAF).replace('{c}', c);
+    var size = 6 + Math.random() * 6;
+    var a = -Math.PI / 2 + (Math.random() - .5) * 2.4; /* an upward fan */
+    var d = 34 + Math.random() * 60;
+    var el = document.createElement('div');
+    el.className = 'bpiece';
+    el.innerHTML = '<svg width="' + size + '" height="' + (size * 1.3) + '" viewBox="0 0 12 17">' + shape + '</svg>';
+    el.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'px');
+    el.style.setProperty('--dy', (Math.sin(a) * d + 16).toFixed(1) + 'px'); /* petals settle a touch */
+    el.style.setProperty('--spin', (Math.random() > .5 ? '' : '-') + Math.round(120 + Math.random() * 260) + 'deg');
+    el.style.setProperty('--t', (0.55 + Math.random() * .4).toFixed(2) + 's');
+    el.style.setProperty('--dl', (Math.random() * .06).toFixed(2) + 's');
+    wrap.appendChild(el);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(function(){ wrap.remove(); }, 1300);
+}
+/* the slot may live inside the handbook iframe; add the frame's offset if so */
+function burstFromEl(el, frameEl) {
+  try {
+    var r = el.getBoundingClientRect();
+    var x = r.left + r.width / 2, y = r.top + r.height / 2;
+    if (frameEl) {
+      var fr = frameEl.getBoundingClientRect();
+      x += fr.left; y += fr.top;
+    }
+    x = Math.max(20, Math.min(window.innerWidth - 20, x));
+    y = Math.max(20, Math.min(window.innerHeight - 20, y));
+    burstAt(x, y);
+  } catch (e) { console.debug('Presence mockup: placement burst skipped.', e); }
+}
 
 /* ---- v7 item 15: the finale confetti. Brand petals and leaves, never neon. ---- */
 function spawnConfetti() {
