@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.12 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.13 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -114,20 +114,27 @@ p.lede { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 8px; }
   pointer-events: none; }
 .actionbar > * { pointer-events: auto; }
 .nextup { text-align: center; font-size: 12.5px; color: var(--ink-mute); margin-bottom: 8px; }
-/* v8.12 (Jarred): the handbook growth plant - roots, leafs, and blooms with progress */
+/* v8.13 (Jarred): the handbook growth plant - a bare traced outline that comes to life */
 .growwrap { display: flex; flex-direction: column; align-items: center; gap: 3px; margin-bottom: 10px; }
-.growvine { width: 100%; max-width: 360px; height: 46px; display: block; overflow: visible; }
-.gv-stem { fill: none; stroke: #6F8F70; stroke-width: 2.2; stroke-linecap: round;
+.growvine { width: 100%; max-width: 380px; height: 64px; display: block; overflow: visible; }
+/* the ghost "dead branch" trace, always visible */
+.gv-ghoststem { fill: none; stroke: #C9B79A; stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 2 3; opacity: .6; }
+.gv-ghostleaf { fill: none; stroke: #C9B79A; stroke-width: 1.4; opacity: .5; }
+#gvGhostLotus path { fill: none; stroke: #C9B79A; stroke-width: 2; opacity: .5; }
+#gvGhostLotus circle { fill: none; stroke: #C9B79A; stroke-width: 1.4; opacity: .5; }
+/* the live plant, revealed by progress */
+.gv-stem { fill: none; stroke: #6F8F70; stroke-width: 2.4; stroke-linecap: round;
   transition: stroke-dashoffset .7s cubic-bezier(.22,1,.36,1); }
 .gv-leaf { transform-box: fill-box; transform-origin: bottom center; opacity: 0;
   transform: scale(0) rotate(-14deg); transition: opacity .5s ease, transform .55s var(--spring); }
+.gv-leaf.down { transform-origin: top center; }
 .gv-leaf.grown { opacity: 1; transform: scale(1) rotate(0); }
-.gv-bloom { transform-box: fill-box; transform-origin: center; opacity: 0; transform: scale(0) rotate(-30deg);
-  transition: opacity .6s ease, transform .8s var(--spring); }
-.gv-bloom.open { opacity: 1; transform: scale(1) rotate(0); }
+.gv-lotus { transform-box: fill-box; transform-origin: center; opacity: 0; transform: scale(0) rotate(-30deg);
+  transition: opacity .7s ease, transform .9s var(--spring); }
+.gv-lotus.open { opacity: 1; transform: scale(1) rotate(0); }
 .growlabel { font-size: 12.5px; color: var(--sage-deep); font-weight: 600; text-align: center; }
 @media (prefers-reduced-motion: reduce) {
-  .gv-stem, .gv-leaf, .gv-bloom { transition: none; }
+  .gv-stem, .gv-leaf, .gv-lotus { transition: none; }
 }
 .cta { display: block; width: 100%; border: 0; border-radius: var(--radius);
   background: var(--teal-deep); color: #FFFDF8; font-size: 15px; font-weight: 600;
@@ -1000,6 +1007,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 /* v8.1: an uploaded item settles into a quiet done state */
 .upright .upbtn.added { border-style: solid; border-color: var(--sage-deep);
   background: rgba(155,185,158,.16); color: var(--sage-deep); cursor: default; }
+.upright .upbtn .upname { display: block; font-size: 10px; font-weight: 600; color: var(--ink-mute);
+  max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
 
 /* v8.1: the calm attention banner when an unlocked edit empties a required field */
 .attnbanner { position: fixed; left: 50%; bottom: 84px;
@@ -1025,6 +1034,12 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .nativecap { font-family: var(--hand); font-size: 15.5px; color: var(--sage-deep);
   margin: 8px 2px 14px; }
 .nativesign { margin-top: 0; }
+/* v8.13 (Jarred): the digital-signature serial line */
+.sigserial { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px;
+  color: var(--teal-deep); background: rgba(95,174,182,.1); border: 1px solid rgba(61,129,137,.28);
+  border-radius: 5px; padding: 6px 10px; }
+.sigserial svg { width: 15px; height: 15px; flex-shrink: 0; }
+.sigserial b { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 700; letter-spacing: .02em; }
 @media (max-width: 700px) { .nativepdf { height: 62vh; } }
 
 /* ---- v8.7 item 1: the responsive field-grid continuum, stated late so it wins
@@ -1640,9 +1655,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="rname">Immunization record <span class="duechip firm">Due by enrollment</span></div>
         <div class="rmeta">California requires it on file before Theo's first morning. A photo or screenshot from your patient portal works.</div>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="markUploaded('imm')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="pickUpload('imm')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        Add photo</span></div>
+        Add photo or file</span></div>
     </div>
     <div class="grouplabel step-in d1">Your doctor · first two weeks</div>
     <div class="gendoc-anim docrow doctor" style="animation-delay:.85s">
@@ -1654,9 +1669,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           Download for your doctor
         </button>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="markUploaded('lic701')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="pickUpload('lic701')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        Add photo</span></div>
+        Add photo or file</span></div>
     </div>
     </div>
     </div>
@@ -1763,6 +1778,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
             <span class="st st-question">?</span> Appendix E · signature
             <button class="go" onclick="hbNextSig()">Go</button>
           </div>
+          <div class="sigserial" id="hbSerial" hidden style="margin:2px 0 0"></div>
           <div class="placerow">
             <span class="st st-wait"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M8 5v3.2l2.2 1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
             Date · fills automatically
@@ -1779,20 +1795,26 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <!-- v8.12 (Jarred): the "N initials remaining" countdown is replaced by a growing plant, like
          the top banner + sidebar. It roots, leafs, and blooms as the family initials and signs -
          positive growth, not a countdown. Driven by hbUpdateProgress -> gvUpdate(). -->
+    <!-- v8.13 (Jarred): the growth plant starts as a bare traced outline (a dead branch) with leaf
+         and lotus outlines on both sides, and COMES TO LIFE as the family initials: the green stem
+         draws over the trace, leaves fill in on each side, and a real teal lotus (same one as the
+         finale + secure-your-space) blooms at the end. Ghost layer + live layer, both built by gvBuild. -->
     <div class="growwrap" id="hbNextup" aria-live="polite">
-      <svg class="growvine" id="gvSvg" viewBox="0 0 340 48" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <path class="gv-stem" id="gvStem" d="M8 40 C 96 40 104 20 176 20 C 252 20 266 30 330 24" />
+      <svg class="growvine" id="gvSvg" viewBox="0 0 340 72" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <radialGradient id="gvLotusGrad" cx="0" cy="0" r="15" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#B6E4DD"/><stop offset="55%" stop-color="#5FAEB6"/><stop offset="100%" stop-color="#3D8189"/></radialGradient>
+          <radialGradient id="gvLotusGradInner" cx="0" cy="0" r="9" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#DFF3EE"/><stop offset="100%" stop-color="#5FAEB6"/></radialGradient>
+        </defs>
+        <!-- ghost trace (always visible) -->
+        <path class="gv-ghoststem" id="gvGhostStem" d="M10 42 C 92 42 104 34 176 36 C 248 38 260 42 308 40" />
+        <g id="gvGhostLeaves"></g>
+        <g transform="translate(322 40)" id="gvGhostLotus"></g>
+        <!-- live plant (revealed by progress) -->
+        <path class="gv-stem" id="gvStem" d="M10 42 C 92 42 104 34 176 36 C 248 38 260 42 308 40" />
         <g id="gvLeaves"></g>
-        <g transform="translate(330 24)"><g class="gv-bloom" id="gvBloom">
-          <g class="gv-petals">
-            <ellipse cx="0" cy="-8" rx="3.4" ry="8" fill="#5FAEB6"/>
-            <ellipse cx="0" cy="-8" rx="3.4" ry="8" fill="#5FAEB6" transform="rotate(72)"/>
-            <ellipse cx="0" cy="-8" rx="3.4" ry="8" fill="#5FAEB6" transform="rotate(144)"/>
-            <ellipse cx="0" cy="-8" rx="3.4" ry="8" fill="#5FAEB6" transform="rotate(216)"/>
-            <ellipse cx="0" cy="-8" rx="3.4" ry="8" fill="#5FAEB6" transform="rotate(288)"/>
-          </g>
-          <circle cx="0" cy="0" r="3.4" fill="#C9A86A"/>
-        </g></g>
+        <g transform="translate(322 40)"><g class="gv-lotus" id="gvLotus"></g></g>
       </svg>
       <span class="growlabel" id="gvLabel">Read through, or jump from initial to initial; the signature line is last</span>
     </div>
@@ -1817,6 +1839,8 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </div>
     <p class="legal step-in d3" id="reviewLegal">Confirming is recorded with a timestamp and the exact document you saw, like a signature.</p>
     <p class="legal step-in d3" style="margin-top:2px" id="revFiledLine">This on-screen copy is for your review; the filed, signed copy is the official CDSS state form, carrying exactly this information.</p>
+    <!-- v8.13 (Jarred): the digital-signature serial, shown once signed; references the certificate -->
+    <div class="sigserial" id="revSerial" hidden></div>
   </div>
   <div class="actionbar">
     <div class="nextup" id="reviewNext">4 more forms after this one</div>
@@ -1948,9 +1972,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <span class="imsattx">I confirm this is Theo's current, complete immunization record.</span>
         </div>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="markUploaded('imm')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="imm" onclick="pickUpload('imm')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        Add photo</span></div>
+        Add photo or file</span></div>
     </div>
     <div class="grouplabel step-in d3">Your doctor · first two weeks</div>
     <div class="docrow doctor step-in d3">
@@ -1961,9 +1985,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="rmeta" id="d-701-meta">The official CDSS LIC 701; in production Part A (Theo's name, birth date, center, hours) arrives prefilled. Take it to Theo's doctor; due by the end of Theo's second week. Nothing else is blocked while you wait.</div>
         <div class="rowactions"><button class="raction" onclick="openLic701()">Download for your doctor</button></div>
       </div>
-      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="markUploaded('lic701')">
+      <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="pickUpload('lic701')">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10.5" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 5l1.2-2h3.6L13 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        Add photo</span></div>
+        Add photo or file</span></div>
     </div>
 
     <div class="grouplabel step-in d3">Your record</div>
@@ -4619,12 +4643,29 @@ function demoCompleteAll() { chState.forEach(function(c){ c.finished = true; });
 /* v8.1: the step 6 uploads are demo-completable. Production opens the real camera or
    file picker; here the button marks the item uploaded so the journey can honestly
    reach 100 percent and the plant can bloom. */
-function markUploaded(key) {
+/* v8.13 (Jarred, correction): "Add photo" used to auto-checkmark with no upload - wrong. Now it
+   opens a real file picker (photo OR file: image or PDF) and only marks the item added once the
+   family actually chooses a file. The chosen filename is shown so it is clearly a real upload. */
+function pickUpload(key) {
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*,application/pdf';
+  inp.style.display = 'none';
+  inp.onchange = function() {
+    if (inp.files && inp.files.length) markUploaded(key, inp.files[0].name);
+    inp.remove();
+  };
+  document.body.appendChild(inp);
+  inp.click();
+}
+function markUploaded(key, fileName) {
   if (doctorState[key]) return;
   doctorState[key] = true;
+  var short = fileName ? (fileName.length > 22 ? fileName.slice(0, 19) + '...' : fileName) : '';
   document.querySelectorAll('[data-upload="' + key + '"]').forEach(function(b) {
     b.classList.add('added');
-    b.innerHTML = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4.2 4L16 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Added';
+    b.innerHTML = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4.2 4L16 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Added' +
+      (short ? '<span class="upname">' + short.replace(/</g, '&lt;') + '</span>' : '');
     b.onclick = null;
     b.removeAttribute('role');
     b.removeAttribute('tabindex');
@@ -5367,38 +5408,65 @@ function hbUpdateProgress() {
 /* v8.12 (Jarred): the growth plant. gvBuild places leaves along the stem once; gvUpdate grows the
    stem (stroke draw), unfurls each leaf as progress passes it, and blooms the flower at 100%. */
 var gvStemLen = 0, gvLeaves = [];
+var NS_SVG = 'http://www.w3.org/2000/svg';
+var LEAF_OUTLINE_D = 'M6 33 C 2 20 8 6 20 1 C 24 12 20 26 8 32 Q 6 33 6 33 Z';
+/* the lotus petals (same geometry as the finale bloom), either filled (live) or outlined (ghost) */
+function gvLotusMarkup(ghost) {
+  var fO = ghost ? '' : ' fill="url(#gvLotusGrad)"';
+  var fI = ghost ? '' : ' fill="url(#gvLotusGradInner)"';
+  var s = '<g transform="scale(0.34)">';
+  LOTUS_OUTER_ANGLES.forEach(function(a){ s += '<path transform="rotate(' + a + ')" d="' + LOTUS_OUTER_D + '"' + fO + '/>'; });
+  LOTUS_INNER_ANGLES.forEach(function(a){ s += '<path transform="rotate(' + a + ')" d="' + LOTUS_INNER_D + '"' + fI + '/>'; });
+  s += '<circle cx="0" cy="0" r="5"' + (ghost ? '' : ' fill="#C9A86A"') + '/></g>';
+  return s;
+}
+function gvLeafAt(pt, rot, ghost, down) {
+  var pos = document.createElementNS(NS_SVG, 'g');
+  pos.setAttribute('transform', 'translate(' + pt.x.toFixed(1) + ' ' + pt.y.toFixed(1) + ')');
+  var leaf = document.createElementNS(NS_SVG, 'g');
+  var shape = document.createElementNS(NS_SVG, 'g');
+  shape.setAttribute('transform', 'scale(.46) rotate(' + rot + ') translate(-6 -33)');
+  if (ghost) {
+    leaf.setAttribute('class', 'gv-ghostleaf');
+    shape.innerHTML = '<path d="' + LEAF_OUTLINE_D + '"/>';
+  } else {
+    leaf.setAttribute('class', 'gv-leaf' + (down ? ' down' : ''));
+    shape.innerHTML = LEAF_PATHS;
+  }
+  leaf.appendChild(shape);
+  pos.appendChild(leaf);
+  return leaf;
+}
 function gvBuild() {
-  var stem = document.getElementById('gvStem'), holder = document.getElementById('gvLeaves');
-  if (!stem || !holder || gvLeaves.length) return;
+  var stem = document.getElementById('gvStem');
+  var live = document.getElementById('gvLeaves'), ghost = document.getElementById('gvGhostLeaves');
+  if (!stem || !live || !ghost || gvLeaves.length) return;
   var len = stem.getTotalLength();
   gvStemLen = len;
   stem.style.strokeDasharray = len;
-  stem.style.strokeDashoffset = len; /* start undrawn */
-  var N = 7, NS = 'http://www.w3.org/2000/svg';
+  stem.style.strokeDashoffset = len; /* start undrawn - the trace shows through underneath */
+  var N = 8;
   for (var i = 0; i < N; i++) {
     var frac = (i + 1) / (N + 1);
     var pt = stem.getPointAtLength(len * frac);
-    var rot = (i % 2 === 0) ? -22 : 22;
-    var pos = document.createElementNS(NS, 'g');
-    pos.setAttribute('transform', 'translate(' + pt.x.toFixed(1) + ' ' + pt.y.toFixed(1) + ')');
-    var leaf = document.createElementNS(NS, 'g');
-    leaf.setAttribute('class', 'gv-leaf');
-    var shape = document.createElementNS(NS, 'g');
-    shape.setAttribute('transform', 'scale(.5) rotate(' + rot + ') translate(-6 -33)');
-    shape.innerHTML = LEAF_PATHS;
-    leaf.appendChild(shape);
-    pos.appendChild(leaf);
-    holder.appendChild(pos);
-    gvLeaves.push({ el: leaf, at: frac });
+    var down = i % 2 === 1;               /* alternate sides of the stem */
+    var rot = down ? (180 - 18) : -18;    /* up leaf tips up, down leaf tips down */
+    ghost.appendChild(gvLeafAt(pt, rot, true, down).parentNode);
+    var el = gvLeafAt(pt, rot, false, down);
+    live.appendChild(el.parentNode);
+    gvLeaves.push({ el: el, at: frac });
   }
+  /* the lotus - ghost outline (always) + live bloom (opens at 100%) */
+  var gl = document.getElementById('gvGhostLotus'); if (gl) gl.innerHTML = gvLotusMarkup(true);
+  var ll = document.getElementById('gvLotus'); if (ll) ll.innerHTML = gvLotusMarkup(false);
 }
 function gvUpdate(p) {
   p = Math.max(0, Math.min(1, p || 0));
   var stem = document.getElementById('gvStem');
   if (stem && gvStemLen) stem.style.strokeDashoffset = (gvStemLen * (1 - p)).toFixed(1);
   gvLeaves.forEach(function(L) { L.el.classList.toggle('grown', p >= L.at); });
-  var bloom = document.getElementById('gvBloom');
-  if (bloom) bloom.classList.toggle('open', p >= 0.999);
+  var lotus = document.getElementById('gvLotus');
+  if (lotus) lotus.classList.toggle('open', p >= 0.999);
 }
 function hbSign() {
   if (hbPlaced) return;
@@ -5408,6 +5476,8 @@ function hbSign() {
   hbPaint();
   chimeSign();
   if (hbSlotEl) burstFromEl(hbSlotEl, document.getElementById('hbFrame')); /* v8.4 item 3 */
+  var hs = document.getElementById('hbSerial');
+  if (hs) { hs.hidden = false; hs.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L3.8 7.2l5-.7z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg><span>Digitally Signed &middot; <b>' + sigSerial('hb') + '</b></span>'; }
   hbUpdateProgress();
 }
 /* Next signature or initial: jumps to the first unplaced slot, in document order */
@@ -5722,6 +5792,7 @@ function renderForm() {
   var f = pending[0];
   revTarget = f.id;
   revSigned = false;
+  var revSer = document.getElementById('revSerial'); if (revSer) { revSer.hidden = true; revSer.innerHTML = ''; }
   /* the rail highlights only the form on stage (several rows share data-go) */
   document.querySelectorAll('.ritem.signlock').forEach(function(r){ r.classList.remove('on'); });
   var railRow = document.getElementById('r-' + f.id);
@@ -5778,6 +5849,21 @@ function renderForm() {
     ? 'Your director completes and co-signs this plan with you at your interview, before Theo\'s first day.'
     : 'This on-screen copy is for your review; the filed, signed copy is the official CDSS state form, carrying exactly this information.';
 }
+/* v8.13 (Jarred): every signature carries a stable serial - "Digitally Signed (serial)" - so it can
+   be cross-referenced to the signature certificate. Deterministic from the document, signer, and
+   date, so the same signature always shows the same serial on the form, the certificate, and any
+   audit. Format GM-<DOC>-XXXXXXXX. */
+var SIG_SERIALS = {};
+function sigSerial(docKey) {
+  if (SIG_SERIALS[docKey]) return SIG_SERIALS[docKey];
+  var base = docKey + '|' + sigName + '|' + TODAY;
+  var h = 2166136261;
+  for (var i = 0; i < base.length; i++) { h ^= base.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  var tag = String(docKey).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  var s = 'GM-' + tag + '-' + ('00000000' + h.toString(16).toUpperCase()).slice(-8);
+  SIG_SERIALS[docKey] = s;
+  return s;
+}
 function revSign(el) {
   if (revSigned) return;
   revSigned = true;
@@ -5787,6 +5873,12 @@ function revSign(el) {
   el.textContent = sigName;
   var d = document.getElementById('revDate');
   if (d) d.textContent = TODAY;
+  var ser = document.getElementById('revSerial');
+  if (ser) {
+    ser.hidden = false;
+    ser.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L3.8 7.2l5-.7z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' +
+      '<span>Digitally Signed &middot; <b>' + sigSerial(revTarget) + '</b></span>';
+  }
   var btn = document.getElementById('confirmBtn');
   btn.disabled = false;
   var pending = pendingForms();
@@ -5811,10 +5903,17 @@ function confirmDoc() {
 }
 function viewDoc(id) {
   if (id === 'hb') {
-    var blob = new Blob([hbCurrentHTML()], { type: 'text/html' }); /* v8.1: the live signed copy */
+    var blob = new Blob([hbCurrentHTML()], { type: 'text/html' }); /* the handbook is genuinely our own document */
     window.open(URL.createObjectURL(blob), '_blank');
     return;
   }
+  /* v8.13 (Jarred, high-severity fix): View opens the TRUE native CDSS PDF, never our HTML
+     recreation. This is the same file that is signed and filed. The bug was that View still
+     called openPrintDoc(formDocHTML(...)) - our made-up facsimile - while Download already
+     served the native PDF. Now both serve the native document. The NSP draft has no native CDSS
+     form (the director completes it), so it alone opens its readable draft. */
+  var pdf = NATIVE_PDFS[id];
+  if (pdf) { window.open(pdf, '_blank'); return; }
   var f = FORMS.filter(function(x){ return x.id === id; })[0];
   if (f) openPrintDoc(f.name, formDocHTML(f, docState[id]));
 }
