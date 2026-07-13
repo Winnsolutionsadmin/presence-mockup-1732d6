@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.2 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.3 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -745,10 +745,13 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .fdunder { display: inline-block; border-bottom: 1px solid var(--ink-mute);
   min-width: 120px; padding: 0 4px 1px; font-weight: 600; color: var(--ink); }
 .req { color: var(--earth); font-weight: 700; }
-.bandrow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin: 0 0 16px; }
-.bandchip { border: 1.5px solid var(--paper-deep); background: #fff; border-radius: 999px;
-  font-size: 12.5px; font-weight: 700; color: var(--ink-soft); padding: 6px 14px; }
-.bandchip.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+/* v8.3 item 5: the everything-is-on-track line on the documents home */
+.ontrack { display: flex; gap: 12px; align-items: flex-start; background: rgba(155,185,158,.16);
+  border: 1px solid rgba(111,143,112,.35); border-radius: 6px; padding: 14px 16px; margin: 4px 0 16px; }
+.ontrack svg { width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px; }
+.ontrack .otline { font-family: Newsreader, Georgia, serif; font-size: 19px; font-weight: 600;
+  color: var(--sage-deep); letter-spacing: -.01em; }
+.ontrack .otsub { font-size: 13px; color: var(--ink-soft); line-height: 1.55; margin-top: 2px; }
 .healthgroup { margin-bottom: 18px; }
 .healthgroup .grouplabel { margin-top: 0; }
 .hgrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -928,7 +931,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <span class="childchip">Theo · Aug 3</span>
   </div>
   <nav class="railnav">
-    <div class="rgroup">Steps 1 to 5 · Chapters</div>
+    <div class="rgroup">Steps 1 to 4 · Chapters</div>
     <button class="ritem" data-go="s-family" id="r-ch1">
       <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <span class="stepno">Step 1</span> Your family <span class="rsub"></span>
@@ -942,8 +945,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <span class="stepno">Step 3</span> Just in case <span class="rsub"></span>
     </button>
     <button class="ritem" data-go="s-health" id="r-ch4"><span class="st st-question">?</span> <span class="stepno">Step 4</span> Health + routines <span class="rsub"></span></button>
-    <button class="ritem" data-go="s-permissions" id="r-ch5"><span class="st st-question">?</span> <span class="stepno">Step 5</span> Permissions <span class="rsub"></span></button>
-    <div class="rgroup"><span class="stepno">Step 6</span> Sign and confirm</div>
+    <div class="rgroup"><span class="stepno">Step 5</span> Sign and confirm</div>
     <div class="locknote" id="signLockNote">Locked · finish your chapters first</div>
     <button class="ritem">
       <span class="st st-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5 12.5 4.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -951,7 +953,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     </button>
     <button class="ritem signlock" data-go="s-consent" id="r-hb">
       <span class="st st-question">?</span>
-      Parent handbook <span class="rsub">Sign · 1 slot</span>
+      Parent handbook <span class="rsub">Initial + sign</span>
     </button>
     <button class="ritem signlock" data-go="s-review" id="r-lic700">
       <span class="st st-question">?</span>
@@ -962,7 +964,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <button class="ritem signlock" data-go="s-review" id="r-lic613"><span class="st st-question">?</span> LIC 613A · Personal rights <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-lic995"><span class="st st-question">?</span> LIC 995 · Parents' rights <span class="rsub">Sign</span></button>
     <button class="ritem signlock" data-go="s-review" id="r-nsp"><span class="st st-question">?</span> Needs and services plan <span class="rsub">Confirm draft</span></button>
-    <div class="rgroup"><span class="stepno">Step 7</span> Your doctor</div>
+    <div class="rgroup"><span class="stepno">Step 6</span> Your doctor</div>
     <!-- v8 item 7: immunization sits ABOVE the doctor's report; it is the day-1 gate -->
     <button class="ritem" data-go="s-dash" id="r-imm"><span class="st st-upload"><svg viewBox="0 0 16 16" fill="none"><path d="M8 10V3.5m0 0L5 6.5m3-3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span> Immunization record <span class="rsub">Day 1</span></button>
     <button class="ritem" data-go="s-dash" id="r-701">
@@ -1006,7 +1008,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 
 <!-- SCREEN · WELCOME -->
 <section class="screen active" id="s-welcome" aria-label="Welcome"
-  data-stage="answer" data-time="about 12 min left">
+  data-stage="answer" data-time="about 11 min left">
   <div class="body">
     <div class="hband">
       <div class="htext" style="text-align:center">
@@ -1014,7 +1016,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <h1 class="title step-in d2">Let's get Theo ready for his first day.</h1>
         <p class="lede step-in d3">
           We already filled in most of your paperwork from your application.
-          Two chapters down, three to go, then everything is ready to sign.
+          Two chapters down, two to go, then everything is ready to sign.
         </p>
         <div class="trust step-in d3 mobonly" style="justify-content:center">
           <svg viewBox="0 0 16 16" fill="none"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -1024,7 +1026,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="hmeta step-in d2" aria-label="Progress and next step">
         <div class="hrow">
           <svg class="sprig railsprig" viewBox="0 0 132 26" style="width:104px;height:22px" aria-hidden="true"></svg>
-          <b class="pctnum">29%</b> <span class="pctsub">2 of 7 steps</span>
+          <b class="pctnum">29%</b> <span class="pctsub">2 of 6 steps</span>
         </div>
         <div class="hrow" id="hmetaNext"><b>Next up</b> Just in case · about 3 min</div>
         <div class="hrow">
@@ -1064,15 +1066,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="cmainx">
           <div class="cstep">Step 4</div>
           <div class="cname">Health + routines</div>
-          <div class="csub">About 2 min</div>
-        </div>
-        <div class="cstat"></div>
-      </div>
-      <div class="chcard" id="c-ch5" onclick="go('s-permissions')" style="cursor:pointer">
-        <div class="cmainx">
-          <div class="cstep">Step 5</div>
-          <div class="cname">Permissions</div>
-          <div class="csub">About 1 min</div>
+          <div class="csub">About 6 min</div>
         </div>
         <div class="cstat"></div>
       </div>
@@ -1086,7 +1080,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 
 <!-- SCREEN · CHAPTER ONE REVISIT · YOUR FAMILY -->
 <section class="screen" id="s-family" aria-label="Your family chapter"
-  data-stage="answer" data-time="about 12 min left">
+  data-stage="answer" data-time="about 11 min left">
   <div class="body">
     <button class="backlink" onclick="go('s-welcome')">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1106,7 +1100,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 
 <!-- SCREEN · STEP 2 REVISIT · ABOUT THEO -->
 <section class="screen" id="s-child" aria-label="About Theo chapter" data-locknote="All 49 answers, saved July 8 and locked. Unlock any field to change it; changes save as you go."
-  data-stage="answer" data-time="about 12 min left">
+  data-stage="answer" data-time="about 11 min left">
   <div class="body">
     <button class="backlink" onclick="go('s-welcome')">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1238,9 +1232,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   </div>
 </section>
 
-<!-- SCREEN · STEP 4 · HEALTH + ROUTINES · age-band conditional (v7) -->
+<!-- SCREEN · STEP 4 · HEALTH + ROUTINES · age-band conditional blocks render for the
+     child's actual room (toddler for Theo); the band is never a visible control (v8.3) -->
 <section class="screen" id="s-health" aria-label="Health and routines chapter"
-  data-stage="answer" data-time="about 9 min left">
+  data-stage="answer" data-time="about 8 min left">
   <div class="body" style="max-width:680px;margin:0 auto">
     <button class="backlink" onclick="go('s-welcome')">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1249,14 +1244,6 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <span class="kicker step-in">Step 4 · Health + routines <span class="est" id="healthEst">· 0 of 34 fields done</span></span>
     <h1 class="title step-in d1" style="font-size:28px">How Theo eats, sleeps, and settles.</h1>
     <p class="confirm-intro step-in d2">Only your teachers and directors see this. It fills the state health history and Theo's needs and services plan. Fields marked <span class="req">*</span> are required by those forms.</p>
-    <div class="bandrow step-in d2">
-      <span class="flabel" style="margin:0 6px 0 0">Theo's room: Toddler</span>
-      <button class="bandchip" data-band="infant" onclick="setBand('infant')">Infant</button>
-      <button class="bandchip on" data-band="toddler" onclick="setBand('toddler')">Toddler</button>
-      <button class="bandchip" data-band="preschool" onclick="setBand('preschool')">Preschool</button>
-      <span class="demolink" style="font-size:11px">demo: the band is set by Theo's room, never asked</span>
-    </div>
-
     <div class="healthgroup step-in d2">
       <div class="grouplabel">Health <span class="req">*</span></div>
       <div class="hgrid2">
@@ -1358,42 +1345,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   </div>
 </section>
 
-<!-- SCREEN · STEP 5 · PERMISSIONS -->
-<section class="screen" id="s-permissions" aria-label="Permissions chapter"
-  data-stage="answer" data-time="about 5 min left">
-  <div class="body" style="max-width:640px;margin:0 auto">
-    <button class="backlink" onclick="go('s-welcome')">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Your chapters
-    </button>
-    <span class="kicker step-in">Step 5 · Permissions <span class="est" id="permEst">· 0 of 4 checked</span></span>
-    <h1 class="title step-in d1" style="font-size:28px">A few yes-or-no permissions.</h1>
-    <p class="confirm-intro step-in d2">Each one is summarized in plain language. The full text is one tap away.</p>
-    <div class="confirm-card step-in d2" id="ackList">
-      <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
-        <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack1">
-        <label for="ack1" style="font-size:14.5px">Sunscreen and diaper cream. Teachers may apply the sunscreen and topical products you provide. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B opens here.')">Read full text</button></label>
-      </div></div>
-      <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
-        <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack2">
-        <label for="ack2" style="font-size:14.5px">Developmental screening. Teachers may use standard screening tools and share results with you. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full authorization text from Appendix B opens here.')">Read full text</button></label>
-      </div></div>
-      <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
-        <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack3">
-        <label for="ack3" style="font-size:14.5px">Illness exposure notices. I understand Growing Mindfully notifies me when Theo may have been exposed to a communicable illness. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full acknowledgment text from Appendix B opens here.')">Read full text</button></label>
-      </div></div>
-      <div class="crow"><div class="cmain" style="display:flex;gap:12px;align-items:flex-start">
-        <input type="checkbox" class="ack" style="width:18px;height:18px;margin-top:2px;accent-color:var(--sage-deep)" id="ack4">
-        <label for="ack4" style="font-size:14.5px">Late pickup. I understand that if pickup runs late, Growing Mindfully will call my emergency contacts in order. <button class="editbtn" style="padding:0;margin:0" onclick="alert('Mockup: the full acknowledgment text from Appendix B opens here.')">Read full text</button></label>
-      </div></div>
-    </div>
-    <div class="assist step-in d3">Photo, media, and Brightwheel authorizations are part of the handbook (Appendix B), which you sign in Step 6. Each row here is an acknowledgment of how care works, not an opt-in.</div>
-  </div>
-  <div class="actionbar">
-    <div class="nextup" id="permNext">4 permissions to check</div>
-    <button class="cta" id="permCta" onclick="finishChapter(5)" disabled>Finish chapter</button>
-  </div>
-</section>
+<!-- v8.3 item 2: the Permissions chapter is GONE. Its four rows (sunscreen/topical,
+     developmental screening, illness exposure, late pickup) are Appendix B clauses
+     (B.5 / B.6 / B.7 / B.13) that the family initials inside the handbook ceremony,
+     so a separate chapter was signing the same consents twice. -->
 
 <!-- SCREEN · GENERATE MOMENT: done vs needs-you, split -->
 <section class="screen" id="s-docs" aria-label="Your paperwork, filled out"
@@ -1404,15 +1359,15 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 
     <div class="lockbanner step-in d1" id="signLockBanner">
       <svg viewBox="0 0 16 16" fill="none"><path d="M4 7V5a4 4 0 118 0v2m-9 0h10v6.5a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 013 13.5V7z" stroke="#6F7F84" stroke-width="1.4" stroke-linecap="round"/></svg>
-      <span id="signLockText">Signing unlocks when your chapters are done. 3 chapters to finish.</span>
+      <span id="signLockText">Signing unlocks when your chapters are done. 2 chapters to finish.</span>
     </div>
 
     <div class="docgroups">
     <div>
     <div class="grouplabel step-in d1">Ready to sign or confirm · needs you</div>
     <button class="gendoc-anim docrow" style="animation-delay:.25s" id="g-hb" onclick="goGate('s-consent')">
-      <div class="rmain"><div class="rname">Parent handbook</div><div class="rmeta">Read it in full; one signature at Appendix E binds it</div></div>
-      <div class="cstat"><span class="st st-question">?</span><span class="cfields">1 slot</span></div>
+      <div class="rmain"><div class="rname">Parent handbook</div><div class="rmeta">Initial each prefilled or consent section as you read; one signature at Appendix E binds it</div></div>
+      <div class="cstat"><span class="st st-question">?</span><span class="cfields">18 slots</span></div>
     </button>
     <button class="gendoc-anim docrow" style="animation-delay:.35s" id="g-lic700" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review the filled form, then sign</div></div>
@@ -1463,7 +1418,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div class="gendoc-anim docrow doctor" style="animation-delay:.85s">
       <div class="rmain">
         <div class="rname">LIC 701 · Doctor's health report <span class="duechip soft">Due by August 17</span></div>
-        <div class="rmeta">Part A is filled in with Theo's details. Print or save it, take it to Theo's doctor, and they complete Part B. Due by the end of Theo's second week; nothing else is blocked while you wait.</div>
+        <div class="rmeta">This is the official CDSS LIC 701, the same fillable form your doctor knows. In production, Part A (Theo's name, birth date, center, and hours) arrives prefilled. Take it to Theo's doctor; they complete Part B. Due by the end of Theo's second week; nothing else is blocked while you wait.</div>
         <button class="dlbtn" onclick="openLic701()">
           <svg viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 17h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Download for your doctor
@@ -1540,7 +1495,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   <div class="body" style="padding-bottom:0">
     <div class="stagehead step-in">
       <span class="kicker" style="margin-bottom:0">Signing · Parent handbook <span class="est">· v2.7 · the whole document</span></span>
-      <span class="placedchip" id="placedChip">0 of 1 signed</span>
+      <span class="placedchip" id="placedChip">0 of 18 placed</span>
     </div>
     <div class="hbgrid step-in d1">
       <div>
@@ -1554,7 +1509,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
             Download the handbook
           </button>
           <button class="nextsig" id="nextSigBtn" onclick="hbNextSig()">
-            Next signature
+            Next signature or initial
             <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v8m0 0l-3-3m3 3l3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
@@ -1566,6 +1521,12 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         </div>
         <div class="sidecard">
           <div class="sidelabel">Where you sign</div>
+          <!-- v8.3 item 4: initials at every prefilled or consent section, then the
+               one signature at Appendix E. "Next signature or initial" walks them all. -->
+          <div class="placerow" id="pl-init">
+            <span class="st st-question">?</span> <span class="plinitlbl">0 of 17 initials · Appendices A to C</span>
+            <button class="go" onclick="hbNextSig()">Go</button>
+          </div>
           <div class="placerow" id="pl-sig">
             <span class="st st-question">?</span> Appendix E · signature
             <button class="go" onclick="hbNextSig()">Go</button>
@@ -1577,13 +1538,13 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         </div>
         <div class="sidecard">
           <div class="sidelabel">How this works</div>
-          <div style="font-size:12.5px;color:var(--ink-soft);line-height:1.55">This is the complete current handbook, exactly as published. One signature at Appendix E binds the whole document, including every appendix. Jordan signs from his own link.</div>
+          <div style="font-size:12.5px;color:var(--ink-soft);line-height:1.55">This is the complete current handbook, exactly as published. Your initials beside each prefilled or consent section confirm you saw it; one signature at Appendix E binds the whole document. Jordan signs from his own link.</div>
         </div>
       </aside>
     </div>
   </div>
   <div class="actionbar">
-    <div class="nextup" id="hbNextup">Read through, or jump straight to the signature line</div>
+    <div class="nextup" id="hbNextup">Read through, or jump from initial to initial; the signature line is last</div>
     <button class="cta" id="hbFinish" onclick="hbFinishSign()" disabled>Finish signing</button>
   </div>
 </section>
@@ -1604,7 +1565,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <div class="ctext" id="confirmText">I have reviewed this document, the information on it is factually correct, and I authorize Growing Mindfully to use it for Theo's enrollment file.</div>
     </div>
     <p class="legal step-in d3" id="reviewLegal">Confirming is recorded with a timestamp and the exact document you saw, like a signature.</p>
-    <p class="legal step-in d3" style="margin-top:2px" id="revFiledLine">When you confirm, this exact information is filed onto the official state form.</p>
+    <p class="legal step-in d3" style="margin-top:2px" id="revFiledLine">This on-screen copy is for your review; the filed, signed copy is the official CDSS state form, carrying exactly this information.</p>
   </div>
   <div class="actionbar">
     <div class="nextup" id="reviewNext">4 more forms after this one</div>
@@ -1639,9 +1600,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <h1 class="title step-in d1" style="font-size:32px;margin-top:10px">That's all for now!</h1>
       <p class="finalecopy step-in d2">Please complete your doctor evaluation form no later than your second week of attendance (but earlier is fine, too!)</p>
       <p class="finalecopy step-in d2">Your director will complete Theo's needs and services plan with you before his first day.</p>
-      <p class="lede step-in d3" style="font-size:14px">7 steps · 6 documents signed · 1 draft confirmed · 63 answers we typed for you.</p>
+      <p class="lede step-in d3" style="font-size:14px">6 steps · 6 documents signed and initialed · 1 draft confirmed · 63 answers we typed for you.</p>
       <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">We emailed you links to every completed document. They also live in your documents, always.</p>
       <p class="lede step-in d3" style="font-size:13.5px;margin-top:2px">Your signature certificate is in your documents.</p>
+      <!-- v8.3 item 7: what happens next, on our side. Calm, honest, automatic. -->
+      <p class="lede step-in d3" style="font-size:13.5px;margin-top:10px">From here it's automatic: your directors get everything to print, file, and confirm, and a copy is saved to your records.</p>
       <p class="hand step-in d3" style="font-size:19px;color:var(--sage-deep)">See you Monday, August 3.</p>
     </div>
   </div>
@@ -1658,15 +1621,24 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
       <h1 class="title" style="margin-bottom:2px;font-size:27px">Theo's enrollment</h1>
       <span class="pill mute">Starts Aug 3</span>
     </div>
+    <!-- v8.3 items 5 + 7: once everything is signed, the page says so plainly, and
+         says what happens next on our side, honestly: it is automatic. -->
+    <div class="ontrack step-in d1" id="onTrack" hidden>
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 13 C 7 13 8 6 11 6 C 13 6 12 11 15 11" stroke="#6F8F70" stroke-width="1.6" stroke-linecap="round"/><path d="M3 16h14" stroke="#6F8F70" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <div>
+        <div class="otline">Everything is on track!</div>
+        <div class="otsub" id="onTrackSub">Nothing here needs you. Your directors get everything to print, file, and confirm; a copy is saved to your records.</div>
+      </div>
+    </div>
     <p class="lede step-in d1" style="font-size:14.5px;margin-bottom:14px">Every required document, and where it stands. Anything finished opens to view, and downloads beside it.</p>
 
     <div class="docgroups">
     <div>
     <div class="grouplabel step-in d1" id="needsLabel">Needs you</div>
     <button class="docrow step-in d1" id="d-hb" onclick="goGate('s-consent')">
-      <div class="rmain"><div class="rname">Parent handbook</div><div class="rmeta">Sign as you read · about 5 min</div>
+      <div class="rmain"><div class="rname">Parent handbook</div><div class="rmeta">Initial and sign as you read · about 5 min</div>
         <div class="rowactions"></div></div>
-      <div class="cstat"><span class="st st-question">?</span><span class="cfields">1 slot</span></div>
+      <div class="cstat"><span class="st st-question">?</span><span class="cfields">18 slots</span></div>
     </button>
     <button class="docrow step-in d1" id="d-lic700" onclick="goGate('s-review')">
       <div class="rmain"><div class="rname">LIC 700 · Identification and emergency</div><div class="rmeta">Review and sign · about 1 min</div>
@@ -1743,7 +1715,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="rname" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">LIC 701 · Doctor's health report
           <span class="duechip soft">Due by August 17</span>
         </div>
-        <div class="rmeta" id="d-701-meta">Part A is filled in. Take it to Theo's doctor; due by the end of Theo's second week. Nothing else is blocked while you wait.</div>
+        <div class="rmeta" id="d-701-meta">The official CDSS LIC 701; in production Part A (Theo's name, birth date, center, hours) arrives prefilled. Take it to Theo's doctor; due by the end of Theo's second week. Nothing else is blocked while you wait.</div>
         <div class="rowactions"><button class="raction" onclick="openLic701()">Download for your doctor</button></div>
       </div>
       <div class="upright"><span class="upbtn" role="button" tabindex="0" data-upload="lic701" onclick="markUploaded('lic701')">
@@ -1776,7 +1748,7 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   <span class="sdot on" id="dot-answer"></span><span id="lbl-answer" class="slabel">Answer</span>
   <span class="sdot" id="dot-sign"></span><span id="lbl-sign">Sign + confirm</span>
   <span class="sdot" id="dot-done"></span><span id="lbl-done">Done</span>
-  <span>·</span><span class="stime" id="stagetime">about 12 min left</span>
+  <span>·</span><span class="stime" id="stagetime">about 11 min left</span>
 </div>
 
 
@@ -3691,20 +3663,21 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 </script>
 
 <script>
-/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md (v8). */
+/* Mockup wiring only. Production behavior is specified in PRESENCE-DESIGN.md (v8.3). */
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var sigName = 'Maria Alvarez';
 var TODAY = 'July 12, 2026';
 
 /* ---- chapters. v8 item 2: `done` is LIVE, recomputed from the actual fields the
    moment any of them completes; `finished` is the chapter-complete state that grows
-   the leaf and gates signing (set by Finish chapter). Counts stop going stale. ---- */
+   the leaf and gates signing (set by Finish chapter). Counts stop going stale.
+   v8.3 item 2: FOUR data chapters. Permissions is gone; its consents live in the
+   handbook ceremony as Appendix B initials (B.5/B.6/B.7/B.13). ---- */
 var chState = [
   { id: 'ch1', name: 'Your family',       screen: 's-family',      done: 22, total: 22, mins: 0, finished: true },
   { id: 'ch2', name: 'About Theo',        screen: 's-child',       done: 49, total: 49, mins: 0, finished: true },
   { id: 'ch3', name: 'Just in case',      screen: 's-justincase',  done: 16, total: 18, mins: 3, finished: false },
-  { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 34, mins: 6, finished: false },
-  { id: 'ch5', name: 'Permissions',       screen: 's-permissions', done: 0,  total: 4,  mins: 1, finished: false }
+  { id: 'ch4', name: 'Health + routines', screen: 's-health',      done: 0,  total: 34, mins: 6, finished: false }
 ];
 /* v8.1: solo-parent excludes the Parent 2 fields from chapter 1's total AND done,
    everywhere the counts surface (rail, cards, fractions); unchecking restores them. */
@@ -3727,7 +3700,6 @@ function refreshLiveCounts() {
   chState[1].done = countFilled('#ch2Fields');
   chState[2].done = chState[2].finished ? chState[2].total : jicFilled();
   chState[3].done = chState[3].finished ? chState[3].total : healthFilled();
-  chState[4].done = chState[4].finished ? chState[4].total : document.querySelectorAll('.ack:checked').length;
 }
 function countFilled(sel) {
   var n = 0;
@@ -3747,7 +3719,7 @@ function jicFilled() {
    completion bug where the handbook never registered as signed ---- */
 var docState = { hb: false, lic700: false, lic702: false, lic627: false, lic613: false, lic995: false, nsp: false };
 var DOCLIST = [
-  { id: 'hb',     rail: 'r-hb',     gen: 'g-hb',     dash: 'd-hb',     doneLabel: 'Signed',    pend: '1 slot' },
+  { id: 'hb',     rail: 'r-hb',     gen: 'g-hb',     dash: 'd-hb',     doneLabel: 'Signed',    pend: 'Initial + sign' },
   { id: 'lic700', rail: 'r-lic700', gen: 'g-lic700', dash: 'd-lic700', doneLabel: 'Signed',    pend: '27/27 filled' },
   { id: 'lic702', rail: 'r-lic702', gen: 'g-lic702', dash: 'd-lic702', doneLabel: 'Signed',    pend: '14/14 filled' },
   { id: 'lic627', rail: 'r-lic627', gen: 'g-lic627', dash: 'd-lic627', doneLabel: 'Signed',    pend: '5/5 filled' },
@@ -3775,34 +3747,33 @@ function signLocked() { return chState.some(function(c){ return !c.finished; });
 function allDocsDone() { return DOCLIST.every(function(d){ return docState[d.id]; }); }
 function docsDoneCount() { return DOCLIST.filter(function(d){ return docState[d.id]; }).length; }
 function nextChapter() { return chState.filter(function(c){ return !c.finished; })[0] || null; }
-/* v8 item 2: fractional progress. Each of the 7 steps contributes 1/7th; inside a
-   step, every completed field moves the bar its 1/Nth. The percent readouts and the
-   stem tip all derive from this one number. */
+/* v8 item 2 (renumbered v8.3): fractional progress. Each of the 6 steps contributes
+   1/6th; inside a step, every completed field moves the bar its 1/Nth. The percent
+   readouts and the stem tip all derive from this one number. */
 function sectionFraction(i) {
-  if (i < 5) { var c = chState[i]; return c.finished ? 1 : Math.min(c.done / c.total, 1); }
-  if (i === 5) return docsDoneCount() / DOCLIST.length;
+  if (i < 4) { var c = chState[i]; return c.finished ? 1 : Math.min(c.done / c.total, 1); }
+  if (i === 4) return docsDoneCount() / DOCLIST.length;
   /* v8.1: your doctor contributes fractionally from its two items */
   return ((doctorState.imm ? 1 : 0) + (doctorState.lic701 ? 1 : 0)) / 2;
 }
 function overallPct() {
   var sum = 0;
-  for (var i = 0; i < 7; i++) sum += sectionFraction(i);
-  return sum / 7;
+  for (var i = 0; i < 6; i++) sum += sectionFraction(i);
+  return sum / 6;
 }
 
 /* ---- the progress plant (v7): STEM extends to the CURRENT step; a LEAF grows
    only when its step FINISHES. Built once so the draw-in and unfurl animate. ---- */
 var TG_SECTIONS = [
   { label: 'your family' }, { label: 'Theo' }, { label: 'just in case' },
-  { label: 'health + routines' }, { label: 'permissions' },
-  { label: 'sign + confirm' }, { label: 'your doctor' }
+  { label: 'health + routines' }, { label: 'sign + confirm' }, { label: 'your doctor' }
 ];
 var LEAF_PATHS = '<path d="M6 33 C 2 20 8 6 20 1 C 24 12 20 26 8 32 Q 6 33 6 33 Z" fill="#9BB99E"/><path d="M7 31 C 10 22 14 13 19 4" stroke="#6F8F70" stroke-width="1" fill="none"/>';
 var LEAF_SVG_UP = '<svg class="tgleaf" viewBox="0 0 26 34" aria-hidden="true">' + LEAF_PATHS + '</svg>';
 var LEAF_SVG_DN = '<svg class="tgleaf" viewBox="0 0 26 34" aria-hidden="true"><g transform="translate(0 34) scale(1 -1)">' + LEAF_PATHS + '</g></svg>';
 function tgStates() {
   var st = [];
-  for (var i = 0; i < 5; i++) st.push(chState[i].finished ? 'done' : 'dormant');
+  for (var i = 0; i < 4; i++) st.push(chState[i].finished ? 'done' : 'dormant');
   st.push(allDocsDone() ? 'done' : 'dormant');
   st.push(doctorDone() ? 'done' : 'dormant'); /* v8.1: leaf when both uploads are in */
   var actIdx = -1;
@@ -3862,7 +3833,7 @@ function renderTopGarden() {
       pos = centerPct(end.getBoundingClientRect());
     } else {
       var here = centerPct(nodes[t.active].getBoundingClientRect());
-      var nextBox = (t.active < 6) ? nodes[t.active + 1].getBoundingClientRect() : end.getBoundingClientRect();
+      var nextBox = (t.active < 5) ? nodes[t.active + 1].getBoundingClientRect() : end.getBoundingClientRect();
       /* the tip never reaches the next node until the step actually finishes */
       pos = here + Math.min(sectionFraction(t.active), 0.88) * (centerPct(nextBox) - here);
     }
@@ -3883,13 +3854,13 @@ function renderTopGarden() {
 }
 window.addEventListener('resize', function(){ if (tgBuilt) renderTopGarden(); });
 
-/* ---- v8 item 9: the rail sprig, rendered live from the same 7 steps. One node per
-   step, a leaf on each COMPLETED step (alternating sides), fill to the same
-   fractional position as the stem. ---- */
+/* ---- v8 item 9 (renumbered v8.3): the rail sprig, rendered live from the same
+   6 steps. One node per step, a leaf on each COMPLETED step (alternating sides),
+   fill to the same fractional position as the stem. ---- */
 function renderSprigs() {
   var t = tgStates();
   var pct = overallPct();
-  var xs = [10, 27, 44, 61, 78, 95, 112];
+  var xs = [10, 31, 52, 73, 94, 115];
   var fillX = 6 + (120 * pct);
   var h = '<line class="srail" x1="6" y1="14" x2="126" y2="14"/>' +
     '<line class="sfill" x1="6" y1="14" x2="' + fillX.toFixed(1) + '" y2="14"/>';
@@ -3906,7 +3877,7 @@ function renderSprigs() {
       h += '<circle class="n" cx="' + x + '" cy="14" r="3.2"/>';
     }
   });
-  var label = Math.round(pct * 100) + ' percent complete, ' + t.states.filter(function(s){ return s === 'done'; }).length + ' of 7 steps';
+  var label = Math.round(pct * 100) + ' percent complete, ' + t.states.filter(function(s){ return s === 'done'; }).length + ' of 6 steps';
   document.querySelectorAll('svg.railsprig').forEach(function(svg) {
     svg.innerHTML = h;
     svg.setAttribute('aria-label', label);
@@ -3920,7 +3891,7 @@ function renderState() {
   var doneSections = t.states.filter(function(x){ return x === 'done'; }).length;
   var pctv = Math.round(overallPct() * 100) + '%';
   document.querySelectorAll('.pctnum').forEach(function(e){ e.textContent = pctv; });
-  document.querySelectorAll('.pctsub').forEach(function(e){ e.textContent = (e.classList.contains('sub') ? '· ' : '') + doneSections + ' of 7 steps'; });
+  document.querySelectorAll('.pctsub').forEach(function(e){ e.textContent = (e.classList.contains('sub') ? '· ' : '') + doneSections + ' of 6 steps'; });
   document.querySelectorAll('.railprog .pct').forEach(function(e){ e.textContent = pctv; });
   chState.forEach(function(c) {
     var full = c.finished;
@@ -3973,21 +3944,10 @@ function renderState() {
   if (hc) hc.disabled = !hReady;
   var hn = document.getElementById('healthNext');
   if (hn) hn.textContent = chState[3].finished ? 'Done. Everything here is saved.'
-    : (hReady ? 'Next: Permissions · about 1 min'
+    : (hReady ? 'Last chapter. Next: your paperwork, filled out'
     : healthMissing() + ' required ' + (healthMissing() === 1 ? 'field' : 'fields') + ' to go, marked *');
   var he = document.getElementById('healthEst');
   if (he) he.textContent = '· ' + healthFilled() + ' of ' + chState[3].total + ' fields done';
-  var acks = document.querySelectorAll('.ack');
-  var ackDone = Array.prototype.filter.call(acks, function(a){ return a.checked; }).length;
-  var pc = document.getElementById('permCta');
-  if (pc) pc.disabled = ackDone < acks.length;
-  var pn = document.getElementById('permNext');
-  if (pn) pn.textContent = chState[4].finished ? 'Done. Everything here is saved.'
-    : (ackDone < acks.length
-    ? (acks.length - ackDone) + (acks.length - ackDone === 1 ? ' permission' : ' permissions') + ' to check'
-    : 'Last chapter. Next: your paperwork, filled out');
-  var pe = document.getElementById('permEst');
-  if (pe) pe.textContent = '· ' + ackDone + ' of ' + acks.length + ' checked';
   /* welcome next-up lines */
   var nxt = nextChapter();
   var nextText = nxt ? ('Next up: ' + nxt.name + ' · about ' + nxt.mins + ' min')
@@ -4029,6 +3989,16 @@ function renderDocs() {
   });
   var nl = document.getElementById('needsLabel');
   if (nl) nl.textContent = needs > 0 ? 'Needs you · ' + needs : 'Signed and confirmed · nothing needs you';
+  /* v8.3 items 5 + 7: the on-track line appears once every document is signed or
+     confirmed; the sub-line stays honest about the two doctor items if they remain */
+  var ot = document.getElementById('onTrack');
+  if (ot) {
+    ot.hidden = needs > 0;
+    var os = document.getElementById('onTrackSub');
+    if (os) os.textContent = doctorDone()
+      ? 'Nothing needs you. Your directors get everything to print, file, and confirm; a copy is saved to your records.'
+      : 'All your signing is done, and nothing is blocked. Your directors get everything to print, file, and confirm; a copy is saved to your records. Only the doctor items remain.';
+  }
 }
 
 /* ---- navigation ---- */
@@ -4052,7 +4022,7 @@ function go(id) {
   if (id === 's-docs') countUp();
   if (id === 's-handbook') hbInit();
   if (id === 's-review') renderForm();
-  if (id === 's-finale') { spawnConfetti(); chimeSign(); }
+  if (id === 's-finale') { spawnConfetti(); } /* v8.3: the finale is visual only; sound belongs to signatures */
   var chHere = chState.filter(function(c){ return c.screen === id; })[0];
   if (chHere && chHere.finished) applyChapterLock(t);
   maskInputs();
@@ -4130,10 +4100,6 @@ function chapterValid(i) {
   if (i === 1) return countFilled('#ch2Fields') >= chState[1].total;
   if (i === 2) return pickupOk();
   if (i === 3) return healthValid();
-  if (i === 4) {
-    var acks = document.querySelectorAll('.ack');
-    return Array.prototype.every.call(acks, function(a){ return a.checked; });
-  }
   return true;
 }
 function revalidateChapter(sec) {
@@ -4202,7 +4168,6 @@ document.addEventListener('click', function(e) {
 /* v6 item 3 (flow): Continue always leads to the next DATA chapter; the
    generate/paperwork screen appears only after the last chapter */
 function goNextChapter() {
-  chimeNext();
   var nxt = nextChapter();
   go(nxt ? nxt.screen : 's-docs');
 }
@@ -4210,18 +4175,13 @@ function finishChapter(n) {
   var c = chState[n - 1];
   if (n === 3 && !pickupOk()) { renderState(); return; }
   if (n === 4 && !healthValid()) { renderState(); return; }
-  if (n === 5) {
-    var acks = document.querySelectorAll('.ack');
-    if (Array.prototype.some.call(acks, function(a){ return !a.checked; })) { renderState(); return; }
-  }
   c.finished = true;
-  chimeNext();
   renderState();
   var nxt = nextChapter();
   go(nxt ? nxt.screen : 's-docs');
 }
 function demoCompleteAll() { chState.forEach(function(c){ c.finished = true; }); renderState(); go('s-docs'); }
-/* v8.1: the step 7 uploads are demo-completable. Production opens the real camera or
+/* v8.1: the step 6 uploads are demo-completable. Production opens the real camera or
    file picker; here the button marks the item uploaded so the journey can honestly
    reach 100 percent and the plant can bloom. */
 function markUploaded(key) {
@@ -4240,7 +4200,6 @@ function markUploaded(key) {
     var sub = rail.querySelector('.rsub');
     if (sub) sub.textContent = 'Added';
   }
-  chimeNext();
   sparkPending = true;
   renderState();
 }
@@ -4333,21 +4292,19 @@ function maskInputs() { maskPhones(); maskAlpha(); }
 document.addEventListener('input', function(e) {
   if (e.target.closest && e.target.closest('#pickupRows')) renderState();
 });
-document.addEventListener('change', function(e) {
-  if (e.target.classList && e.target.classList.contains('ack')) renderState();
-});
-
-/* ---- v8 item 5: sound, synthesized in WebAudio. No audio files. Two voices:
-   a peaceful single-bell chime when a signature completes (fundamental + one soft
-   partial, long exponential decay) and a shorter, quieter tone on Next presses.
-   A visible toggle turns all of it off; the toggle state would persist per family. ---- */
+/* ---- v8.3 item 3: sound, synthesized in WebAudio, plays ONLY when a signature or
+   initial is placed. No chime on Next, clicks, or navigation; those are silent.
+   The signature voice is a soft two-note rising resolve (C5 then E5, a major third):
+   quietly victorious, short, low volume. Initials get a single soft E5, shorter
+   still, so a run of initial taps never becomes a bell choir. The visible toggle
+   turns it all off, and prefers-reduced-motion mutes it entirely. ---- */
 var audioOn = true, actx = null;
-function bell(freq, dur, peak) {
-  if (!audioOn) return;
+function bell(freq, dur, peak, delay) {
+  if (!audioOn || reduceMotion) return;
   try {
     if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
     if (actx.state === 'suspended') actx.resume();
-    var t0 = actx.currentTime;
+    var t0 = actx.currentTime + (delay || 0);
     [[1, 1], [2.76, .28], [5.4, .08]].forEach(function(p) {
       var o = actx.createOscillator(), g = actx.createGain();
       o.type = 'sine';
@@ -4360,8 +4317,11 @@ function bell(freq, dur, peak) {
     });
   } catch (e) { console.debug('Presence mockup: WebAudio bell unavailable.', e); }
 }
-function chimeSign() { bell(659.25, 2.4, 0.075); }   /* E5: the zen bell, sparing */
-function chimeNext() { bell(440, 0.7, 0.028); }      /* A4: the soft page-turn tone */
+function chimeSign() {
+  bell(523.25, 1.1, 0.045);        /* C5: the gentle lift */
+  bell(659.25, 2.2, 0.06, 0.16);   /* E5: the resolve, a major third up */
+}
+function chimeInitial() { bell(659.25, 0.9, 0.03); } /* one soft E5 per initial */
 function toggleAudio(btn) {
   audioOn = !audioOn;
   document.querySelectorAll('.audiotog').forEach(function(b) {
@@ -4371,7 +4331,6 @@ function toggleAudio(btn) {
     var l = b.querySelector('.audlbl');
     if (l) l.textContent = audioOn ? 'Sounds on' : 'Sounds off';
   });
-  if (audioOn) chimeNext();
 }
 
 /* ---- v8 item 1: the completed chapters render EVERY saved entry as a real,
@@ -4488,6 +4447,7 @@ document.addEventListener('change', function(e) {
    latest handbook and DETECT anchors by their labels, so version bumps never
    break the component. ---- */
 var hbInited = false, hbPlaced = false, hbSlotEl = null, hbDateEl = null, hbDoc = null;
+var hbSlots = []; /* v8.3 item 4: every initials slot + the signature, in document order */
 function hbInit() {
   if (hbInited) return;
   hbInited = true;
@@ -4526,7 +4486,16 @@ function hbWire(doc) {
     '.pres-acc label{display:inline-flex;align-items:center;gap:5px;cursor:pointer}' +
     '.pres-acc input{width:12px;height:12px;accent-color:#6F8F70;margin:0}' +
     '.pres-acc .pres-editaff{background:none;border:0;color:#3D8189;font:700 8pt Manrope,sans-serif;cursor:pointer;padding:0}' +
-    '.pres-acc.ok{color:#6F8F70}';
+    '.pres-acc.ok{color:#6F8F70}' +
+    /* v8.3 item 4: per-section initials. Every prefilled or consent section carries
+       a tappable initials slot, in document order; the adopted initials fill it. */
+    '.pres-initrow{display:flex;align-items:center;gap:10px;justify-content:flex-end;margin:10px 0 4px}' +
+    '.pres-initlab{font:600 7.5pt Manrope,sans-serif;color:#6F7F84;letter-spacing:.05em;text-transform:uppercase;text-align:right}' +
+    '.pres-init{display:inline-flex;align-items:center;justify-content:center;border:1.5px dashed #C9A86A;' +
+    'background:rgba(201,168,106,.1);border-radius:6px;color:#8A6E38;font:700 8.5pt Manrope,sans-serif;' +
+    'padding:5px 12px;min-width:78px;cursor:pointer;flex-shrink:0}' +
+    '.pres-init.filled{border-style:solid;background:#fff;cursor:default;' +
+    "font-family:'Caveat',cursive;font-size:14pt;font-weight:600;color:#1F2A2E;padding:2px 12px}";
   doc.head.appendChild(st);
   /* v8 item 3: attach "This is accurate" + inline edit to a prefilled slot */
   function addAccuracy(field, fillEl) {
@@ -4619,6 +4588,43 @@ function hbWire(doc) {
       addAccuracy(field, v);
     }
   });
+  /* v8.3 item 4: initials slots, in document order. One per prefilled-data section
+     (Appendix A parties block, Appendix C drafted plan) and one per Appendix B
+     clause, the consents especially. Tapping applies the adopted initials. */
+  hbSlots = [];
+  function addInitialSlot(afterEl, label) {
+    var row = doc.createElement('div');
+    row.className = 'pres-initrow';
+    var lab = doc.createElement('span');
+    lab.className = 'pres-initlab';
+    lab.textContent = label;
+    var b = doc.createElement('button');
+    b.type = 'button';
+    b.className = 'pres-init';
+    b.textContent = 'Tap to initial';
+    row.appendChild(lab);
+    row.appendChild(b);
+    afterEl.parentNode.insertBefore(row, afterEl.nextSibling);
+    var slot = { el: b, row: row, kind: 'initial', placed: false };
+    b.addEventListener('click', function(){ hbPlaceInitial(slot); });
+    hbSlots.push(slot);
+  }
+  var appA = doc.getElementById('app-a');
+  if (appA) {
+    var firstSubA = appA.querySelector('.sub');
+    if (firstSubA && firstSubA.previousElementSibling) {
+      addInitialSlot(firstSubA.previousElementSibling, 'Initials · the details above are correct');
+    }
+  }
+  doc.querySelectorAll('#app-b .sub').forEach(function(sub) {
+    var num = sub.querySelector('.subnum');
+    var lastChild = sub.lastElementChild || sub;
+    addInitialSlot(lastChild, 'Initials · ' + (num ? num.textContent.trim() : 'this section'));
+  });
+  var appC = doc.getElementById('app-c');
+  if (appC && appC.lastElementChild) {
+    addInitialSlot(appC.lastElementChild, 'Initials · this drafted plan looks right');
+  }
   if (sigField) {
     sigRow = sigField.closest('.sig-row');
     var btn = doc.createElement('button');
@@ -4628,6 +4634,7 @@ function hbWire(doc) {
     btn.onclick = hbSign;
     sigField.insertBefore(btn, sigField.firstChild);
     hbSlotEl = btn;
+    hbSlots.push({ el: btn, kind: 'sig', placed: false });
     if (sigRow) {
       var dateField = null;
       sigRow.querySelectorAll('.flabel').forEach(function(l) {
@@ -4637,6 +4644,7 @@ function hbWire(doc) {
     }
   }
   if (hbPlaced) hbPaint(); /* persistence across re-entry */
+  hbUpdateProgress();
 }
 function hbPaint() {
   if (!hbSlotEl) return;
@@ -4649,27 +4657,65 @@ function hbPaint() {
     hbDateEl.insertBefore(dv, hbDateEl.firstChild);
   }
 }
+/* v8.3 item 4: placing an initial. The adopted initials fill the slot; each one
+   earns the single soft note, never the full two-note signature resolve. */
+function hbPlaceInitial(slot) {
+  if (slot.placed) return;
+  slot.placed = true;
+  slot.el.classList.add('filled');
+  slot.el.textContent = initialsOf(sigName) || 'MA';
+  chimeInitial();
+  hbUpdateProgress();
+}
+function hbAllPlaced() { return hbSlots.length > 0 && hbSlots.every(function(s){ return s.placed || (s.kind === 'sig' && hbPlaced); }); }
+function hbInitialsLeft() { return hbSlots.filter(function(s){ return s.kind === 'initial' && !s.placed; }).length; }
+function hbUpdateProgress() {
+  var total = hbSlots.length;
+  var placed = hbSlots.filter(function(s){ return s.placed; }).length;
+  var chip = document.getElementById('placedChip');
+  if (chip && total) {
+    chip.textContent = placed + ' of ' + total + ' placed';
+    chip.classList.toggle('alldone', placed === total);
+  }
+  var initTotal = hbSlots.filter(function(s){ return s.kind === 'initial'; }).length;
+  var initLeft = hbInitialsLeft();
+  var pi = document.getElementById('pl-init');
+  if (pi) {
+    var lbl = pi.querySelector('.plinitlbl');
+    if (lbl) lbl.textContent = (initTotal - initLeft) + ' of ' + initTotal + ' initials · Appendices A to C';
+    if (initLeft === 0 && pi.querySelector('.st-question')) pi.querySelector('.st').outerHTML = CHECK_SVG;
+  }
+  var ps = document.getElementById('pl-sig');
+  if (ps && hbPlaced && ps.querySelector('.st-question')) ps.querySelector('.st').outerHTML = CHECK_SVG;
+  var fin = document.getElementById('hbFinish');
+  var done = total > 0 && placed === total;
+  if (fin) fin.disabled = !done;
+  var nu = document.getElementById('hbNextup');
+  if (nu) nu.textContent = done
+    ? 'Signed and initialed. Finish below whenever you are ready.'
+    : (initLeft > 0
+      ? initLeft + (initLeft === 1 ? ' initial' : ' initials') + (hbPlaced ? ' to go' : ' and the signature to go')
+      : 'The Appendix E signature to go');
+}
 function hbSign() {
   if (hbPlaced) return;
   hbPlaced = true;
+  var sigSlot = hbSlots.filter(function(s){ return s.kind === 'sig'; })[0];
+  if (sigSlot) sigSlot.placed = true;
   hbPaint();
   chimeSign();
-  var chip = document.getElementById('placedChip');
-  chip.textContent = '1 of 1 signed';
-  chip.classList.add('alldone');
-  var row = document.getElementById('pl-sig');
-  if (row) row.querySelector('.st').outerHTML = CHECK_SVG;
-  document.getElementById('hbFinish').disabled = false;
-  document.getElementById('hbNextup').textContent = 'Signed. Finish below whenever you are ready.';
+  hbUpdateProgress();
 }
+/* Next signature or initial: jumps to the first unplaced slot, in document order */
 function hbNextSig() {
   if (!hbInited) { hbInit(); }
-  if (hbSlotEl) hbSlotEl.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  var next = hbSlots.filter(function(s){ return !s.placed; })[0];
+  var target = next ? next.el : hbSlotEl;
+  if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
 }
 function hbFinishSign() {
-  if (!hbPlaced) { hbNextSig(); return; }
+  if (!hbAllPlaced()) { hbNextSig(); return; }
   docState.hb = true; /* v6 fix: completion registers and persists */
-  chimeNext();
   var btn = document.getElementById('hbFinish');
   btn.textContent = 'Signed and sealed';
   btn.classList.add('done');
@@ -4996,7 +5042,7 @@ function renderForm() {
     : 'Confirming is recorded with a timestamp and the exact document you saw, like a signature.';
   document.getElementById('revFiledLine').textContent = f.draft
     ? 'Your director completes and co-signs this plan with you at your interview, before Theo\'s first day.'
-    : 'When you confirm, this exact information is filed onto the official state form.';
+    : 'This on-screen copy is for your review; the filed, signed copy is the official CDSS state form, carrying exactly this information.';
 }
 function revSign(el) {
   if (revSigned) return;
@@ -5022,7 +5068,6 @@ function confirmDoc() {
     return;
   }
   docState[f.id] = true;
-  chimeNext();
   renderState();
   if (allDocsDone()) { go('s-finale'); return; }
   if (!pendingForms().length) { go(docState.hb ? 's-finale' : 's-consent'); return; }
@@ -5109,74 +5154,16 @@ function openPrintDoc(title, bodyHtml) {
   w.document.close();
 }
 
-/* ---- v6 item 5: the physician's report downloads as a REAL LIC 701, Part A
-   prefilled (child, birthdate, center), Part B structured and blank for the
-   physician. Never blank, never a placeholder. ---- */
-function lic701HTML() {
-  /* v8 item 4: the literal LIC 701 (8/08), both pages, monochrome. Part A prefilled
-     by Presence; Part B structured and blank for the physician. */
-  var HDR = '<div class="fdstate"><span>STATE OF CALIFORNIA<br>HEALTH AND HUMAN SERVICES AGENCY</span><span>CALIFORNIA DEPARTMENT OF SOCIAL SERVICES<br>COMMUNITY CARE LICENSING</span></div>';
-  var h = '<div class="formdoc">' + HDR +
-    '<div class="fdhead"><div class="fdmaintitle">PHYSICIAN\'S REPORT - CHILD CARE CENTERS' +
-    '<span class="t2" style="font-weight:400;font-size:11px">(CHILD\'S PRE-ADMISSION HEALTH EVALUATION)</span></div></div>' +
-    '<div class="fdsecthead">PART A - PARENT\'S CONSENT <i>(TO BE COMPLETED BY PARENT)</i></div>' +
-    '<div class="fdtext" style="border-top:0;line-height:2">' +
-    '<span class="fdunder" style="min-width:220px">Theo Alvarez</span> <span style="font-size:6.5px">(NAME OF CHILD)</span>, born ' +
-    '<span class="fdunder" style="min-width:150px">March 14, 2024</span> <span style="font-size:6.5px">(BIRTH DATE)</span> is being studied for readiness to enter<br>' +
-    '<span class="fdunder" style="min-width:260px">Growing Mindfully (Present Pathways, Inc.)</span> <span style="font-size:6.5px">(NAME OF CHILD CARE CENTER/SCHOOL)</span>. This Child Care Center/School provides a program which extends from <span class="fdunder" style="min-width:40px">7</span> : <span class="fdunder" style="min-width:40px">00</span><br>' +
-    'a.m./p.m. to <span class="fdunder" style="min-width:50px">6:00</span> a.m./p.m., <span class="fdunder" style="min-width:70px">five (5)</span> days a week.<br><br>' +
-    'Please provide a report on above-named child using the form below. I hereby authorize release of medical information contained in this report to the above-named Child Care Center.<br><br>' +
-    '<span class="blank" style="min-width:280px"></span>&nbsp;&nbsp;<span style="font-size:6.5px">(SIGNATURE OF PARENT, GUARDIAN, OR CHILD\'S AUTHORIZED REPRESENTATIVE)</span>' +
-    '&nbsp;&nbsp;&nbsp;<span class="blank" style="min-width:90px"></span>&nbsp;&nbsp;<span style="font-size:6.5px">(TODAY\'S DATE)</span></div>' +
-    '<div class="fdsecthead">PART B - PHYSICIAN\'S REPORT <i>(TO BE COMPLETED BY PHYSICIAN)</i></div>' +
-    '<div class="fdtext" style="border-top:0">Problems of which you should be aware:</div>' +
-    fdrow([{l:'HEARING:'},{l:'ALLERGIES: MEDICINE:'}]) +
-    fdrow([{l:'VISION:'},{l:'INSECT STINGS:'}]) +
-    fdrow([{l:'DEVELOPMENTAL:'},{l:'FOOD:'}]) +
-    fdrow([{l:'LANGUAGE/SPEECH:'},{l:'ASTHMA:'}]) +
-    fdrow([{l:'DENTAL:'},{l:''}]) +
-    fdrow([{l:'OTHER (INCLUDE BEHAVIORAL CONCERNS):', flex:1}]) +
-    fdrow([{l:'COMMENTS/EXPLANATIONS:', flex:1}]) +
-    fdrow([{l:'MEDICATION PRESCRIBED/SPECIAL ROUTINES/RESTRICTIONS FOR THIS CHILD:', flex:1}]) +
-    '<div class="fdtext" style="border-top:2px solid #111"><b style="font-size:11px;font-weight:700">IMMUNIZATION HISTORY:</b> (Fill out or enclose California Immunization Record, PM-298.)' +
-    '<table class="imtable"><tr><th style="width:34%">VACCINE</th><th>1st</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th></tr>' +
-    '<tr><td>POLIO (OPV OR IPV)</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td></tr>' +
-    '<tr><td>DTP/DTaP/DT/Td <span style="font-size:6px">(DIPHTHERIA, TETANUS AND [ACELLULAR] PERTUSSIS OR TETANUS AND DIPHTHERIA ONLY)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td></tr>' +
-    '<tr><td>MMR <span style="font-size:6px">(MEASLES, MUMPS, AND RUBELLA)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td><td></td><td></td></tr>' +
-    '<tr><td>HIB MENINGITIS <span style="font-size:6px">(REQUIRED FOR CHILD CARE ONLY) (HAEMOPHILUS B)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td></tr>' +
-    '<tr><td>HEPATITIS B</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td><td></td></tr>' +
-    '<tr><td>VARICELLA <span style="font-size:6px">(CHICKENPOX)</span></td><td>/&nbsp;&nbsp;/</td><td>/&nbsp;&nbsp;/</td><td></td><td></td><td></td></tr></table>' +
-    '<div class="fdbox" style="margin:6px 0 4px;max-width:420px"><b style="font-size:9.5px;font-weight:700">SCREENING OF TB RISK FACTORS</b> (listing on reverse side)<br>' +
-    '&#9633; Risk factors not present; TB skin test not required.<br>' +
-    '&#9633; Risk factors present; Mantoux TB skin test performed (unless previous positive skin test documented).<br>' +
-    '&nbsp;&nbsp;&nbsp;___ Communicable TB disease not present.</div>' +
-    'I have &#9633; &nbsp; have not &#9633; &nbsp; reviewed the above information with the parent/guardian.<br><br>' +
-    'Physician: <span class="blank" style="min-width:230px"></span> &nbsp; Date of Physical Exam: <span class="blank" style="min-width:130px"></span><br>' +
-    'Address: <span class="blank" style="min-width:240px"></span> &nbsp; Date This Form Completed: <span class="blank" style="min-width:120px"></span><br>' +
-    'Telephone: <span class="blank" style="min-width:225px"></span> &nbsp; Signature <span class="blank" style="min-width:180px"></span><br>' +
-    '<span style="float:right">&#9633; Physician &nbsp; &#9633; Physician\'s Assistant &nbsp; &#9633; Nurse Practitioner</span><br></div>' +
-    '<div class="fdfoot"><span>LIC 701 (8/08) (Confidential)</span><span>PAGE 1 OF 2</span></div></div>' +
-    '<div class="formdoc">' +
-    '<div class="fdtext" style="border-top:0"><b style="font-size:10.5px;font-weight:700">RISK FACTORS FOR TB IN CHILDREN:</b>' +
-    '<ul style="list-style:none;margin-left:2px">' +
-    '<li>* &nbsp;Have a family member or contacts with a history of confirmed or suspected TB.</li>' +
-    '<li>* &nbsp;Are in foreign-born families and from high-prevalence countries (Asia, Africa, Central and South America).</li>' +
-    '<li>* &nbsp;Live in out-of-home placements.</li>' +
-    '<li>* &nbsp;Have, or are suspected to have, HIV infection.</li>' +
-    '<li>* &nbsp;Live with an adult with HIV seropositivity.</li>' +
-    '<li>* &nbsp;Live with an adult who has been incarcerated in the last five years.</li>' +
-    '<li>* &nbsp;Live among, or are frequently exposed to, individuals who are homeless, migrant farm workers, users of street drugs, or residents in nursing homes.</li>' +
-    '<li>* &nbsp;Have abnormalities on chest X-ray suggestive of TB.</li>' +
-    '<li>* &nbsp;Have clinical evidence of TB.</li></ul>' +
-    'Consult with your local health department\'s TB control program on any aspects of TB prevention and treatment.</div>' +
-    '<div class="fdfoot"><span>LIC 701 (8/08) (Confidential)</span><span>PAGE 2 of 2</span></div></div>';
-  return h;
-}
+/* ---- v8.3 item 6: the doctor's download is the NATIVE CDSS LIC 701 (the real
+   fillable state form, public/docs/cdss-native/LIC701.pdf, 97 AcroForm fields),
+   served beside this mockup. The HTML facsimile download is retired per
+   docs/enrollment/FORM-FIDELITY-CORRECTION.md; production prefills Part A (child
+   name, birth date, center, hours) into the AcroForm fields before serving. ---- */
 function openLic701() {
-  openPrintDoc("Physician's Report · LIC 701 · Theo Alvarez", lic701HTML());
+  window.open('LIC701.pdf', '_blank');
   lic701Downloaded = true;
   var m = document.getElementById('d-701-meta');
-  if (m) m.textContent = 'Downloaded ' + TODAY + ' · due by August 17, the end of Theo\'s second week. Nothing else is blocked while you wait.';
+  if (m) m.textContent = 'Opened ' + TODAY + ' · due by August 17, the end of Theo\'s second week. Nothing else is blocked while you wait.';
 }
 
 /* ---- v8 item 8: the signature certificate is a real document row (view/download),
@@ -5255,17 +5242,11 @@ function downloadCert() {
   a.click();
 }
 
-/* ---- v7 item 4: age-band conditional blocks (Needs and Services data).
-   The band comes from the child's room; the chips are a mockup-only demo. ---- */
+/* ---- v8.3 item 1: the age band is set SILENTLY by the child's room. There is no
+   selector, not even in demo; Theo's room is Toddler, so the toddler block renders
+   and the infant/preschool blocks stay hidden. Production reads the band from the
+   room assignment and shows exactly one block, with no control anywhere. ---- */
 var band = 'toddler';
-function setBand(b) {
-  band = b;
-  document.querySelectorAll('.bandchip').forEach(function(c){ c.classList.toggle('on', c.dataset.band === b); });
-  document.querySelectorAll('[data-band-block]').forEach(function(el){
-    el.style.display = el.dataset.bandBlock === b ? '' : 'none';
-  });
-  renderState();
-}
 function healthRequiredFields() {
   var req = [document.getElementById('hAllergies'), document.getElementById('hConditions')];
   if (band === 'infant') req.push(document.querySelector('.binfant'));
