@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presence signature sounds</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FBF7EE;--paper2:#F0E9D8;--ink:#1F2A2E;--ink2:#3F5359;--ink3:#6F7F84;--teal:#5FAEB6;--tealdeep:#3D8189;--sage:#9BB99E;--gold:#C9A86A;--r:8px}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,sans-serif;padding:28px 18px 60px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-family:Newsreader,serif;font-weight:600;font-size:26px;margin:0 0 4px}
+p.sub{color:var(--ink2);margin:0 0 22px;font-size:15px}
+.card{background:#fff;border:1px solid var(--paper2);border-radius:var(--r);padding:20px;margin-bottom:20px;box-shadow:0 1px 3px rgba(31,42,46,.05)}
+.lab{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:12px}
+.voices{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.voice{border:1.5px solid var(--paper2);background:var(--paper);border-radius:var(--r);padding:11px 12px;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink2);text-align:left;transition:.15s}
+.voice:hover{border-color:var(--teal)}
+.voice.on{border-color:var(--tealdeep);background:#EAF3F2;color:var(--tealdeep)}
+.voice small{display:block;font-weight:400;font-size:11px;color:var(--ink3);margin-top:2px}
+.slots{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin:6px 0 4px}
+.slot{width:118px;height:74px;border:1.5px dashed var(--sage);border-radius:var(--r);background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.2s;position:relative}
+.slot:hover{border-color:var(--teal)}
+.slot.signed{border-style:solid;border-color:var(--gold);background:#FBF3E4}
+.slot .n{font-size:10px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase}
+.slot .sig{font-family:Newsreader,serif;font-style:italic;font-size:20px;color:var(--tealdeep);opacity:0;transition:.25s}
+.slot.signed .sig{opacity:1}
+.slot .tap{font-size:12px;color:var(--ink3)}
+.slot.signed .tap{display:none}
+.submit{margin-top:20px;width:100%;max-width:360px;background:var(--tealdeep);color:#fff;border:0;border-radius:var(--r);padding:16px;font-size:16px;font-weight:700;cursor:pointer}
+.submit:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.mini{font-size:13px;color:var(--ink3)}
+button.ghost{border:1px solid var(--paper2);background:#fff;border-radius:var(--r);padding:8px 14px;font-weight:600;color:var(--ink2);cursor:pointer;font-size:13px}
+.done-note{font-family:Newsreader,serif;font-style:italic;color:var(--sage);margin-top:10px;min-height:20px}
+</style></head><body><div class="wrap">
+<h1>Presence signature sounds</h1>
+<p class="sub">Pick a voice, then tap the signature slots left to right to hear the ascending run. The submit button plays the full ascension plus the confirm. Tell me which voice you want.</p>
+
+<div class="card">
+<div class="lab">Signature voice</div>
+<div class="voices" id="voices"></div>
+</div>
+
+<div class="card">
+<div class="lab">Try it — tap each slot, then submit</div>
+<div class="slots" id="slots"></div>
+<button class="submit" id="submit" disabled>Finish signing</button>
+<div class="done-note" id="note"></div>
+<div class="row">
+<button class="ghost" id="reset">Reset slots</button>
+<button class="ghost" id="preview">Preview full ascension</button>
+<span class="mini" id="which"></span>
+</div>
+</div>
+</div>
+<script>
+var actx;
+function ac(){ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+// each voice: given a step index (0..n) and total, schedule a tone. Ascending pentatonic base.
+var PENTA=[523.25,587.33,659.25,783.99,880.00,1046.50,1174.66,1318.51,1567.98,1760.0]; // C5 D5 E5 G5 A5 C6...
+function tone(freq,t0,dur,type,peak){
+  var o=ac().createOscillator(),g=ac().createGain();
+  o.type=type||'sine';o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(peak||0.16,t0+0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.connect(g);g.connect(ac().destination);o.start(t0);o.stop(t0+dur+0.05);
+}
+function pluck(freq,t0,dur,peak){ // xylophone/marimba-ish: sine + quick decay + a soft harmonic
+  tone(freq,t0,dur,'sine',peak||0.18);
+  tone(freq*2.0,t0,dur*0.5,'sine',(peak||0.18)*0.35);
+}
+var VOICES={
+  'rising-chime':{name:'Rising chime',desc:'soft bell, steps up',play:function(i){var t=ac().currentTime;tone(PENTA[i%PENTA.length],t,1.1,'sine',0.14);}},
+  'xylo-up':{name:'Xylophone up',desc:'ascending wooden',play:function(i){var t=ac().currentTime;pluck(PENTA[i%PENTA.length],t,0.5);}},
+  'xylo-down':{name:'Xylophone down',desc:'descending wooden',play:function(i,n){var t=ac().currentTime;pluck(PENTA[(n-1-i+PENTA.length)%PENTA.length],t,0.5);}},
+  'marimba':{name:'Marimba',desc:'warm, rounded',play:function(i){var t=ac().currentTime;pluck(PENTA[i%PENTA.length]*0.75,t,0.7,0.2);tone(PENTA[i%PENTA.length]*1.5,t,0.3,'triangle',0.05);}},
+  'music-box':{name:'Music box',desc:'delicate, high',play:function(i){var t=ac().currentTime;tone(PENTA[i%PENTA.length]*2,t,0.9,'triangle',0.10);tone(PENTA[i%PENTA.length]*3,t,0.4,'sine',0.03);}},
+  'soft-bell':{name:'Soft bell',desc:'the current one',play:function(i){var t=ac().currentTime;tone(659.25,t,2.0,'sine',0.075);}},
+  'two-note':{name:'Two-note rise',desc:'gentle major third',play:function(i){var t=ac().currentTime;tone(523.25,t,0.5,'sine',0.13);tone(659.25,t+0.16,1.4,'sine',0.11);}},
+  'harp':{name:'Harp pluck',desc:'bright string',play:function(i){var t=ac().currentTime;tone(PENTA[i%PENTA.length],t,1.3,'triangle',0.12);tone(PENTA[i%PENTA.length]*1.5,t,0.6,'sine',0.04);}}
+};
+var CONFIRM={ // the finish/confirm sound. 'liked' = the current one Jarred approved.
+  play:function(voiceKey,n){
+    var v=VOICES[voiceKey], t0=ac().currentTime, step=0.14;
+    for(var i=0;i<Math.max(5,n);i++){ // full ascension
+      (function(i){ var d=t0+i*step; var o=ac().createOscillator(),g=ac().createGain();
+        var f=PENTA[i%PENTA.length]; o.type=(voiceKey.indexOf('xylo')>=0||voiceKey==='marimba')?'sine':'triangle';
+        o.frequency.value=f; g.gain.setValueAtTime(0.0001,d); g.gain.exponentialRampToValueAtTime(0.15,d+0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001,d+0.5); o.connect(g);g.connect(ac().destination);o.start(d);o.stop(d+0.55);
+      })(i);
+    }
+    // final resolve chord (the 'confirm' Jarred liked - C6 + E6 soft)
+    var end=t0+Math.max(5,n)*step+0.05;
+    tone(1046.5,end,1.6,'sine',0.13); tone(1318.5,end+0.02,1.6,'sine',0.08);
+  }
+};
+var voiceKey='rising-chime', N=7, signed=0;
+var vc=document.getElementById('voices');
+Object.keys(VOICES).forEach(function(k){
+  var b=document.createElement('button'); b.className='voice'+(k===voiceKey?' on':''); b.dataset.k=k;
+  b.innerHTML=VOICES[k].name+'<small>'+VOICES[k].desc+'</small>';
+  b.onclick=function(){ voiceKey=k; ac().resume&&ac().resume(); [].forEach.call(vc.children,function(c){c.classList.toggle('on',c.dataset.k===k)}); VOICES[k].play(0,N); document.getElementById('which').textContent='Voice: '+VOICES[k].name; };
+  vc.appendChild(b);
+});
+var sl=document.getElementById('slots');
+function build(){ sl.innerHTML=''; signed=0; document.getElementById('note').textContent=''; document.getElementById('submit').disabled=true;
+  for(var i=0;i<N;i++){ (function(i){ var d=document.createElement('div'); d.className='slot'; d.innerHTML='<span class="n">Sign '+(i+1)+'</span><span class="sig">Theo A.</span><span class="tap">tap</span>';
+    d.onclick=function(){ if(d.classList.contains('signed'))return; ac().resume&&ac().resume(); d.classList.add('signed'); VOICES[voiceKey].play(signed,N); signed++; if(signed>=N)document.getElementById('submit').disabled=false; };
+    sl.appendChild(d); })(i); } }
+build();
+document.getElementById('reset').onclick=build;
+document.getElementById('preview').onclick=function(){ ac().resume&&ac().resume(); var t=0; for(var i=0;i<N;i++){ (function(i){ setTimeout(function(){VOICES[voiceKey].play(i,N)}, i*260); })(i); } };
+document.getElementById('submit').onclick=function(){ ac().resume&&ac().resume(); CONFIRM.play(voiceKey,N); document.getElementById('note').textContent='That is the ascension for "'+VOICES[voiceKey].name+'" then the confirm.'; };
+</script></body></html>
