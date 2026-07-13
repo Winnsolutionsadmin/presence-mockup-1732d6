@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.13 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.14 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -4371,6 +4371,7 @@ function renderState() {
   renderDocs();
   renderTopGarden();
   renderSprigs();
+  saveProgress(); /* v8.14: persist signing progress on every state change so a reload restores it */
 }
 
 /* ---- v6 item 12: completed documents flip status and gain View + Download ---- */
@@ -4484,7 +4485,41 @@ function go(id) {
   if (chHere && chHere.finished) applyChapterLock(t);
   maskInputs();
   renderState();
+  /* v8.14 (Jarred): record this screen in browser history so the Back button navigates to the
+     PREVIOUS screen and stays in the flow, instead of leaving the single-page app and restarting
+     all the signatures. Skipped when we ARE responding to a Back (popstate). */
+  if (!_navFromPop) { try { history.pushState({ screen: id }, '', '#' + id); } catch (e) {} }
+  saveProgress();
 }
+
+/* v8.14 (Jarred): the browser/phone Back button used to leave this single-page mockup entirely and
+   reload it fresh - and because the chapters are demo-prefilled, only the live signatures reset,
+   which read as "back restarted all my signatures." Fix: (1) each go() pushes a history entry so
+   Back walks screen-to-screen and never leaves; (2) signing progress persists to sessionStorage so
+   even a genuine reload restores signed forms. */
+var _navFromPop = false, _progressReady = false;
+function navScreen() { var a = document.querySelector('.screen.active'); return a ? a.id : 's-welcome'; }
+function saveProgress() {
+  /* gated until restore has run, so the initial render does not overwrite a prior session's save */
+  if (!_progressReady) return;
+  try { sessionStorage.setItem('presence_progress', JSON.stringify({ d: docState, dr: doctorState, hp: hbPlaced })); } catch (e) {}
+}
+function restoreProgress() {
+  try {
+    var s = JSON.parse(sessionStorage.getItem('presence_progress') || 'null');
+    if (!s) return;
+    if (s.d) for (var k in s.d) { if (Object.prototype.hasOwnProperty.call(docState, k)) docState[k] = s.d[k]; }
+    if (s.dr) for (var k2 in s.dr) { doctorState[k2] = s.dr[k2]; }
+    if (typeof s.hp === 'boolean') hbPlaced = s.hp;
+    renderState();
+  } catch (e) {}
+}
+window.addEventListener('popstate', function(ev) {
+  var scr = (ev.state && ev.state.screen) || 's-welcome';
+  if (!document.getElementById(scr)) scr = 's-welcome';
+  _navFromPop = true;
+  try { go(scr); } finally { _navFromPop = false; }
+});
 
 /* ---- v8 item 1: a completed chapter opens locked. Every text field gets its own
    unlock control; radio and checkbox groups unlock from the banner. Unlocked edits
@@ -6580,6 +6615,12 @@ if (FRESH) (function() {
 })();
 maskInputs();
 renderState();
+/* v8.14 (Jarred): seed history with the starting screen so the first Back returns here rather than
+   leaving the page, and restore any signing progress a prior reload saved. */
+try { history.replaceState({ screen: navScreen() }, '', ''); } catch (e) {}
+restoreProgress();      /* reads the prior session while saves are still gated */
+_progressReady = true;  /* from here on, every state change persists */
+saveProgress();
 </script>
 </body>
 </html>
