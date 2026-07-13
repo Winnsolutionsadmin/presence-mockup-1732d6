@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.14 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.15 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -4499,18 +4499,56 @@ function go(id) {
    even a genuine reload restores signed forms. */
 var _navFromPop = false, _progressReady = false;
 function navScreen() { var a = document.querySelector('.screen.active'); return a ? a.id : 's-welcome'; }
+/* v8.15 (Jarred): item status and every entered value are recorded PERMANENTLY - a family never
+   fills anything out twice. In the mockup that permanence is localStorage (survives closing the
+   browser, not just the tab). In production this is the server-side system of record: enrollment_items
+   (per-item status, migration 040) + the Family Data Vault (entered facts), keyed to the enrollment,
+   so returning on ANY device resumes exactly where they left off. Keyed per demo family (fresh vs
+   default) so they never collide. */
+var PROG_KEY = 'presence_progress_v2' + (typeof FRESH !== 'undefined' && FRESH ? '_fresh' : '');
+function snapshotFields() {
+  var out = {};
+  document.querySelectorAll('input, textarea, select').forEach(function(el, i) {
+    var t = el.type;
+    if (t === 'file' || t === 'button' || t === 'submit' || t === 'reset') return;
+    var key = el.name || el.id || ('pk' + i);
+    out[key] = (t === 'checkbox' || t === 'radio') ? (el.checked ? 1 : 0) : el.value;
+  });
+  return out;
+}
 function saveProgress() {
   /* gated until restore has run, so the initial render does not overwrite a prior session's save */
   if (!_progressReady) return;
-  try { sessionStorage.setItem('presence_progress', JSON.stringify({ d: docState, dr: doctorState, hp: hbPlaced })); } catch (e) {}
+  try {
+    localStorage.setItem(PROG_KEY, JSON.stringify({
+      d: docState, dr: doctorState, hp: hbPlaced,
+      ch: chState.map(function(c){ return c.finished ? 1 : 0; }),
+      pickups: document.querySelectorAll('#pickupRows .prow').length,
+      f: snapshotFields()
+    }));
+  } catch (e) {}
 }
 function restoreProgress() {
   try {
-    var s = JSON.parse(sessionStorage.getItem('presence_progress') || 'null');
+    var s = JSON.parse(localStorage.getItem(PROG_KEY) || 'null');
     if (!s) return;
+    /* recreate any extra authorized-pickup rows first, so their inputs exist before we restore values */
+    var have = document.querySelectorAll('#pickupRows .prow').length;
+    for (var i = have; i < (s.pickups || 0); i++) { try { addPickup(); } catch (e) {} }
+    if (s.f) document.querySelectorAll('input, textarea, select').forEach(function(el, idx) {
+      var t = el.type;
+      if (t === 'file' || t === 'button' || t === 'submit' || t === 'reset') return;
+      var key = el.name || el.id || ('pk' + idx);
+      if (!Object.prototype.hasOwnProperty.call(s.f, key)) return;
+      if (t === 'checkbox' || t === 'radio') el.checked = !!s.f[key];
+      else el.value = s.f[key];
+    });
     if (s.d) for (var k in s.d) { if (Object.prototype.hasOwnProperty.call(docState, k)) docState[k] = s.d[k]; }
     if (s.dr) for (var k2 in s.dr) { doctorState[k2] = s.dr[k2]; }
     if (typeof s.hp === 'boolean') hbPlaced = s.hp;
+    if (s.ch) s.ch.forEach(function(v, i2){ if (chState[i2]) chState[i2].finished = !!v; });
+    ['imm', 'lic701'].forEach(function(key){ if (doctorState[key]) paintUploaded(key); });
+    maskInputs();
     renderState();
   } catch (e) {}
 }
@@ -4693,11 +4731,12 @@ function pickUpload(key) {
   document.body.appendChild(inp);
   inp.click();
 }
-function markUploaded(key, fileName) {
-  if (doctorState[key]) return;
-  doctorState[key] = true;
+/* v8.15: paint an upload as Added (shared by markUploaded + restoreProgress so a restored upload
+   still shows Added on return). */
+function paintUploaded(key, fileName) {
   var short = fileName ? (fileName.length > 22 ? fileName.slice(0, 19) + '...' : fileName) : '';
   document.querySelectorAll('[data-upload="' + key + '"]').forEach(function(b) {
+    if (b.classList.contains('added')) return;
     b.classList.add('added');
     b.innerHTML = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4.2 4L16 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Added' +
       (short ? '<span class="upname">' + short.replace(/</g, '&lt;') + '</span>' : '');
@@ -4707,10 +4746,14 @@ function markUploaded(key, fileName) {
   });
   var rail = document.getElementById(key === 'imm' ? 'r-imm' : 'r-701');
   if (rail) {
-    rail.querySelector('.st').outerHTML = CHECK_SVG;
-    var sub = rail.querySelector('.rsub');
-    if (sub) sub.textContent = 'Added';
+    var st = rail.querySelector('.st'); if (st && !st.classList.contains('st-check')) st.outerHTML = CHECK_SVG;
+    var sub = rail.querySelector('.rsub'); if (sub) sub.textContent = 'Added';
   }
+}
+function markUploaded(key, fileName) {
+  if (doctorState[key]) return;
+  doctorState[key] = true;
+  paintUploaded(key, fileName);
   sparkPending = true;
   renderState();
 }
