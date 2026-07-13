@@ -480,14 +480,12 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   .body { max-width: 680px; padding: 36px 32px 8px; margin: 0 auto; }
   .actionbar { position: static; transform: none; max-width: 680px; margin: 0 auto;
     padding: 28px 32px 0; background: none; }
-  /* v8.4 item 2: the CTA anchors to the CONTENT COLUMN's left edge at every desktop
-     width (it was centered in the pane, so it drifted relative to the left-aligned
-     content as the window resized). Screens with narrower centered columns match
-     their action column to the body column below; the finale, whose content is
-     centered, keeps a centered CTA. */
-  .actionbar .cta { max-width: 460px; margin: 0; }
-  .actionbar .quietlink { max-width: 460px; margin: 10px 0 0; text-align: left; }
-  .nextup { text-align: left; }
+  /* v8.5 item (Jarred): the chapter CTA is CENTERED under the content, not flush-left.
+     A left-anchored button orphaned far-left under the wide two-column Just in case grid.
+     Centered reads correctly on both single-column and two-column chapter layouts. */
+  .actionbar .cta { max-width: 460px; margin: 0 auto; }
+  .actionbar .quietlink { max-width: 460px; margin: 10px auto 0; text-align: center; }
+  .nextup { text-align: center; }
   #s-consent .actionbar { max-width: 620px; }
   #s-review .actionbar { max-width: 760px; }
   #s-finale .actionbar .cta { margin: 0 auto; }
