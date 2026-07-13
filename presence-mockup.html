@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.4 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.9 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -214,8 +214,15 @@ p.lede { color: var(--ink-soft); font-size: 15.5px; margin-bottom: 8px; }
 .crow.editing .cvalue, .crow.editing .cnote { display: none; }
 .crow.editing .cedit { display: block; }
 .crow.editing .editbtn { color: var(--sage-deep); }
-.fieldgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* v8.7 item 1 (field-width audit): one field per row on phones; two columns from
+   700px. A value must never render clipped: phones need ~116px of text at 16px
+   Manrope, emails and sentence answers more, and the old two-across mobile grid
+   (~140px inner) truncated both. */
+.fieldgrid { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .fieldgrid .full { grid-column: 1 / -1; }
+/* v8.7 item 1: a tel input is never narrower than a full US phone number,
+   "(916) 555-0123" (14 chars, ~116px at 16px) plus padding and borders. */
+input[type=tel] { min-width: 150px; }
 .flabel { display: block; font-size: 11px; font-weight: 700; letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
 input[type=text], input[type=tel] { width: 100%; padding: 12px 14px; font-size: 16px;
@@ -543,10 +550,11 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   .chaptercards .chcard { margin-bottom: 0; }
   .jicgrid { display: grid; grid-template-columns: minmax(0,1.08fr) minmax(0,.92fr);
     gap: 40px; align-items: start; }
-  .jicgrid .prow .fieldgrid { grid-template-columns: 1fr 1fr; }
-  .cedit .fieldgrid { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  .cedit .fieldgrid .full { grid-column: span 2; }
-  .prow .fieldgrid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  /* v8.7 item 1: the v8.6 four-across contact and pickup grids are GONE. Inside
+     the ~400px jicgrid column they left ~90px per input and truncated every phone
+     number ("(916) 555-0!") and relationship ("Grandmothe"). Contact and pickup
+     grids now follow the base two-across rule; phone, relationship, and practice
+     cells span the full row (class "full") so their values always fit. */
   .hbgrid { display: grid; grid-template-columns: minmax(0,1fr) 260px; gap: 20px; align-items: start; }
   .hbside { display: block; }
   .pagecard { height: 540px; }
@@ -777,7 +785,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .ontrack .otsub { font-size: 13px; color: var(--ink-soft); line-height: 1.55; margin-top: 2px; }
 .healthgroup { margin-bottom: 18px; }
 .healthgroup .grouplabel { margin-top: 0; }
-.hgrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* v8.7 item 1: single column on phones (a 390px viewport gives ~140px per
+   column two-across, which truncated the meal and routine answers) */
+.hgrid2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
 .hgrid2 .full { grid-column: 1 / -1; }
 .radiorow { display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: var(--ink-soft); }
 .radiorow label { display: inline-flex; gap: 6px; align-items: center; }
@@ -963,6 +973,40 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   margin: 8px 2px 14px; }
 .nativesign { margin-top: 0; }
 @media (max-width: 700px) { .nativepdf { height: 62vh; } }
+
+/* ---- v8.7 item 1: the responsive field-grid continuum, stated late so it wins
+   the cascade over the tier blocks above. Phones: one field per row (set at the
+   base rules). 700px+: two columns everywhere except the chapter review grids,
+   whose sentence-length answers need the 900px measure before pairing up. ---- */
+@media (min-width: 700px) {
+  .fieldgrid { grid-template-columns: 1fr 1fr; }
+  .hgrid2 { grid-template-columns: 1fr 1fr; }
+  .reviewfields .fieldgrid { grid-template-columns: 1fr; }
+}
+@media (min-width: 900px) {
+  .reviewfields .fieldgrid { grid-template-columns: 1fr 1fr; }
+}
+/* ---- v8.9: the native PDF, FILLED. Each page renders as a fixed-size sheet
+   (PDF points; 612x792 for the LIC set) with the family's values absolutely
+   positioned at the real AcroForm field coordinates, then the whole sheet is
+   scaled to the stage width. The signature slot sits ON the form's own
+   signature line; there is no separate signature card. ---- */
+.nativepdf.pdffill { height: auto; max-height: min(78vh, 980px); overflow-y: auto;
+  background: #F0E9D8; }
+.pdfpagebox { position: relative; overflow: hidden; }
+.pdfpagebox + .pdfpagebox { margin-top: 8px; }
+.pdfsheet { position: relative; transform-origin: 0 0; background: #fff; }
+.pdfsheet canvas { position: absolute; left: 0; top: 0; }
+.fillval { position: absolute; z-index: 1; font-family: Arial, Helvetica, sans-serif;
+  color: #101418; white-space: nowrap; overflow: hidden; }
+.fillval.wrap { white-space: normal; overflow: visible; }
+.fillck { position: absolute; z-index: 1; font: 700 10px Arial, Helvetica, sans-serif;
+  color: #101418; line-height: 1; }
+.pdfsheet .slot.sigslot { position: absolute; z-index: 2; min-width: 0; padding: 0 6px;
+  font-size: 9.5px; letter-spacing: .02em; border-radius: 3px; border-width: 1.5px; }
+.pdfsheet .slot.sigslot.filled { background: transparent; border-color: transparent;
+  justify-content: flex-start; font-size: 15px; padding: 0 2px; }
+.pdfsheet .fillval.filldate { font-family: var(--hand); font-size: 12px; color: var(--ink); }
 
 /* ---- v8.6 item 3: the fresh-enrollment demo ribbon (?fresh=1) ---- */
 .freshribbon { position: fixed; top: 18px; right: -44px; z-index: 400; pointer-events: none;
@@ -1211,7 +1255,10 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div class="reviewfields step-in d2" id="ch1Fields"></div>
   </div>
   <div class="actionbar">
-    <button class="cta" onclick="go('s-welcome')">Back to your chapters</button>
+    <!-- v8.7 item 2: the hint line + id let the fresh variant gate this CTA on
+         the chapter's required fields, the same pattern as health -->
+    <div class="nextup" hidden></div>
+    <button class="cta" id="ch1Cta" onclick="go('s-welcome')">Back to your chapters</button>
   </div>
 </section>
 
@@ -1229,7 +1276,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div class="reviewfields step-in d2" id="ch2Fields"></div>
   </div>
   <div class="actionbar">
-    <button class="cta" onclick="go('s-welcome')">Back to your chapters</button>
+    <!-- v8.7 item 2: same gate hook as chapter 1 -->
+    <div class="nextup" hidden></div>
+    <button class="cta" id="ch2Cta" onclick="go('s-welcome')">Back to your chapters</button>
   </div>
 </section>
 
@@ -1248,18 +1297,21 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div>
     <!-- v6 symmetry rule: both columns open with the same header component on one line -->
     <div class="divider step-in d2">Check what we have</div>
-    <p class="confirm-intro step-in d2">Tap edit if anything changed.</p>
+    <p class="confirm-intro step-in d2">Tap edit if anything changed. Fields marked <span class="req">*</span> are required by the state emergency form.</p>
     <div class="confirm-card step-in d2">
       <div class="crow" id="jic-ec1">
         <div class="cmain">
           <div class="clabel">Emergency contact 1</div>
           <div class="cvalue">Denise Alvarez · Grandmother<br><span class="soft">(916) 555-0173</span></div>
           <div class="cnote">from your application</div>
+          <!-- v8.7 items 1+2: LIC 700 requires name, telephone, and relationship for
+               the first emergency contact; phone and relationship span the full row
+               so their values never truncate. -->
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Denise"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
-            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0173"></div>
-            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Grandmother"></div>
+            <div><span class="flabel">First name <span class="req">*</span></span><input type="text" data-alpha data-req value="Denise"></div>
+            <div><span class="flabel">Last name <span class="req">*</span></span><input type="text" data-alpha data-req value="Alvarez"></div>
+            <div class="full"><span class="flabel">Phone number <span class="req">*</span></span><input type="tel" inputmode="tel" data-req value="(916) 555-0173"></div>
+            <div class="full"><span class="flabel">Relationship <span class="req">*</span></span><input type="text" data-alpha data-req value="Grandmother"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('jic-ec1', this)">Edit</button>
@@ -1269,11 +1321,13 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="clabel">Emergency contact 2</div>
           <div class="cvalue">Sam Okafor · Family friend<br><span class="soft">(916) 555-0148</span></div>
           <div class="cnote">from your application</div>
+          <!-- v8.7 item 2: LIC 700 requires ONE emergency contact; a second is
+               optional, so this row carries no required marks. -->
           <div class="cedit"><div class="fieldgrid">
             <div><span class="flabel">First name</span><input type="text" data-alpha value="Sam"></div>
             <div><span class="flabel">Last name</span><input type="text" data-alpha value="Okafor"></div>
-            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0148"></div>
-            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Family friend"></div>
+            <div class="full"><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0148"></div>
+            <div class="full"><span class="flabel">Relationship</span><input type="text" data-alpha value="Family friend"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('jic-ec2', this)">Edit</button>
@@ -1283,11 +1337,13 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
           <div class="clabel">Theo's physician</div>
           <div class="cvalue">Dr. Priya Nair · Capitol Pediatrics<br><span class="soft">(916) 555-0122</span></div>
           <div class="cnote">from your application</div>
+          <!-- v8.7 item 2: LIC 700 requires physician name and telephone; the
+               practice line is ours and stays optional. -->
           <div class="cedit"><div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Priya"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Nair"></div>
-            <div><span class="flabel">Practice</span><input type="text" value="Capitol Pediatrics"></div>
-            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0122"></div>
+            <div><span class="flabel">First name <span class="req">*</span></span><input type="text" data-alpha data-req value="Priya"></div>
+            <div><span class="flabel">Last name <span class="req">*</span></span><input type="text" data-alpha data-req value="Nair"></div>
+            <div class="full"><span class="flabel">Practice</span><input type="text" value="Capitol Pediatrics"></div>
+            <div class="full"><span class="flabel">Phone number <span class="req">*</span></span><input type="tel" inputmode="tel" data-req value="(916) 555-0122"></div>
           </div></div>
         </div>
         <button class="editbtn" onclick="toggleEdit('jic-doc', this)">Edit</button>
@@ -1301,21 +1357,24 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div class="step-in d3" style="margin-bottom:20px">
       <span class="flabel" style="margin-bottom:8px">Persons authorized for pickup</span>
       <div id="pickupRows">
+        <!-- v8.7 item 2: LIC 700 requires name and relationship for each authorized
+             person; phone is ours and stays optional. Phone and relationship span
+             the full row (item 1) so their values never truncate. -->
         <div class="prow">
           <div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Maria"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
-            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0134"></div>
-            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Parent"></div>
+            <div><span class="flabel">First name <span class="req">*</span></span><input type="text" data-alpha value="Maria"></div>
+            <div><span class="flabel">Last name <span class="req">*</span></span><input type="text" data-alpha value="Alvarez"></div>
+            <div class="full"><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0134"></div>
+            <div class="full"><span class="flabel">Relationship <span class="req">*</span></span><input type="text" data-alpha value="Parent"></div>
           </div>
           <div class="pnote">from your application</div>
         </div>
         <div class="prow">
           <div class="fieldgrid">
-            <div><span class="flabel">First name</span><input type="text" data-alpha value="Jordan"></div>
-            <div><span class="flabel">Last name</span><input type="text" data-alpha value="Alvarez"></div>
-            <div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0187"></div>
-            <div><span class="flabel">Relationship</span><input type="text" data-alpha value="Parent"></div>
+            <div><span class="flabel">First name <span class="req">*</span></span><input type="text" data-alpha value="Jordan"></div>
+            <div><span class="flabel">Last name <span class="req">*</span></span><input type="text" data-alpha value="Alvarez"></div>
+            <div class="full"><span class="flabel">Phone number</span><input type="tel" inputmode="tel" value="(916) 555-0187"></div>
+            <div class="full"><span class="flabel">Relationship <span class="req">*</span></span><input type="text" data-alpha value="Parent"></div>
           </div>
           <div class="pnote">from your application</div>
         </div>
@@ -1427,8 +1486,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
     <div class="healthgroup step-in d3">
       <div class="grouplabel">Meals</div>
       <div class="hgrid2">
-        <div><span class="flabel">Usual breakfast, and when</span><input type="text" placeholder="Oatmeal with fruit · 7:15 a.m."></div>
-        <div><span class="flabel">Usual dinner, and when</span><input type="text" placeholder="What and when"></div>
+        <!-- v8.7 item 1: meal-plus-time answers run long; full rows so they never clip -->
+        <div class="full"><span class="flabel">Usual breakfast, and when</span><input type="text" placeholder="Oatmeal with fruit · 7:15 a.m."></div>
+        <div class="full"><span class="flabel">Usual dinner, and when</span><input type="text" placeholder="What and when"></div>
         <div><span class="flabel">Food dislikes</span><input type="text" placeholder="Or none"></div>
         <div><span class="flabel">Eating problems</span><input type="text" placeholder="Or none"></div>
       </div>
@@ -3894,6 +3954,25 @@ function jicFilled() {
   });
   return Math.min(n, chState[2].total);
 }
+/* ---- v8.7 item 2: required-field gates for every chapter, driven by data-req
+   (which mirrors the LIC 700 / LIC 702 field definitions). The health chapter
+   already gated this way; chapters 1 to 3 now follow the same pattern. ---- */
+function reqMissingIn(sel) {
+  var n = 0;
+  document.querySelectorAll(sel + ' input[data-req]').forEach(function(f) {
+    if (soloOn() && f.closest('#parent2block')) return;
+    if (!f.value.trim()) n++;
+  });
+  return n;
+}
+function ch1Valid() { return reqMissingIn('#ch1Fields') === 0; }
+function ch2Valid() { return reqMissingIn('#ch2Fields') === 0; }
+function jicMissing() {
+  var n = reqMissingIn('#s-justincase .confirm-card');
+  if (!pickupOk()) n++;
+  return n;
+}
+function jicValid() { return jicMissing() === 0; }
 /* ---- documents (step 6): signed/confirmed state persists; fixes the v5
    completion bug where the handbook never registered as signed ---- */
 var docState = { hb: false, lic700: false, lic702: false, lic627: false, lic613: false, lic995: false, nsp: false };
@@ -4139,14 +4218,32 @@ function renderState() {
   var sn = document.getElementById('startSignNext');
   if (sn) sn.textContent = locked ? 'Locked until every chapter is complete'
     : (allDocsDone() ? 'Everything is signed. Your documents live in the dashboard.' : 'First: adopt your signature, once');
-  /* chapter CTAs */
-  var jReady = pickupOk();
+  /* chapter CTAs. v8.7 item 2: every chapter gates on its required fields
+     (data-req per the LIC forms), the pattern health already used. */
+  var jm = jicMissing();
+  var jReady = jm === 0;
   var jc = document.getElementById('jicCta');
   if (jc) jc.disabled = !jReady;
   var jn = document.getElementById('jicNext');
   if (jn) jn.textContent = chState[2].finished ? 'Done. Everything here is saved.'
     : (jReady ? 'Next: Health + routines · about 6 min'
-    : 'Add at least one pickup person with a first and last name');
+    : (!pickupOk() && jm === 1 ? 'Add at least one pickup person: first and last name, and their relationship'
+    : jm + ' required ' + (jm === 1 ? 'field' : 'fields') + ' to go, marked *'));
+  /* v8.7 item 2: chapters 1 and 2 gate the same way when they are still open
+     (the fresh variant); a finished chapter's CTA is Back and never disables. */
+  [['ch1Cta', 0, chState[1].name], ['ch2Cta', 1, 'Just in case']].forEach(function(p) {
+    var cta = document.getElementById(p[0]);
+    if (!cta || chState[p[1]].finished || cta.textContent !== 'Finish chapter') return;
+    var miss = reqMissingIn(p[1] === 0 ? '#ch1Fields' : '#ch2Fields');
+    cta.disabled = miss > 0;
+    var nu = cta.parentNode.querySelector('.nextup');
+    if (nu) {
+      nu.hidden = false;
+      nu.textContent = miss > 0
+        ? miss + ' required ' + (miss === 1 ? 'field' : 'fields') + ' to go, marked *'
+        : 'Next: ' + p[2] + ' · about ' + chState[p[1] + 1].mins + ' min';
+    }
+  });
   var je = document.getElementById('jicEst');
   if (je) je.textContent = '· ' + chState[2].done + ' of ' + chState[2].total + ' fields done';
   /* v7 item 6: required-ness enforced where the underlying form requires it */
@@ -4317,9 +4414,11 @@ function relock(w) {
    signLocked() relocks the sign section, and a calm banner says which chapter
    needs attention. Fixing the field re-finishes the chapter. ---- */
 function chapterValid(i) {
-  if (i === 0) return ch1Filled() >= chState[0].total;
-  if (i === 1) return countFilled('#ch2Fields') >= chState[1].total;
-  if (i === 2) return pickupOk();
+  /* v8.7 item 2: validity means the REQUIRED fields (data-req, per the LIC
+     forms) are non-empty, not every field. Optional fields never block. */
+  if (i === 0) return ch1Valid();
+  if (i === 1) return ch2Valid();
+  if (i === 2) return jicValid();
   if (i === 3) return healthValid();
   return true;
 }
@@ -4394,8 +4493,8 @@ function goNextChapter() {
 }
 function finishChapter(n) {
   var c = chState[n - 1];
-  if (n === 3 && !pickupOk()) { renderState(); return; }
-  if (n === 4 && !healthValid()) { renderState(); return; }
+  /* v8.7 item 2: every chapter gates on its required fields, same pattern */
+  if (!chapterValid(n - 1)) { renderState(); return; }
   c.finished = true;
   renderState();
   var nxt = nextChapter();
@@ -4439,10 +4538,11 @@ function soloToggle(cb) {
   renderState(); /* v8.1: the counts follow the toggle, both ways */
 }
 function pickupOk() {
+  /* v8.7 item 2: LIC 700 requires name AND relationship per authorized person */
   var rows = document.querySelectorAll('#pickupRows .prow');
   for (var i = 0; i < rows.length; i++) {
     var f = rows[i].querySelectorAll('input');
-    if (f[0] && f[0].value.trim() && f[1] && f[1].value.trim()) return true;
+    if (f[0] && f[0].value.trim() && f[1] && f[1].value.trim() && f[3] && f[3].value.trim()) return true;
   }
   return false;
 }
@@ -4450,12 +4550,13 @@ function addPickup() {
   var rows = document.getElementById('pickupRows');
   var row = document.createElement('div');
   row.className = 'prow';
+  /* v8.7 items 1+2: same grid and required marks as the prefilled pickup rows */
   row.innerHTML = '<button class="removep" onclick="this.parentNode.remove(); renderState();">Remove</button>' +
     '<div class="fieldgrid">' +
-    '<div><span class="flabel">First name</span><input type="text" data-alpha placeholder="First name"></div>' +
-    '<div><span class="flabel">Last name</span><input type="text" data-alpha placeholder="Last name"></div>' +
-    '<div><span class="flabel">Phone number</span><input type="tel" inputmode="tel" placeholder="(916) 555-0100"></div>' +
-    '<div><span class="flabel">Relationship</span><input type="text" data-alpha placeholder="Aunt, neighbor..."></div>' +
+    '<div><span class="flabel">First name <span class="req">*</span></span><input type="text" data-alpha placeholder="First name"></div>' +
+    '<div><span class="flabel">Last name <span class="req">*</span></span><input type="text" data-alpha placeholder="Last name"></div>' +
+    '<div class="full"><span class="flabel">Phone number</span><input type="tel" inputmode="tel" placeholder="(916) 555-0100"></div>' +
+    '<div class="full"><span class="flabel">Relationship <span class="req">*</span></span><input type="text" data-alpha placeholder="Aunt, neighbor..."></div>' +
     '</div>';
   rows.appendChild(row);
   maskInputs();
@@ -4509,9 +4610,35 @@ function maskAlpha() {
     });
   });
 }
-function maskInputs() { maskPhones(); maskAlpha(); }
+/* ---- v8.7 item 3: password-manager suppression. Jarred's browser extension
+   injected its credential badge (red boxes with dots) over the first-name
+   values; a clean browser never showed it. Defensive fix: every intake input
+   carries a stable name, an explicit autocomplete value ("off" unless the
+   field data says otherwise, e.g. ac:given-name on Parent 1), and the four
+   vendor ignore attributes, so no manager treats these as login fields. ---- */
+function hardenInputs() {
+  document.querySelectorAll('input[type=text], input[type=tel]').forEach(function(el) {
+    if (el.dataset.hardened) return;
+    el.dataset.hardened = '1';
+    if (!el.getAttribute('autocomplete')) el.setAttribute('autocomplete', 'off');
+    if (!el.name) {
+      var wrap = el.closest('div');
+      var lab = wrap && wrap.querySelector('.flabel');
+      var base = ((lab ? lab.textContent : el.placeholder) || 'field').trim().toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48);
+      el.name = base || 'field';
+    }
+    el.setAttribute('data-1p-ignore', '');
+    el.setAttribute('data-lpignore', 'true');
+    el.setAttribute('data-bwignore', '');
+    el.setAttribute('data-form-type', 'other');
+  });
+}
+function maskInputs() { maskPhones(); maskAlpha(); hardenInputs(); }
 document.addEventListener('input', function(e) {
-  if (e.target.closest && e.target.closest('#pickupRows')) renderState();
+  /* v8.7 item 2: live re-gate while typing in any data chapter (health has its
+     own listener below; pickup rows kept for the added-row case) */
+  if (e.target.closest && e.target.closest('#pickupRows, #s-family, #s-child, #s-justincase')) renderState();
 });
 /* ---- v8.3 item 3, revised v8.6 item 2: sound, synthesized in WebAudio, plays ONLY
    when a signature or initial is placed. No chime on Next, clicks, or navigation;
@@ -4585,11 +4712,16 @@ function chimeVictory() {
 
 /* ---- v8 item 1: the completed chapters render EVERY saved entry as a real,
    locked field. Built from data so the count is the count. ---- */
+/* v8.7 item 2: the third element is a flag string. alpha/tel as before; "req"
+   marks the field required (asterisk + gate) where LIC 700 or LIC 702 requires
+   it; "ac:token" sets the autocomplete value (item 3) so password managers stop
+   treating name and phone fields as credentials. Anything without ac: gets
+   autocomplete="off" plus the manager-ignore attributes in hardenInputs(). */
 var CH1_GROUPS = [
   ['Parent or guardian 1', [
-    ['First name', 'Maria', 'alpha'], ['Last name', 'Alvarez', 'alpha'],
-    ['Cell phone', '(916) 555-0134', 'tel'], ['Email', 'maria.alvarez@example.com'],
-    ['Employer', 'State of California · CalHR'], ['Work phone', '(916) 555-0134', 'tel']
+    ['First name', 'Maria', 'alpha req ac:given-name'], ['Last name', 'Alvarez', 'alpha req ac:family-name'],
+    ['Cell phone', '(916) 555-0134', 'tel ac:tel'], ['Email', 'maria.alvarez@example.com', 'ac:email'],
+    ['Employer', 'State of California · CalHR', 'ac:organization'], ['Work phone', '(916) 555-0134', 'tel']
   ]],
   ['__solo__', []],
   ['Parent or guardian 2', [
@@ -4598,10 +4730,10 @@ var CH1_GROUPS = [
     ['Employer', 'Sutter Health'], ['Work phone', '(916) 555-0187', 'tel']
   ]],
   ['Home', [
-    ['Street address', '1418 P Street'], ['City', 'Sacramento', 'alpha'], ['ZIP', '95814']
+    ['Street address', '1418 P Street', 'req ac:address-line1'], ['City', 'Sacramento', 'alpha req ac:address-level2'], ['ZIP', '95814', 'req ac:postal-code']
   ]],
   ['Household', [
-    ['Language spoken at home', 'English and Spanish', 'alpha'], ['Theo lives with', 'Both parents', 'alpha']
+    ['Language spoken at home', 'English and Spanish', 'alpha'], ['Theo lives with', 'Both parents', 'alpha req']
   ]],
   ['Coverage and contact', [
     ['Insurance carrier', 'Western Health Advantage'], ['Policy number', 'WHA-204577'],
@@ -4611,8 +4743,8 @@ var CH1_GROUPS = [
 ];
 var CH2_GROUPS = [
   ['Theo', [
-    ['First name', 'Theo', 'alpha'], ['Last name', 'Alvarez', 'alpha'],
-    ['Goes by', 'Theo', 'alpha'], ['Date of birth', 'March 14, 2024'], ['First day', 'August 3, 2026']
+    ['First name', 'Theo', 'alpha req'], ['Last name', 'Alvarez', 'alpha req'],
+    ['Goes by', 'Theo', 'alpha'], ['Date of birth', 'March 14, 2024', 'req'], ['First day', 'August 3, 2026']
   ]],
   ['Feeding', [
     ['Solid foods', 'Yes, full table food'], ['Bottles or cups', 'Cups only, at meals'],
@@ -4644,7 +4776,9 @@ var CH2_GROUPS = [
   ]],
   ['Care history', [
     ['Previous care', 'Home with Maria; Denise two mornings'], ['Longest time apart', 'A full workday, does well'],
-    ['Plan for sick days', 'Maria works from home; Denise is backup']
+    /* v8.7 item 1: nameless phrasing; a long swapped-in fresh name ("Priyanka")
+       pushed the named version past a full-width input at 390px */
+    ['Plan for sick days', 'Works from home; Denise is backup']
   ]],
   ['Health notes you shared', [
     ['Allergies', 'None known'], ['Medications', 'None'], ['Pediatric checkups', 'Current; last visit March 2026'],
@@ -4670,14 +4804,23 @@ function buildLockedFields(groups, mountId) {
         '<div class="grouplabel">' + g[0] + '</div><div class="fieldgrid">';
     }
     g[1].forEach(function(f) {
-      var type = f[2] === 'tel' ? 'tel' : 'text';
-      var input = '<input type="' + type + '"' + (f[2] === 'alpha' ? ' data-alpha' : '') +
-        (type === 'tel' ? ' inputmode="tel"' : '') + ' value="' + f[1].replace(/"/g, '&quot;') + '"';
+      /* v8.7 items 2+3: parse the flag string; render the required mark, the
+         data-req gate hook, a stable name, and the autocomplete token. */
+      var flags = f[2] || '';
+      var type = /\btel\b/.test(flags) ? 'tel' : 'text';
+      var ac = (flags.match(/ac:([a-z0-9-]+)/) || [])[1] || 'off';
+      var req = /\breq\b/.test(flags);
+      var nm = (g[0] + ' ' + f[0]).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      var label = f[0] + (req ? ' <span class="req">*</span>' : '');
+      var input = '<input type="' + type + '"' + (/\balpha\b/.test(flags) ? ' data-alpha' : '') +
+        (type === 'tel' ? ' inputmode="tel"' : '') + (ac === 'email' ? ' inputmode="email"' : '') +
+        ' name="' + nm + '" autocomplete="' + ac + '"' + (req ? ' data-req' : '') +
+        ' value="' + f[1].replace(/"/g, '&quot;') + '"';
       /* v8.6 item 3: fresh mode renders OPEN inputs (no lock, no unlock control);
          the family fills them, then finishes the chapter like any other. */
       h += FRESH
-        ? '<div><span class="flabel">' + f[0] + '</span>' + input + '></div>'
-        : '<div class="lockwrap"><span class="flabel">' + f[0] + '</span>' + input + ' disabled>' +
+        ? '<div><span class="flabel">' + label + '</span>' + input + '></div>'
+        : '<div class="lockwrap"><span class="flabel">' + label + '</span>' + input + ' disabled>' +
           '<button type="button" class="unlockbtn" aria-label="Unlock ' + f[0] + ' to edit it">' + UNLOCK_ICON + '</button>' +
           '<span class="savewhisper">Saved</span></div>';
     });
@@ -4694,7 +4837,7 @@ function freshifyGroups() {
     'Parent or guardian 2': { 'First name': D.p2First, 'Last name': D.last, 'Cell phone': D.p2Phone, 'Email': D.p2Email, 'Employer': D.employer2, 'Work phone': D.p2Phone },
     'Home': { 'Street address': D.street, 'ZIP': D.zip },
     'Coverage and contact': { 'Insurance carrier': D.carrier, 'Policy number': D.policy, 'Employment rate tier': D.tier },
-    'Theo': { 'First name': D.first, 'Last name': D.last, 'Goes by': D.first, 'Date of birth': fpick(['February 9, 2024', 'March 14, 2024', 'April 2, 2024', 'May 21, 2024']) },
+    'Theo': { 'First name': D.first, 'Last name': D.last, 'Goes by': D.first, 'Date of birth': (D.dob = fpick(['February 9, 2024', 'March 14, 2024', 'April 2, 2024', 'May 21, 2024'])) },
     'Feeding': { 'Usual breakfast': D.breakfast },
     'Sleep': { 'Wakes up at': D.wake, 'Bedtime': D.bed, 'Daily nap': D.nap, 'Sleeps with': D.lovey },
     'Comfort and temperament': { 'What comforts Theo': D.comfort },
@@ -5290,31 +5433,28 @@ function renderForm() {
     : (f.sig
     ? 'Read it exactly as it will be filed. It needs your signature at the bottom, then your confirmation.'
     : 'Read it exactly as it will be filed. No signature on this one; it just needs your confirmation.');
-  /* ---- v8.6 item 1: the document the family reviews and signs is the ACTUAL native
-     CDSS PDF (public/docs/cdss-native/, served beside this mockup), rendered inline,
-     never the HTML facsimile. The HTML recreation survives only for the NSP and the
-     handbook (no native CDSS form exists for those) and for print/View copies.
-     Production fills the AcroForm fields with pdf-lib before serving; the mockup
-     embeds the blank current-revision form, with a caption saying so. ---- */
+  /* ---- v8.6 item 1 + v8.9: the document the family reviews and signs is the ACTUAL
+     native CDSS PDF (public/docs/cdss-native/, served beside this mockup), rendered
+     inline, never the HTML facsimile. v8.9: the family's OWN data is overlaid at the
+     real AcroForm field coordinates so the form reads filled, and the signature slot
+     sits ON the form's signature line (no separate signature card). This positioned
+     overlay is the deterministic demo technique; production fills the real AcroForm
+     fields server-side with pdf-lib, so the filed copy carries exactly this data.
+     The HTML recreation survives only for the NSP and the handbook (no native CDSS
+     form exists for those) and for print/View copies. ---- */
   var nativePdf = NATIVE_PDFS[f.id];
   var revTitleEl = document.getElementById('revTitle');
   if (revTitleEl) revTitleEl.textContent = nativePdf
-    ? 'This is the real state form you are signing.'
+    ? 'This is the real state form, filled out for you.'
     : 'This is the real form, filled out for you.';
   if (nativePdf) {
-    /* the browser's own PDF viewer where it exists (desktop Chrome/Firefox/Safari);
-       pdf.js rendering of the SAME native file where it does not (iOS Safari,
-       embedded webviews). Either way the family reviews the actual state PDF. */
-    var canIframe = navigator.pdfViewerEnabled === true;
     var pdfTitle = f.name + ' · official CDSS ' + f.foot.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    var kidFirst = FRESH ? FRESHD.first : 'Theo';
     document.getElementById('formStage').innerHTML =
-      (canIframe
-        ? '<iframe class="nativepdf" src="' + nativePdf + '#toolbar=0&navpanes=0" title="' + pdfTitle + '"></iframe>'
-        : '<div class="nativepdf pdfjs" id="pdfjsMount" role="document" aria-label="' + pdfTitle + '"><div class="pdfwait">Loading the state form...</div></div>') +
-      '<p class="nativecap">In production this form is filled with Theo\'s information via the state form fields.</p>' +
-      '<div class="formdoc nativesign">' + fdsigHTML(f, false) +
-        '<div class="fdfoot"><span>' + f.foot + '</span><span>SIGNATURE PAGE · APPLIED TO THE FORM ABOVE</span></div></div>';
-    if (!canIframe) renderNativePdf(nativePdf, document.getElementById('pdfjsMount'));
+      '<div class="nativepdf pdffill" id="pdfFillMount" role="document" aria-label="' + pdfTitle + '">' +
+        '<div class="pdfwait">Loading the state form...</div></div>' +
+      '<p class="nativecap">Every value on this form is ' + kidFirst + '\'s real information. In production it is written into the state form\'s own fields (pdf-lib, server side), so the filed copy carries exactly what you see.</p>';
+    renderFilledPdf(f, document.getElementById('pdfFillMount'));
   } else {
     document.getElementById('formStage').innerHTML = formDocHTML(f, false);
   }
@@ -5430,6 +5570,244 @@ function renderNativePdf(url, mount) {
     console.debug('Presence mockup: pdf.js unavailable; offering the file directly.', e);
     mount.innerHTML = '<div class="pdfwait">The form preview could not load here. ' +
       '<a href="' + url + '" target="_blank" rel="noopener">Open ' + url + '</a> to read it.</div>';
+  });
+}
+
+/* ---- v8.9: the FILLED native form. The family's own data (the same values they
+   confirmed in the chapters; the random demo family under ?fresh=1) is positioned
+   at each AcroForm field's real coordinates on top of the rendered native PDF, and
+   the signature slot sits ON the form's signature line. Field geometry was read
+   from each form's AcroForm field rects (612x792 pt pages). Production writes the
+   same values into the real fields server-side with pdf-lib. ---- */
+function fillFamily() {
+  var V = {
+    childFirst: 'Theo', childLast: 'Alvarez', sex: 'M', dob: '3/14/2024',
+    p1First: 'Maria', p2First: 'Jordan', last: 'Alvarez',
+    p1Phone: '(916) 555-0134', p2Phone: '(916) 555-0187',
+    streetNum: '1418', street: 'P Street', city: 'Sacramento', st: 'CA', zip: '95814',
+    ec1: { name: 'Denise Alvarez', addr: '2210 T Street, Sacramento, CA', phone: '(916) 555-0173', rel: 'Grandmother' },
+    ec2: { name: 'Sam Okafor', addr: 'Sacramento, CA', phone: '(916) 555-0148', rel: 'Family friend' },
+    physician: 'Dr. Priya Nair', physAddr: 'Capitol Pediatrics, Sacramento, CA',
+    plan: 'Western Health Advantage WHA-204577', physPhone: '(916) 555-0122',
+    allergy: 'None known', wake: '6:30 a.m.', bed: '7:30 p.m.', breakfast: 'Oatmeal with fruit'
+  };
+  if (FRESH) {
+    var D = FRESHD, sp = D.street.split(' ');
+    V.childFirst = D.first; V.childLast = D.last; V.last = D.last;
+    V.dob = D.dob || V.dob;
+    V.p1First = D.p1First; V.p2First = D.p2First;
+    V.p1Phone = D.p1Phone; V.p2Phone = D.p2Phone;
+    V.streetNum = sp.shift(); V.street = sp.join(' '); V.zip = D.zip;
+    V.ec1 = { name: D.ec1.first + ' ' + D.ec1.last, addr: 'Sacramento, CA', phone: D.ec1.phone, rel: D.ec1.rel };
+    V.ec2 = { name: D.ec2.first + ' ' + D.ec2.last, addr: 'Sacramento, CA', phone: D.ec2.phone, rel: D.ec2.rel };
+    V.physician = 'Dr. ' + D.doc.first + ' ' + D.doc.last;
+    V.physAddr = D.doc.practice + ', Sacramento, CA';
+    V.plan = D.carrier + ' ' + D.policy; V.physPhone = D.doc.phone;
+    V.allergy = D.allergy; V.wake = D.wake; V.bed = D.bed; V.breakfast = D.breakfast;
+  }
+  return V;
+}
+function splitPhone(p) {
+  var m = (p || '').match(/\((\d{3})\)\s*(.*)/);
+  return m ? [m[1], m[2]] : ['916', p || ''];
+}
+function fillEntriesFor(id) {
+  var V = fillFamily();
+  var a1 = splitPhone(V.p1Phone), a2 = splitPhone(V.p2Phone), ph = splitPhone(V.physPhone);
+  var childFull = V.childFirst + ' ' + V.childLast;
+  var facility = 'Growing Mindfully (Present Pathways, Inc.)';
+  function T(x, y, w, h, v, opt) {
+    var e = { k: 't', x: x, y: y, w: w, h: h, v: v };
+    if (opt) for (var kk in opt) e[kk] = opt[kk];
+    return e;
+  }
+  function X(x, y) { return { k: 'x', x: x, y: y }; }
+  if (id === 'lic700') return { 1: [
+    T(18, 116, 185, 17, V.childLast), T(283, 115, 146, 17, V.childFirst),
+    T(436, 116, 38, 17, V.sex), T(490, 116, 22, 17, a1[0]), T(520, 116, 73, 17, a1[1]),
+    T(19, 140, 72, 15, V.streetNum), T(124, 140, 170, 15, V.street), T(301, 139, 83, 15, V.city),
+    T(386, 139, 41, 15, V.st), T(438, 140, 46, 15, V.zip), T(488, 140, 107, 15, V.dob),
+    T(19, 165, 211, 15, V.last), T(349, 166, 134, 15, V.p2First),
+    T(492, 167, 22, 15, a2[0]), T(522, 166, 69, 15, a2[1]),
+    T(18, 190, 69, 15, V.streetNum), T(115, 190, 147, 15, V.street), T(265, 190, 118, 15, V.city),
+    T(386, 190, 47, 15, V.st), T(439, 190, 45, 15, V.zip), T(491, 189, 21, 15, a2[0]), T(522, 189, 71, 15, a2[1]),
+    T(18, 213, 196, 15, V.last), T(311, 213, 174, 15, V.p1First),
+    T(493, 213, 22, 15, a1[0]), T(523, 213, 69, 15, a1[1]),
+    T(22, 236, 73, 15, V.streetNum), T(107, 236, 155, 15, V.street), T(269, 236, 108, 15, V.city),
+    T(382, 238, 46, 14, V.st), T(431, 236, 58, 15, V.zip), T(494, 236, 20, 15, a1[0]), T(523, 237, 70, 15, a1[1]),
+    T(21, 261, 175, 15, V.last), T(278, 261, 111, 15, V.p1First),
+    T(399, 261, 22, 15, a1[0]), T(426, 261, 60, 15, a1[1]), T(494, 261, 21, 15, a1[0]), T(521, 261, 71, 15, a1[1]),
+    T(18, 320, 185, 18, V.ec1.name), T(206, 321, 206, 19, V.ec1.addr), T(417, 322, 90, 17, V.ec1.phone), T(512, 323, 80, 17, V.ec1.rel),
+    T(18, 345, 185, 18, V.ec2.name), T(207, 346, 206, 18, V.ec2.addr), T(418, 346, 90, 17, V.ec2.phone), T(513, 346, 80, 17, V.ec2.rel),
+    T(17, 434, 146, 15, V.physician), T(170, 432, 181, 17, V.physAddr), T(358, 432, 128, 17, V.plan),
+    T(494, 433, 21, 17, ph[0]), T(523, 433, 70, 17, ph[1]),
+    X(29, 487),
+    T(18, 561, 370, 15, V.p1First + ' ' + V.last), T(395, 561, 199, 15, 'Parent'),
+    T(18, 585, 370, 15, V.p2First + ' ' + V.last), T(394, 585, 199, 15, 'Parent'),
+    T(18, 609, 370, 15, V.ec1.name), T(395, 609, 199, 15, V.ec1.rel),
+    T(19, 682, 574, 15, '8:00 a.m. to 5:00 p.m., Monday to Friday'),
+    { k: 'sig', x: 20, y: 703, w: 430, h: 16 },
+    { k: 'date', x: 489, y: 705, w: 104, h: 15 }
+  ] };
+  if (id === 'lic702') return { 1: [
+    T(41, 148, 264, 20, childFull), T(312, 148, 80, 20, V.sex), T(398, 148, 178, 20, V.dob),
+    T(36, 213, 355, 20, V.p1First + ' ' + V.last), T(398, 213, 178, 20, 'Yes'),
+    T(36, 276, 355, 20, V.p2First + ' ' + V.last), T(398, 277, 178, 20, 'Yes'),
+    T(36, 334, 355, 20, 'Yes'), T(398, 334, 178, 20, 'March 2026'),
+    T(40, 394, 98, 20, '11'), T(219, 393, 98, 20, '14'), T(394, 393, 98, 20, '24'),
+    T(37, 622, 539, 20, 'None'),
+    X(131, 668),
+    T(219, 681, 153, 20, 'Two or three'), T(379, 681, 197, 20, V.allergy)
+  ], 2: [
+    T(69, 102, 142, 20, V.wake), T(274, 101, 120, 20, V.bed), T(399, 102, 176, 20, 'Yes'),
+    T(99, 143, 112, 20, 'Yes'), T(222, 142, 169, 20, '12:30 p.m.'), T(398, 142, 176, 20, 'About two hours'),
+    T(219, 176, 357, 20, V.breakfast), T(218, 209, 357, 20, 'Provided by the center'), T(219, 239, 357, 20, 'Family dinner, varied'),
+    T(288, 262, 288, 20, '7:15 a.m.'), T(261, 284, 315, 20, '11:30 a.m.'), T(264, 307, 312, 20, '6:00 p.m.'),
+    T(36, 342, 287, 20, 'Broccoli'), T(325, 343, 251, 20, 'None'),
+    X(83, 384), T(206, 393, 113, 20, 'Training in progress'),
+    X(329, 397), T(482, 393, 94, 20, 'After breakfast'),
+    T(36, 430, 266, 20, 'Poop'), T(309, 430, 266, 20, 'Potty'),
+    X(83, 556), X(362, 570), X(84, 625), X(362, 639)
+  ], 3: [
+    T(36, 96, 540, 50, 'Warm and easygoing; plays alongside his cousins happily.', { wrap: 1 }),
+    T(36, 167, 540, 61, 'Weekly library playgroup since age one.', { wrap: 1 }),
+    T(36, 250, 540, 61, 'Startles at loud sudden noises; settles quickly when held.', { wrap: 1 }),
+    T(36, 332, 540, 61, V.p1First + ' works from home and keeps ' + V.childFirst + '; ' + V.ec1.name.split(' ')[0] + ' is backup.', { wrap: 1 }),
+    T(36, 414, 540, 61, 'Both parents returning to full-time work.', { wrap: 1 }),
+    { k: 'sig', x: 42, y: 497, w: 320, h: 22 },
+    { k: 'date', x: 382, y: 497, w: 194, h: 20 }
+  ] };
+  if (id === 'lic627') return { 1: [
+    T(49, 143, 227, 15, facility),
+    T(49, 200, 281, 15, childFull),
+    T(33, 334, 544, 14, V.allergy),
+    { k: 'date', x: 118, y: 655, w: 79, h: 15 },
+    { k: 'sig', x: 330, y: 653, w: 244, h: 16 },
+    T(33, 684, 543, 15, V.streetNum + ' ' + V.street),
+    T(37, 707, 541, 15, V.city + ', ' + V.st + ' ' + V.zip),
+    T(43, 731, 20, 15, a1[0]), T(73, 731, 80, 15, a1[1]),
+    T(301, 730, 24, 15, a1[0]), T(332, 730, 113, 15, a1[1])
+  ] };
+  if (id === 'lic613') return { 1: [
+    T(41, 472, 530, 14, 'California Department of Social Services'),
+    T(41, 500, 530, 14, '851 Traeger Ave (Ste 360)'),
+    T(41, 529, 265, 14, 'San Bruno'), T(312, 529, 85, 14, '94066'), T(403, 529, 167, 14, '650-266-8843'),
+    T(41, 650, 265, 14, facility), T(312, 650, 259, 14, '750 N Street, Sacramento, CA 95814'),
+    T(41, 679, 530, 14, childFull),
+    { k: 'sig', x: 41, y: 706, w: 300, h: 15 },
+    T(41, 737, 356, 14, 'Parent'),
+    { k: 'date', x: 403, y: 737, w: 167, h: 14 }
+  ] };
+  if (id === 'lic995') return { 1: [
+    T(252, 334, 270, 15, 'California Department of Social Services'),
+    T(252, 359, 270, 15, '851 Traeger Ave (Ste 360), San Bruno, CA 94066'),
+    T(252, 382, 270, 15, '650-266-8843'),
+    T(254, 583, 261, 14, childFull),
+    T(203, 624, 205, 14, facility),
+    { k: 'sig', x: 75, y: 652, w: 250, h: 20 },
+    { k: 'date', x: 373, y: 656, w: 90, h: 14 }
+  ] };
+  return null;
+}
+function fillNode(e) {
+  var el;
+  if (e.k === 'sig') {
+    el = document.createElement('button');
+    el.className = 'slot sigslot';
+    el.id = 'revSlot';
+    el.type = 'button';
+    el.textContent = 'Tap to sign';
+    el.onclick = function() { revSign(el); };
+    el.style.height = e.h + 'px';
+  } else if (e.k === 'date') {
+    el = document.createElement('span');
+    el.className = 'fillval filldate';
+    el.id = 'revDate';
+    el.style.lineHeight = e.h + 'px';
+    el.style.height = e.h + 'px';
+  } else if (e.k === 'x') {
+    el = document.createElement('span');
+    el.className = 'fillck';
+    el.textContent = 'X';
+    el.style.left = e.x + 'px';
+    el.style.top = e.y + 'px';
+    return el;
+  } else {
+    el = document.createElement('span');
+    el.className = 'fillval' + (e.wrap ? ' wrap' : '');
+    el.textContent = e.v || '';
+    var size = e.s || 8.5;
+    /* long values shrink to their field width, like pdf-lib auto-size does */
+    var est = (e.v || '').length * size * 0.52;
+    if (!e.wrap && est > e.w) size = Math.max(6, size * e.w / est);
+    el.style.fontSize = size + 'px';
+    if (e.wrap) { el.style.lineHeight = '1.4'; }
+    else { el.style.lineHeight = e.h + 'px'; el.style.height = e.h + 'px'; }
+  }
+  el.style.left = e.x + 'px';
+  el.style.top = e.y + 'px';
+  el.style.width = e.w + 'px';
+  return el;
+}
+var pdfFillFit = null;
+window.addEventListener('resize', function() { if (pdfFillFit) pdfFillFit(); });
+function renderFilledPdf(f, mount) {
+  if (!mount) return;
+  var url = NATIVE_PDFS[f.id];
+  var geom = fillEntriesFor(f.id);
+  if (!geom) { renderNativePdf(url, mount); return; }
+  loadPdfJs().then(function(lib) {
+    return lib.getDocument(url).promise;
+  }).then(function(pdf) {
+    mount.innerHTML = '';
+    var sheets = [];
+    function fit() {
+      if (!document.contains(mount)) { pdfFillFit = null; return; }
+      var w = mount.clientWidth - 2;
+      if (w < 40) return;
+      sheets.forEach(function(s) {
+        var sc = w / s.w0;
+        s.sheet.style.transform = 'scale(' + sc + ')';
+        s.box.style.height = (s.h0 * sc) + 'px';
+      });
+    }
+    pdfFillFit = fit;
+    function page(n) {
+      if (n > pdf.numPages) { fit(); return; }
+      pdf.getPage(n).then(function(p) {
+        var v1 = p.getViewport({ scale: 1 });
+        var vp = p.getViewport({ scale: 2 }); /* 2x for sharp text */
+        var box = document.createElement('div');
+        box.className = 'pdfpagebox';
+        var sheet = document.createElement('div');
+        sheet.className = 'pdfsheet';
+        sheet.style.width = v1.width + 'px';
+        sheet.style.height = v1.height + 'px';
+        var c = document.createElement('canvas');
+        c.width = vp.width;
+        c.height = vp.height;
+        c.style.width = v1.width + 'px';
+        c.style.height = v1.height + 'px';
+        sheet.appendChild(c);
+        (geom[n] || []).forEach(function(e) { sheet.appendChild(fillNode(e)); });
+        box.appendChild(sheet);
+        mount.appendChild(box);
+        sheets.push({ box: box, sheet: sheet, w0: v1.width, h0: v1.height });
+        fit();
+        p.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise
+          .then(function() { page(n + 1); });
+      });
+    }
+    page(1);
+  }).catch(function(e) {
+    /* offline or CDN blocked: fall back to the readable HTML facsimile so the
+       family can still review and sign */
+    console.debug('Presence mockup: pdf.js unavailable; falling back to the facsimile.', e);
+    var stage = document.getElementById('formStage');
+    if (stage) {
+      stage.innerHTML = formDocHTML(f, false);
+      if (FRESH) freshSweep(stage);
+    }
   });
 }
 function downloadDoc(id) {
@@ -5777,10 +6155,10 @@ if (FRESH) (function() {
     ['Daily nap', D.nap],
     ['What comforts', D.comfort],
     ['Special instructions', D.lovey + ' for nap'],
-    ['get along with family', 'Warm and curious; watches new children first'],
+    ['get along with family', 'Warm and curious; watches first'],
     ['Group play', fpick(['Weekly library playgroup', 'A neighborhood nanny share', 'Cousins most weekends'])],
     ['Special problems', 'None'],
-    ['plan for care', 'A parent stays home; grandmother is backup'],
+    ['plan for care', 'A parent stays home; Grandma is backup'],
     ['Rest time habits', 'Rests quietly with a book']
   ];
   document.querySelectorAll('#s-health .hgrid2 > div, #s-health .hgrid2 > div.full').forEach(function(cell) {
