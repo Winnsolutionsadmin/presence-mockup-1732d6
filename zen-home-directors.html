@@ -235,11 +235,41 @@ body{
   font-size:.72rem;color:var(--on-surface-faint);line-height:1.7}
 .pagefoot code{font-family:var(--font-body);background:rgba(0,0,0,.04);padding:1px 6px;border-radius:5px}
 
-.tasklist{list-style:none;margin:12px 0 2px;display:grid;grid-template-columns:1fr 1fr;gap:7px 20px}
-.tasklist li{display:flex;align-items:center;gap:9px;font-size:.84rem;color:var(--on-surface);font-weight:500}
-.tasklist li.todo{color:var(--on-surface-variant);font-weight:400}
-.tasklist .tick{width:18px;height:18px;flex-shrink:0}
-@media(max-width:640px){.tasklist{grid-template-columns:1fr}}
+.enrollcalm{max-width:600px;margin:34px auto 0}
+.ec{background:var(--card);border:var(--ghost);border-radius:var(--radius);box-shadow:var(--shadow-soft);overflow:hidden}
+.ec-head{width:100%;display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;background:transparent;border:0;cursor:pointer;padding:16px 18px;text-align:left}
+.ec-head:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+.ec-seed{width:26px;height:26px;flex-shrink:0}
+.ec-txt{display:flex;flex-direction:column;min-width:0}
+.ec-txt b{font-family:var(--fd);font-weight:700;font-size:.92rem}
+.ec-txt span{font-size:.76rem;color:var(--on-surface-faint)}
+.ec-prog{display:flex;align-items:center;gap:9px}
+.ec-bar{width:78px;height:6px;border-radius:999px;background:rgba(31,42,46,.08);overflow:hidden;display:block}
+.ec-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--secondary),var(--secondary-deep));transition:width .3s ease}
+.ec-prog>span{font-family:var(--fd);font-weight:700;font-size:.74rem;color:var(--on-surface-variant);white-space:nowrap}
+.ec-chev{width:18px;height:18px;color:var(--on-surface-faint);transition:transform .2s ease}
+.ec-head[aria-expanded="true"] .ec-chev{transform:rotate(180deg)}
+.ec-body{padding:2px 18px 18px;border-top:1px solid rgba(0,0,0,.05)}
+.ecmaster{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:linear-gradient(0deg,rgba(56,102,111,.05),rgba(56,102,111,.05)),var(--card);border:1px solid rgba(56,102,111,.26);border-radius:var(--radius-sm);padding:13px 15px;margin:14px 0}
+.ecmaster b{font-family:var(--fd);font-weight:800;font-size:.9rem}
+.ecmaster p{font-size:.75rem;color:var(--on-surface-variant);margin-top:1px}
+.ecm-btn{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;text-decoration:none;font-family:var(--fd);font-weight:700;font-size:.78rem;border-radius:999px;padding:9px 14px;white-space:nowrap}
+.ecm-btn svg{width:14px;height:14px}
+.ecdoc{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid rgba(0,0,0,.04)}
+.ecdoc:last-child{border-bottom:0}
+.ecchk{width:22px;height:22px;border-radius:50%;border:2px solid #c3c9c4;background:#fff;display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:all .16s ease}
+.ecchk svg{width:13px;height:13px;opacity:0;transition:opacity .16s ease}
+.ecchk.on{background:var(--secondary-deep);border-color:var(--secondary-deep)}
+.ecchk.on svg{opacity:1}
+.ecdoc .n{font-size:.86rem;font-weight:500;flex:1;min-width:0}
+.ecdoc.on .n{color:var(--on-surface-faint);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.18)}
+.ecdoc .oneoff{font-family:var(--fd);font-weight:600;font-size:.72rem;color:var(--primary-dim);text-decoration:none;opacity:.65;white-space:nowrap}
+.ecdoc .oneoff:hover{opacity:1}
+.ec-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px}
+.ec-open{font-family:var(--fd);font-weight:600;font-size:.8rem;color:var(--primary-dim);text-decoration:none;border-bottom:1.5px solid rgba(56,102,111,.28);padding-bottom:2px}
+.ec-send{font-family:var(--fd);font-weight:700;font-size:.82rem;color:#fff;background:#c9cdc9;border:0;border-radius:999px;padding:10px 18px;cursor:not-allowed;transition:all .2s ease}
+.ec-send.ready{background:var(--primary);cursor:pointer;box-shadow:0 5px 14px rgba(56,102,111,.22)}
+.ec-send.sent{background:var(--secondary-deep)}
 
 [hidden]{display:none !important}
 
@@ -304,9 +334,32 @@ body{
 
     <!-- attention copy -->
     <div data-when="attention" hidden>
-      <h1 class="headline">A family just finished <em>enrolling</em>.</h1>
-      <p class="subline">Theo Nakamura's paperwork is all signed. <b>A few steps to build his file</b> and he is ready for his Aug 10 start. Everything else is calm.</p>
+      <h1 class="headline">A few things could use your <em>eyes</em>.</h1>
+      <p class="subline">Most of the school is running itself. <b>A couple of quick items</b> are waiting below. Everything else is calm.</p>
       <div class="checkedline">Watched continuously &middot; last read 9:14 AM</div>
+    </div>
+  </section>
+
+  <!-- ============ ENROLLMENT (calm-screen, expandable) ============ -->
+  <section class="enrollcalm" data-when="clear" aria-label="Enrollment in progress">
+    <div class="ec">
+      <button class="ec-head" id="ecHead" aria-expanded="false">
+        <svg class="ec-seed" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 28C16 20 10 16 6 15c0 8 6 12 10 13Z" fill="#849e85"/><path d="M16 28c0-9 6-13 10-14 0 8-6 13-10 14Z" fill="#6f8f70"/><path d="M16 28V13" stroke="#9caf8f" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="ec-txt"><b>Theo Nakamura is enrolling</b><span>Paperwork signed &middot; building the file</span></span>
+        <span class="ec-prog"><span class="ec-bar"><i id="ecBar"></i></span><span id="ecCount"></span></span>
+        <svg class="ec-chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="ec-body" id="ecBody" hidden>
+        <div class="ecmaster">
+          <div><b>Master file - print ready</b><p>Every signed document compiled into one file, in filing order.</p></div>
+          <a class="ecm-btn" href="./master-theo.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>View / print all</a>
+        </div>
+        <div id="ecDocs"></div>
+        <div class="ec-actions">
+          <a class="ec-open" href="./child-file.html">Open the full file - review, approve, print and file each &rarr;</a>
+          <button class="ec-send" id="ecSend" disabled>Send to Ashley</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -352,39 +405,28 @@ body{
       <span class="wchip"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>No room over capacity</span>
       <span class="wchip"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Staff attendance clean</span>
     </div>
-    <p class="foot">The last enrollment finished this morning and its file is built. Two children start within two weeks. Nothing needs a decision today.</p>
+    <p class="foot">Two children start within two weeks and four move rooms this month. Both are on track and need no decision today.</p>
     <div class="peekall"><a href="#">Take a deeper peek anyway &rarr;</a></div>
   </section>
 
   <!-- ================= ATTENTION STACK ================= -->
   <section class="attention" data-when="attention" hidden>
     <div class="attn-eyebrow">
-      <h2>To finish this week</h2>
+      <h2>Needs your eyes</h2>
       <div class="rule"></div>
-      <span class="n">1 new enrollment &middot; 2 quick items</span>
+      <span class="n">2 quick items</span>
     </div>
 
-    <div class="tier-label tier-attn"><span class="swatch"></span>New enrollment &middot; build the file</div>
-    <div class="card attn" style="align-items:flex-start">
-      <div class="num">3<small>of 8 built</small></div>
-      <div class="body">
-        <h3>Theo Nakamura just finished enrolling</h3>
-        <p>Every document is signed. A few steps to assemble his paper file and he is ready for his Aug 10 start.</p>
-        <ul class="tasklist">
-          <li><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#849e85" opacity=".18"/><path d="M7.5 12.2l3 3 6-6.4" stroke="#6f8f70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Master file assembled from signed docs</li>
-          <li><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#849e85" opacity=".18"/><path d="M7.5 12.2l3 3 6-6.4" stroke="#6f8f70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>LIC 700 verified in the folder</li>
-          <li><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#849e85" opacity=".18"/><path d="M7.5 12.2l3 3 6-6.4" stroke="#6f8f70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>LIC 702 verified in the folder</li>
-          <li class="todo"><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="none" stroke="#b9bab8" stroke-width="1.6" stroke-dasharray="2.6 2.6"/></svg>LIC 627 - verify in folder</li>
-          <li class="todo"><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="none" stroke="#b9bab8" stroke-width="1.6" stroke-dasharray="2.6 2.6"/></svg>LIC 613A - verify in folder</li>
-          <li class="todo"><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="none" stroke="#b9bab8" stroke-width="1.6" stroke-dasharray="2.6 2.6"/></svg>LIC 995 - verify in folder</li>
-          <li class="todo"><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="none" stroke="#b9bab8" stroke-width="1.6" stroke-dasharray="2.6 2.6"/></svg>Needs &amp; Services Plan - confirm</li>
-          <li class="todo"><svg class="tick" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" fill="none" stroke="#b9bab8" stroke-width="1.6" stroke-dasharray="2.6 2.6"/></svg>File the paper file in Drive</li>
-        </ul>
-      </div>
-      <a class="peek" href="./child-file.html">Open the file <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    </div>
-
+    <!-- NEEDS ATTENTION -->
     <div class="tier-label tier-attn"><span class="swatch"></span>Needs attention &middot; this week</div>
+    <div class="card attn">
+      <div class="num">2<small>overdue</small></div>
+      <div class="body">
+        <h3>Two tasks slipped past their due date</h3>
+        <p>The oldest is four days over. The rest of the agenda is on time.</p>
+      </div>
+      <a class="peek" href="#">Go to agenda <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
     <div class="card attn">
       <div class="num">2<small>unconfirmed</small></div>
       <div class="body">
@@ -394,14 +436,15 @@ body{
       <a class="peek" href="#">Open the schedule <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
     <div class="card attn">
-      <div class="num">2<small>overdue</small></div>
+      <div class="num">3<small>marks</small></div>
       <div class="body">
-        <h3>Two tasks slipped past their due date</h3>
-        <p>The oldest is four days over. The rest of the agenda is on time.</p>
+        <h3>Maya R. reached three attendance marks</h3>
+        <p>Three marks this pay period crosses the review line. A conversation, not a crisis.</p>
       </div>
-      <a class="peek" href="#">Go to agenda <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="peek" href="#">Open accountability <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
 
+    <!-- WORTH KNOWING -->
     <div class="tier-label tier-know"><span class="swatch"></span>Worth knowing &middot; no action needed</div>
     <div class="card know">
       <div class="num">18<small>of 18</small></div>
@@ -427,12 +470,12 @@ body{
 const DOMAINS = [
   { key:'rooms',     label:'Rooms',      clear:'clear', attention:'know' },
   { key:'tasks',     label:'Tasks',      clear:'clear', attention:'attn' },
-  { key:'documents', label:'Documents',  clear:'clear', attention:'clear' },
-  { key:'enroll',    label:'Enrollment', clear:'clear', attention:'attn' },
+  { key:'documents', label:'Documents',  clear:'clear', attention:'crit' },
+  { key:'enroll',    label:'Enrollment', clear:'clear', attention:'clear' },
   { key:'staff',     label:'Staff',      clear:'clear', attention:'attn' },
   { key:'forecast',  label:'Forecast',   clear:'clear', attention:'clear' },
 ];
-const COUNT = { rooms:'', tasks:'2', documents:'', enroll:'5', staff:'3', forecast:'' };
+const COUNT = { rooms:'', tasks:'2', documents:'3', enroll:'', staff:'3', forecast:'' };
 const CLASS = { clear:'leaf-clear', know:'leaf-know', attn:'leaf-attn', crit:'leaf-crit' };
 
 /* build the leaves along the stem curve */
@@ -672,8 +715,32 @@ buildSprig();
 const _params = new URLSearchParams(location.search);
 const _t = _params.get('t');
 if (_t && /^\d{1,2}:\d{2}$/.test(_t)) demoMin = toMin(_t);
-const _initial = _params.get('state')==='clear' ? 'clear' : 'attention';
+const _initial = _params.get('state')==='attention' ? 'attention' : 'clear';
 setState(_initial);
+</script>
+<script>
+(function(){
+  const DOCS=[{n:'Parent Handbook',done:true},{n:'LIC 700 - Identification & Emergency',done:true},{n:'LIC 702 - Health History',done:true},{n:'LIC 627 - Medical Consent',done:false},{n:'LIC 613A - Personal Rights',done:false},{n:"LIC 995 - Parents' Rights",done:false},{n:'Needs & Services Plan',done:false},{n:'Immunization Record',done:false}];
+  const CK='<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const head=document.getElementById('ecHead'), body=document.getElementById('ecBody');
+  head.addEventListener('click',function(){var open=head.getAttribute('aria-expanded')==='true';head.setAttribute('aria-expanded',String(!open));body.hidden=open;});
+  function render(){
+    var el=document.getElementById('ecDocs'); el.innerHTML='';
+    DOCS.forEach(function(d,i){
+      var row=document.createElement('div'); row.className='ecdoc'+(d.done?' on':'');
+      row.innerHTML='<div class="ecchk '+(d.done?'on':'')+'" data-i="'+i+'" role="checkbox" aria-checked="'+d.done+'">'+CK+'</div><span class="n">'+d.n+'</span><a class="oneoff" href="./child-file.html">print &middot; file</a>';
+      el.appendChild(row);
+    });
+    el.querySelectorAll('.ecchk').forEach(function(c){c.addEventListener('click',function(){var i=+c.dataset.i;DOCS[i].done=!DOCS[i].done;render();});});
+    var done=DOCS.filter(function(d){return d.done;}).length, total=DOCS.length;
+    document.getElementById('ecBar').style.width=Math.round(done/total*100)+'%';
+    document.getElementById('ecCount').textContent=done+' of '+total;
+    var send=document.getElementById('ecSend'), ready=done===total;
+    if(!send.classList.contains('sent')){send.classList.toggle('ready',ready);send.disabled=!ready;send.textContent=ready?"Theo's file is complete - send to Ashley":'Send to Ashley';}
+  }
+  document.getElementById('ecSend').addEventListener('click',function(){var s=document.getElementById('ecSend');s.classList.remove('ready');s.classList.add('sent');s.textContent='Sent to Ashley for confirmation \u2713';s.disabled=true;});
+  render();
+})();
 </script>
 </body>
 </html>

@@ -49,6 +49,16 @@ body{font-family:var(--fb);color:var(--on-surface);min-height:100vh;-webkit-font
 .grouphead .l{display:flex;align-items:baseline;gap:10px}
 .grouphead h2{font-family:var(--fd);font-weight:800;font-size:1.05rem}
 .grouphead .sub{font-size:.78rem;color:var(--on-surface-faint)}
+.master{background:linear-gradient(0deg,rgba(56,102,111,.05),rgba(56,102,111,.05)),var(--card);border:1px solid rgba(56,102,111,.28);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.master-l{display:flex;align-items:center;gap:14px}
+.master-ic{width:42px;height:42px;border-radius:10px;background:rgba(56,102,111,.14);display:grid;place-items:center;flex-shrink:0}
+.master-ic svg{width:22px;height:22px}
+.master h3{font-family:var(--fd);font-weight:800;font-size:.98rem}
+.master p{font-size:.8rem;color:var(--on-surface-variant);max-width:50ch;margin-top:2px}
+.mbtn{display:inline-flex;align-items:center;gap:7px;font-family:var(--fd);font-weight:700;font-size:.82rem;text-decoration:none;border-radius:var(--radius-full);padding:11px 16px;white-space:nowrap;transition:transform .15s ease}
+.mbtn.primary{background:var(--primary);color:#fff;box-shadow:0 5px 14px rgba(56,102,111,.22)}
+.mbtn.primary:hover{transform:translateY(-1px)}
+.mbtn svg{width:15px;height:15px}
 
 /* doc rows */
 .doc{background:var(--card);border:var(--ghost);border-radius:var(--radius-sm);margin-bottom:9px;overflow:hidden;transition:box-shadow .15s ease}
@@ -125,7 +135,17 @@ body{font-family:var(--fb);color:var(--on-surface);min-height:100vh;-webkit-font
 
   <!-- ENROLLMENT GROUP -->
   <div class="grouphead">
-    <div class="l"><h2>Enrollment</h2><span class="sub">review, approve, print and file each document</span></div>
+    <div class="l"><h2>Enrollment</h2><span class="sub">the print-ready packet up top, one-offs below</span></div>
+  </div>
+  <div class="master">
+    <div class="master-l">
+      <div class="master-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="#38666f" stroke-width="1.8"/><path d="M14 3v4h4M9 12h6M9 16h6" stroke="#38666f" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div>
+        <h3>Master file - print ready</h3>
+        <p>Every signed document compiled into one file, in filing order. Print the whole packet at once.</p>
+      </div>
+    </div>
+    <a class="mbtn primary" href="./master-theo.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>View / print all</a>
   </div>
   <div id="docs"></div>
 
