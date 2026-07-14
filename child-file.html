@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kindred - Child File (Director)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --primary:#38666f; --primary-dim:#2b5963;
+  --secondary:#849e85; --secondary-deep:#6f8f70;
+  --tertiary-deep:#b08d4c; --critical:#a8503c;
+  --on-surface:#313333; --on-surface-variant:#5e5f5f; --on-surface-faint:#8a8b8b;
+  --outline:rgba(177,178,178,.28);
+  --paper:#faf6ec; --paper-2:#f2ecdd; --card:#fffdf9;
+  --ok:#4d6f4e; --ok-wash:rgba(132,158,133,.14);
+  --shadow-soft:0 12px 34px rgba(49,51,51,.06);
+  --ghost:1px solid rgba(177,178,178,.22);
+  --radius:16px; --radius-sm:10px; --radius-full:9999px;
+  --fd:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fs:'Newsreader',serif; --fh:'Caveat',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fb);color:var(--on-surface);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5;
+  background:radial-gradient(1100px 560px at 50% -12%, #fffdf7 0, rgba(255,253,247,0) 60%),linear-gradient(180deg,var(--paper),var(--paper-2));background-attachment:fixed}
+.wrap{max-width:820px;margin:0 auto;padding:26px 22px 90px}
+.back{display:inline-flex;align-items:center;gap:7px;font-family:var(--fd);font-weight:600;font-size:.78rem;color:var(--primary-dim);text-decoration:none;margin-bottom:20px}
+.back svg{width:14px;height:14px}
+
+/* child header */
+.child{background:var(--card);border:var(--ghost);border-radius:var(--radius);box-shadow:var(--shadow-soft);padding:22px 24px;margin-bottom:22px}
+.child-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.child h1{font-family:var(--fs);font-weight:500;font-size:2rem;letter-spacing:-.01em;line-height:1.05}
+.child .meta{font-size:.85rem;color:var(--on-surface-variant);margin-top:4px}
+.child .meta b{color:var(--secondary-deep);font-weight:600}
+.printbtn{display:inline-flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:700;font-size:.82rem;
+  color:#fff;background:var(--primary);border:0;border-radius:var(--radius-full);padding:11px 18px;cursor:pointer;
+  box-shadow:0 6px 16px rgba(56,102,111,.24);transition:transform .15s ease,box-shadow .15s ease;white-space:nowrap}
+.printbtn:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(56,102,111,.30)}
+.printbtn svg{width:16px;height:16px}
+.progwrap{margin-top:18px;display:flex;align-items:center;gap:12px}
+.progbar{flex:1;height:8px;border-radius:999px;background:rgba(31,42,46,.07);overflow:hidden}
+.progbar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--secondary),var(--secondary-deep));transition:width .35s ease}
+.progtxt{font-family:var(--fd);font-weight:700;font-size:.8rem;color:var(--on-surface-variant);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* group header */
+.grouphead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 4px 12px}
+.grouphead .l{display:flex;align-items:baseline;gap:10px}
+.grouphead h2{font-family:var(--fd);font-weight:800;font-size:1.05rem}
+.grouphead .sub{font-size:.78rem;color:var(--on-surface-faint)}
+
+/* doc rows */
+.doc{background:var(--card);border:var(--ghost);border-radius:var(--radius-sm);margin-bottom:9px;overflow:hidden;transition:box-shadow .15s ease}
+.doc.open{box-shadow:var(--shadow-soft)}
+.doc.filed{background:linear-gradient(0deg,var(--ok-wash),var(--ok-wash)),var(--card)}
+.docrow{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;padding:14px 16px;cursor:pointer}
+.check{width:24px;height:24px;flex-shrink:0;border-radius:50%;border:2px solid #c3c9c4;background:#fff;display:grid;place-items:center;cursor:pointer;transition:all .18s ease}
+.check svg{width:15px;height:15px;opacity:0;transform:scale(.6);transition:all .18s ease}
+.check.on{background:var(--secondary-deep);border-color:var(--secondary-deep)}
+.check.on svg{opacity:1;transform:scale(1)}
+.dname{font-family:var(--fd);font-weight:600;font-size:.94rem;min-width:0}
+.dname .filedtag{font-family:var(--fb);font-weight:500;font-size:.72rem;color:var(--ok);margin-left:8px}
+.dstat{font-size:.72rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.dstat.todo{background:rgba(0,0,0,.045);color:var(--on-surface-faint)}
+.dstat.prog{background:rgba(176,141,76,.16);color:var(--tertiary-deep)}
+.dstat.done{background:var(--ok-wash);color:var(--ok)}
+.chev{width:18px;height:18px;color:var(--on-surface-faint);transition:transform .2s ease}
+.doc.open .chev{transform:rotate(180deg)}
+
+.detail{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.doc.open .detail{max-height:420px}
+.detail-in{padding:2px 16px 16px 54px;border-top:1px solid rgba(0,0,0,.05);margin-top:2px}
+.overview{font-size:.85rem;color:var(--on-surface-variant);margin:12px 0 12px;max-width:56ch}
+.viewdoc{display:inline-flex;align-items:center;gap:7px;font-family:var(--fd);font-weight:600;font-size:.8rem;color:var(--primary-dim);
+  text-decoration:none;background:rgba(56,102,111,.08);border-radius:var(--radius-full);padding:8px 14px;margin-bottom:14px;transition:background .15s ease}
+.viewdoc:hover{background:rgba(56,102,111,.15)}
+.viewdoc svg{width:14px;height:14px}
+.subhead{font-family:var(--fd);font-weight:700;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--on-surface-faint);margin-bottom:8px}
+.subs{display:flex;flex-direction:column;gap:2px}
+.sub{display:flex;align-items:center;gap:11px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:background .12s ease}
+.sub:hover{background:rgba(0,0,0,.025)}
+.subcheck{width:20px;height:20px;flex-shrink:0;border-radius:6px;border:2px solid #c3c9c4;background:#fff;display:grid;place-items:center;transition:all .16s ease}
+.subcheck svg{width:12px;height:12px;opacity:0;transition:opacity .16s ease}
+.subcheck.on{background:var(--secondary-deep);border-color:var(--secondary-deep)}
+.subcheck.on svg{opacity:1}
+.sub .slabel{font-size:.86rem;font-weight:500}
+.sub.on .slabel{color:var(--on-surface-faint);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.2)}
+.sub .shint{font-size:.74rem;color:var(--on-surface-faint);margin-left:auto}
+
+/* bubble up to ashley */
+.bubble{margin-top:26px;background:var(--card);border:var(--ghost);border-radius:var(--radius);padding:22px 24px;
+  display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;transition:all .3s ease;opacity:.55}
+.bubble.ready{opacity:1;border-color:rgba(56,102,111,.4);box-shadow:var(--shadow-soft);background:linear-gradient(0deg,rgba(56,102,111,.05),rgba(56,102,111,.05)),var(--card)}
+.bubble.sent{border-color:rgba(132,158,133,.5);background:linear-gradient(0deg,var(--ok-wash),var(--ok-wash)),var(--card)}
+.bubble . av{width:44px;height:44px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;font-family:var(--fs);font-weight:500;color:var(--primary-dim);font-size:1rem}
+.bubble.ready .av{background:rgba(56,102,111,.14)}
+.bubble h3{font-family:var(--fd);font-weight:700;font-size:1rem}
+.bubble p{font-size:.84rem;color:var(--on-surface-variant);margin-top:2px;max-width:44ch}
+.sendbtn{font-family:var(--fd);font-weight:700;font-size:.84rem;color:#fff;background:var(--primary);border:0;border-radius:var(--radius-full);
+  padding:12px 20px;cursor:pointer;white-space:nowrap;transition:transform .15s ease;box-shadow:0 6px 16px rgba(56,102,111,.24)}
+.sendbtn:disabled{background:#c9cdc9;color:#fff;cursor:not-allowed;box-shadow:none}
+.sendbtn:not(:disabled):hover{transform:translateY(-1px)}
+
+.foot{margin-top:34px;text-align:center;font-size:.72rem;color:var(--on-surface-faint)}
+.foot .cav{font-family:var(--fh);font-size:1.05rem;color:var(--secondary-deep);display:block;margin-bottom:4px}
+@media (max-width:640px){ .detail-in{padding-left:20px} .docrow{grid-template-columns:auto 1fr auto} .chev{display:none} .bubble{grid-template-columns:auto 1fr} .sendbtn{grid-column:1/-1} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./zen-home-directors.html"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to your home</a>
+
+  <!-- CHILD -->
+  <section class="child">
+    <div class="child-top">
+      <div>
+        <h1>Theo Nakamura</h1>
+        <div class="meta">Toddler 1 &middot; starts <b>Aug 10</b> &middot; family finished enrolling, building the file</div>
+      </div>
+      <button class="printbtn" onclick="window.print()"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Print paperwork</button>
+    </div>
+    <div class="progwrap"><div class="progbar"><i id="prog"></i></div><span class="progtxt" id="progtxt"></span></div>
+  </section>
+
+  <!-- ENROLLMENT GROUP -->
+  <div class="grouphead">
+    <div class="l"><h2>Enrollment</h2><span class="sub">review, approve, print and file each document</span></div>
+  </div>
+  <div id="docs"></div>
+
+  <!-- BUBBLE UP TO ASHLEY -->
+  <section class="bubble" id="bubble">
+    <div class="av">A</div>
+    <div>
+      <h3 id="bubbleH">Send to Ashley for final confirmation</h3>
+      <p id="bubbleP">Available once every document is reviewed, printed and filed. Ashley gives the final sign-off before Theo is enrolled.</p>
+    </div>
+    <button class="sendbtn" id="sendBtn" disabled onclick="sendToAshley()">Send to Ashley</button>
+  </section>
+
+  <div class="foot"><span class="cav">file it, then hand it up</span>Kindred &middot; Growing Mindfully &middot; a director's working file</div>
+</div>
+
+<script>
+const SUBS = [
+  { key:'review', label:'Review & approve', hint:'confirm it is complete and correct' },
+  { key:'print',  label:'Print',            hint:'for the physical folder' },
+  { key:'file',   label:'File in the folder',hint:'place in the child file' },
+];
+const DOCS = [
+  { key:'handbook', name:'Parent Handbook', pdf:null, over:'The full handbook, initialed throughout and signed at Appendix E.', done:{review:true,print:true,file:true} },
+  { key:'lic700', name:'LIC 700 - Identification & Emergency', pdf:'LIC700.pdf', over:'Emergency contacts, authorized pickups, physician and release information.', done:{review:true,print:true,file:true} },
+  { key:'lic702', name:'LIC 702 - Health History', pdf:'LIC702.pdf', over:"Parent's report of the child's health history, allergies and needs.", done:{review:true,print:true,file:true} },
+  { key:'lic627', name:'LIC 627 - Medical Consent', pdf:'LIC627.pdf', over:'Parent consent for emergency medical treatment.', done:{review:false,print:false,file:false} },
+  { key:'lic613', name:'LIC 613A - Personal Rights', pdf:'LIC613A.pdf', over:"Acknowledgment of the child's personal rights in care.", done:{review:false,print:false,file:false} },
+  { key:'lic995', name:"LIC 995 - Parents' Rights", pdf:'LIC995.pdf', over:"Acknowledgment of the parents' rights.", done:{review:false,print:false,file:false} },
+  { key:'nsp', name:'Needs & Services Plan', pdf:null, over:'Draft confirmed by the family; finalized with the director at the intake interview.', done:{review:false,print:false,file:false} },
+  { key:'immunization', name:'Immunization Record', pdf:null, over:'Uploaded by the family; verify it is current and complete before filing.', done:{review:false,print:false,file:false} },
+];
+const CK = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const docsEl = document.getElementById('docs');
+const docFiled = d => SUBS.every(s => d.done[s.key]);
+const docStarted = d => SUBS.some(s => d.done[s.key]);
+
+function render(){
+  docsEl.innerHTML = '';
+  DOCS.forEach((d, i) => {
+    const filed = docFiled(d), started = docStarted(d);
+    const stat = filed ? ['done','Filed'] : started ? ['prog','In review'] : ['todo','To do'];
+    const el = document.createElement('div');
+    el.className = 'doc' + (d._open ? ' open' : '') + (filed ? ' filed' : '');
+    el.innerHTML = `
+      <div class="docrow">
+        <div class="check ${filed?'on':''}" role="checkbox" aria-checked="${filed}" data-doc="${i}">${CK}</div>
+        <div class="dname">${d.name}${filed?'<span class="filedtag">&middot; in the folder</span>':''}</div>
+        <span class="dstat ${stat[0]}">${stat[1]}</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="detail"><div class="detail-in">
+        <p class="overview">${d.over}</p>
+        ${d.pdf ? `<a class="viewdoc" href="./${d.pdf}" target="_blank" rel="noopener">View the document <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : `<a class="viewdoc" href="#" onclick="return false">View the document <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`}
+        <div class="subhead">Director tasks</div>
+        <div class="subs">
+          ${SUBS.map(s => `<div class="sub ${d.done[s.key]?'on':''}" data-doc="${i}" data-sub="${s.key}">
+            <div class="subcheck ${d.done[s.key]?'on':''}">${CK}</div>
+            <span class="slabel">${s.label}</span><span class="shint">${s.hint}</span>
+          </div>`).join('')}
+        </div>
+      </div></div>`;
+    docsEl.appendChild(el);
+  });
+  // wire
+  docsEl.querySelectorAll('.docrow').forEach(row => {
+    row.addEventListener('click', e => {
+      if (e.target.closest('.check')) return;
+      const i = +row.querySelector('.check').dataset.doc; DOCS[i]._open = !DOCS[i]._open; render();
+    });
+  });
+  docsEl.querySelectorAll('.check').forEach(c => c.addEventListener('click', e => {
+    e.stopPropagation();
+    const i = +c.dataset.doc; const filed = docFiled(DOCS[i]);
+    SUBS.forEach(s => DOCS[i].done[s.key] = !filed); render();
+  }));
+  docsEl.querySelectorAll('.sub').forEach(sub => sub.addEventListener('click', () => {
+    const i = +sub.dataset.doc, k = sub.dataset.sub; DOCS[i].done[k] = !DOCS[i].done[k]; DOCS[i]._open = true; render();
+  }));
+  updateProgress();
+}
+function updateProgress(){
+  const filed = DOCS.filter(docFiled).length, total = DOCS.length;
+  document.getElementById('prog').style.width = Math.round(filed/total*100)+'%';
+  document.getElementById('progtxt').textContent = `${filed} of ${total} filed`;
+  const ready = filed === total;
+  const bubble = document.getElementById('bubble'), btn = document.getElementById('sendBtn');
+  if (!bubble.classList.contains('sent')){
+    bubble.classList.toggle('ready', ready);
+    btn.disabled = !ready;
+    document.getElementById('bubbleH').textContent = ready ? "Theo's file is complete - send it to Ashley" : 'Send to Ashley for final confirmation';
+    document.getElementById('bubbleP').textContent = ready
+      ? 'Every document is reviewed, printed and filed. Ashley gives the final sign-off before Theo is enrolled.'
+      : 'Available once every document is reviewed, printed and filed. Ashley gives the final sign-off before Theo is enrolled.';
+  }
+}
+function sendToAshley(){
+  const bubble = document.getElementById('bubble');
+  bubble.classList.remove('ready'); bubble.classList.add('sent');
+  document.getElementById('bubbleH').textContent = 'Sent to Ashley for confirmation';
+  document.getElementById('bubbleP').textContent = "Theo's completed file is now with Ashley for final owner sign-off. You are done here.";
+  const btn = document.getElementById('sendBtn'); btn.textContent = 'Sent ✓'; btn.disabled = true;
+  bubble.querySelector('.av').textContent = '✓';
+}
+DOCS[3]._open = true; // start with the first to-do open so the flow is obvious
+render();
+</script>
+</body>
+</html>
