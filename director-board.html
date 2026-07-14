@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presence - Director Operations Board</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EE; --paper2:#F4EEDD; --card:#FFFDF7;
+    --ink:#1F2A2E; --ink2:#3F5359; --ink3:#8A969A;
+    --teal:#3D8189; --teal2:#5FAEB6; --sage:#6F8F70; --sage2:#9BB99E;
+    --gold:#C9A86A; --clay:#B4694E; --blush:#E8C9B5;
+    --line:rgba(31,42,46,.10); --line2:rgba(31,42,46,.06);
+    --ok-bg:rgba(111,143,112,.12); --ok:#4d6f4e;
+    --urgent-bg:#FBEDE4; --urgent-line:rgba(180,105,78,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:
+      radial-gradient(1200px 500px at 78% -8%, rgba(95,174,182,.10), transparent 60%),
+      radial-gradient(900px 500px at 5% 110%, rgba(155,185,158,.12), transparent 60%),
+      var(--paper);
+    color:var(--ink); font-family:'Manrope',system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+    min-height:100vh;}
+  .wrap{max-width:1120px; margin:0 auto; padding:46px 26px 90px}
+
+  /* header */
+  .eyebrow{font-size:11px; font-weight:800; letter-spacing:.24em; text-transform:uppercase; color:var(--teal); display:flex; align-items:center; gap:9px}
+  .leaf{width:20px;height:20px}
+  h1{font-family:'Newsreader',Georgia,serif; font-weight:500; font-size:clamp(30px,5vw,46px); line-height:1.05; letter-spacing:-.015em; margin:16px 0 6px}
+  h1 em{font-style:italic; color:var(--teal)}
+  .say{font-family:'Caveat',cursive; font-size:22px; color:var(--sage); margin:0}
+  .head-row{display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap}
+  .today{text-align:right; font-size:12.5px; color:var(--ink3); line-height:1.6}
+  .today b{display:block; font-family:'Newsreader',serif; font-size:20px; color:var(--ink2); font-weight:500}
+
+  /* summary ribbon */
+  .ribbon{display:flex; gap:12px; flex-wrap:wrap; margin:30px 0 8px}
+  .stat{flex:1 1 150px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:0 1px 0 rgba(31,42,46,.02)}
+  .stat .n{font-family:'Newsreader',serif; font-size:30px; font-weight:500; line-height:1}
+  .stat .l{font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3); margin-top:7px}
+  .stat.calm .n{color:var(--sage)} .stat.warm .n{color:var(--clay)} .stat.teal .n{color:var(--teal)}
+
+  /* board */
+  .board-h{display:flex; align-items:baseline; gap:12px; margin:38px 0 4px}
+  .board-h h2{font-family:'Newsreader',serif; font-weight:600; font-size:22px; margin:0}
+  .board-h .sub{font-size:13px; color:var(--ink3)}
+  .rule{height:1px; background:var(--line); margin:14px 0 22px}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  @media (max-width:760px){ .grid{grid-template-columns:1fr} .wrap{padding:32px 18px 70px} }
+
+  .kid{position:relative; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px 20px 18px; box-shadow:0 2px 14px rgba(31,42,46,.05); transition:transform .15s ease, box-shadow .15s ease}
+  .kid:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(31,42,46,.08)}
+  .kid.urgent{background:var(--urgent-bg); border-color:var(--urgent-line); box-shadow:0 3px 18px rgba(180,105,78,.10)}
+  .kid.enrolling{border-color:rgba(95,174,182,.4)}
+  .kid-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
+  .kid-name{font-family:'Newsreader',serif; font-size:21px; font-weight:500; letter-spacing:-.01em; margin:0}
+  .kid-meta{font-size:12px; color:var(--ink3); margin-top:2px}
+  .pill{font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:5px 11px; border-radius:999px; white-space:nowrap}
+  .pill.ok{background:var(--ok-bg); color:var(--ok)}
+  .pill.go{background:rgba(95,174,182,.16); color:var(--teal)}
+  .pill.new{background:rgba(201,168,106,.16); color:#8a6a12}
+  .pill.urg{background:rgba(180,105,78,.16); color:var(--clay)}
+
+  .prog{display:flex; align-items:center; gap:10px; margin:14px 0 12px}
+  .track{flex:1; height:6px; border-radius:999px; background:rgba(31,42,46,.07); overflow:hidden}
+  .track i{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--sage2),var(--sage))}
+  .kid.enrolling .track i{background:linear-gradient(90deg,var(--teal2),var(--teal))}
+  .prog .txt{font-size:12px; font-weight:700; color:var(--ink2); white-space:nowrap}
+
+  .docs{display:flex; flex-wrap:wrap; gap:6px}
+  .doc{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:600; color:var(--ink2);
+    background:var(--paper2); border:1px solid var(--line2); border-radius:8px; padding:4px 8px 4px 6px}
+  .doc .ck{width:15px;height:15px;flex-shrink:0}
+  .doc.done{color:var(--ok); background:var(--ok-bg); border-color:transparent}
+  .doc.pend{color:var(--ink3)}
+  .doc.urg{color:var(--clay); background:#f6e0d5; border-color:transparent; font-weight:700}
+
+  .callout{margin-top:14px; display:flex; align-items:center; gap:11px; background:#fff; border:1px solid var(--urgent-line); border-radius:12px; padding:11px 13px}
+  .callout .ic{width:34px;height:34px;border-radius:50%;background:rgba(180,105,78,.14); display:flex;align-items:center;justify-content:center; flex-shrink:0}
+  .callout .t{font-size:13px; font-weight:700; color:var(--clay)}
+  .callout .t small{display:block; font-weight:500; color:var(--ink3); font-size:11.5px; margin-top:1px}
+  .callout .btn{margin-left:auto; font-size:12px; font-weight:800; color:#fff; background:var(--clay); border:none; border-radius:999px; padding:8px 14px; cursor:pointer; white-space:nowrap}
+
+  .calm-note{margin-top:13px; font-size:12.5px; color:var(--ink3); display:flex; align-items:center; gap:7px}
+  .calm-note svg{width:15px;height:15px}
+
+  .foot{margin-top:40px; text-align:center; font-size:12px; color:var(--ink3)}
+  .foot .cav{font-family:'Caveat',cursive; font-size:17px; color:var(--sage)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head-row">
+    <div>
+      <div class="eyebrow">
+        <svg class="leaf" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 35 C20 24 12 20 6 14 C15 12 20 15 20 22 C20 15 25 12 34 14 C28 20 20 24 20 35 Z" fill="none" stroke="#3D8189" stroke-width="1.6" stroke-linejoin="round"/><path d="M20 34 L20 21" stroke="#6F8F70" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Presence &middot; Directors
+      </div>
+      <h1>Everyone's settling in.<br><em>One family</em> needs a call today.</h1>
+      <p class="say">calm board, gentle nudges - green means you're all set</p>
+    </div>
+    <div class="today"><b>Monday</b>July 13, 2026<br>Growing Mindfully</div>
+  </div>
+
+  <div class="ribbon">
+    <div class="stat teal"><div class="n">5</div><div class="l">Families enrolling</div></div>
+    <div class="stat calm"><div class="n">3</div><div class="l">On track</div></div>
+    <div class="stat teal"><div class="n">1</div><div class="l">Enrolling now</div></div>
+    <div class="stat warm"><div class="n">1</div><div class="l">Needs a call</div></div>
+  </div>
+
+  <div class="board-h">
+    <h2>Operations board</h2>
+    <span class="sub">every enrolling child and where their paperwork stands</span>
+  </div>
+  <div class="rule"></div>
+
+  <div class="grid" id="board"></div>
+
+  <div class="foot">
+    <div class="cav">green all the way down is a good day</div>
+    Growing Mindfully &middot; Present Pathways, Inc. &middot; a calm view for directors
+  </div>
+</div>
+
+<script>
+const DOCS = ['Handbook','LIC 700','LIC 702','LIC 627','LIC 613A','LIC 995','NSP','Immunization'];
+// status per doc: 'done' | 'pend' | 'urg'
+const KIDS = [
+  { name:'Aria Bello', meta:'Preschool &middot; started Jun 30', state:'complete',
+    st:['done','done','done','done','done','done','done','done'] },
+  { name:'Wren Castellano', meta:'Infant &middot; starts Aug 3', state:'ontrack',
+    st:['done','done','done','pend','done','pend','pend','done'] },
+  { name:'Theo Nakamura', meta:'Toddler &middot; starts Aug 10', state:'enrolling',
+    st:['done','done','pend','pend','pend','pend','pend','pend'] },
+  { name:'Kai Okafor', meta:'Infant &middot; starts Aug 17', state:'new',
+    st:['pend','pend','pend','pend','pend','pend','pend','pend'] },
+  { name:'Paul Jang', meta:'Infant &middot; paperwork was due Jul 11', state:'urgent',
+    st:['done','done','urg','urg','done','urg','urg','urg'] },
+];
+const CK = {
+  done:'<svg class="ck" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#6F8F70"/><path d="M6 10.5l2.6 2.6L14 7.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  pend:'<svg class="ck" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.2" fill="none" stroke="#C3C9C4" stroke-width="1.6" stroke-dasharray="2.5 2.5"/></svg>',
+  urg:'<svg class="ck" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#B4694E"/><path d="M10 5.6v5.2M10 13.7v.2" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>',
+};
+const PILL = {
+  complete:['ok','Enrolled &middot; file complete'],
+  ontrack:['ok','On track'],
+  enrolling:['go','Enrolling now'],
+  new:['new','Just started'],
+  urgent:['urg','Needs a call'],
+};
+const board = document.getElementById('board');
+KIDS.forEach(k=>{
+  const done = k.st.filter(s=>s==='done').length;
+  const [pc,pl] = PILL[k.state];
+  const cls = 'kid' + (k.state==='urgent'?' urgent':'') + (k.state==='enrolling'?' enrolling':'');
+  const docs = k.st.map((s,i)=>`<span class="doc ${s}">${CK[s]}${DOCS[i]}</span>`).join('');
+  let tail = '';
+  if(k.state==='urgent'){
+    tail = `<div class="callout"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B4694E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <div class="t">Call the Jang family<small>paperwork 2 days overdue - reminder already sent</small></div>
+      <button class="btn">Call now</button></div>`;
+  } else if(k.state==='complete'){
+    tail = `<div class="calm-note"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#6F8F70"/><path d="M6 10.5l2.6 2.6L14 7.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Paper file assembled and filed. Nothing to do.</div>`;
+  } else if(k.state==='enrolling'){
+    tail = `<div class="calm-note"><svg viewBox="0 0 20 20" fill="none" stroke="#3D8189" stroke-width="1.7"><path d="M10 3v4M10 13v4M3 10h4M13 10h4" stroke-linecap="round"/></svg> Filling out their paperwork now - well inside the window.</div>`;
+  } else {
+    tail = `<div class="calm-note"><svg viewBox="0 0 20 20" fill="none" stroke="#9BB99E" stroke-width="1.7"><path d="M10 4v12M4 10h12" stroke-linecap="round"/></svg> ${k.state==='new'?'Just getting started - no nudge needed yet.':'On track - a couple of documents still to come in.'}</div>`;
+  }
+  board.insertAdjacentHTML('beforeend', `<div class="${cls}">
+    <div class="kid-top"><div><h3 class="kid-name">${k.name}</h3><div class="kid-meta">${k.meta}</div></div><span class="pill ${pc}">${pl}</span></div>
+    <div class="prog"><div class="track"><i style="width:${Math.round(done/8*100)}%"></i></div><span class="txt">${done} of 8 filed</span></div>
+    <div class="docs">${docs}</div>
+    ${tail}
+  </div>`);
+});
+</script>
+</body>
+</html>
