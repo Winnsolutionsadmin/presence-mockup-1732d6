@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signed Parent Handbook - Signature Record - Theo Alvarez</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#FBF7EE;--card:#FFFDF7;--ink:#1F2A2E;--ink2:#3F5359;--ink3:#8A969A;
+    --teal:#3D8189;--sage:#6F8F70;--gold:#C9A86A;--line:rgba(31,42,46,.12);--line2:rgba(31,42,46,.07)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#e7e3d8;font-family:'Manrope',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;padding:24px 0}
+  .sheet{width:8.5in;min-height:11in;margin:0 auto 22px;background:var(--paper);padding:.6in .62in .5in;position:relative;box-shadow:0 2px 18px rgba(31,42,46,.18);display:flex;flex-direction:column}
+  .sheet::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--teal) 0 42%,var(--sage) 42% 74%,var(--gold) 74% 100%);opacity:.9}
+  /* header */
+  .head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
+  .brand{display:flex;align-items:center;gap:9px}
+  .brand svg{width:26px;height:26px}
+  .logo{font-family:'Newsreader',serif;font-size:19px;font-weight:500}
+  .logo b{color:var(--teal);font-weight:600}
+  .eyebrow{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);text-align:right;line-height:1.5}
+  .title{font-family:'Newsreader',serif;font-weight:600;font-size:31px;line-height:1.03;letter-spacing:-.01em;margin:15px 0 3px}
+  .sub{font-family:'Caveat',cursive;font-size:18px;color:var(--sage);margin:0 0 6px}
+  .meta{display:flex;gap:26px;flex-wrap:wrap;font-size:11px;color:var(--ink2);margin:10px 0 4px}
+  .meta b{display:block;font-size:9px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+  .lead{font-size:12px;color:var(--ink2);line-height:1.55;margin:12px 0 6px;max-width:64ch}
+  .lead b{color:var(--teal);font-weight:700}
+  /* grid of pages */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+  .pg{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;position:relative}
+  .pg img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line2)}
+  .pg .cap{padding:6px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .pg .cap .l{font-size:9.5px;font-weight:700;color:var(--ink2)}
+  .pg .badge{font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:999px;background:rgba(111,143,112,.16);color:#4d6f4e;white-space:nowrap}
+  .pg.signed{grid-column:span 2;border-color:rgba(61,129,137,.5);box-shadow:0 3px 14px rgba(61,129,137,.12)}
+  .pg.signed .badge{background:rgba(61,129,137,.16);color:var(--teal)}
+  .foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;font-size:9.5px;color:var(--ink3);line-height:1.5}
+  .foot .path{font-family:'Newsreader',serif;font-style:italic;color:var(--teal);font-size:11px}
+  /* certificate */
+  .cert-h{font-family:'Newsreader',serif;font-weight:600;font-size:26px;margin:16px 0 4px}
+  .cert-sub{font-size:12px;color:var(--ink2);margin-bottom:20px}
+  .crow{display:grid;grid-template-columns:180px 1fr;gap:4px 18px;padding:11px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+  .crow .k{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);align-self:center}
+  .crow .v{color:var(--ink);font-weight:500}
+  .crow .v.mono{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink2);word-break:break-all}
+  .crow .v .sig{font-family:'Caveat',cursive;font-size:22px;color:var(--ink)}
+  .seal{margin-top:26px;display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;padding:14px 16px}
+  .seal svg{width:34px;height:34px;flex-shrink:0}
+  .seal p{font-size:11.5px;color:var(--ink2);line-height:1.55}
+  .seal b{color:var(--ink);font-weight:700}
+  @page{size:letter;margin:0}
+  @media print{body{background:#fff;padding:0}.sheet{box-shadow:none;margin:0;page-break-after:always}.sheet::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  @media(max-width:820px){.sheet{width:100%;min-height:auto;padding:24px 18px}.grid{grid-template-columns:repeat(2,1fr)}.pg.signed{grid-column:span 2}}
+</style>
+</head>
+<body>
+  <!-- PAGE 1: signature record grid -->
+  <section class="sheet">
+    <div class="head">
+      <div class="brand">
+        <svg viewBox="0 0 40 40"><path d="M20 35 C20 24 12 20 6 14 C15 12 20 15 20 22 C20 15 25 12 34 14 C28 20 20 24 20 35 Z" fill="none" stroke="#6F8F70" stroke-width="1.6" stroke-linejoin="round"/><path d="M20 34 L20 21" stroke="#3D8189" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span class="logo">growing<b>mindfully</b></span>
+      </div>
+      <div class="eyebrow">Parent Handbook v2.7<br>Signature record</div>
+    </div>
+    <h1 class="title">Signed parent handbook</h1>
+    <p class="sub">every page they initialed, and the page they signed</p>
+    <div class="meta">
+      <div><b>Child</b>Theo Alvarez</div>
+      <div><b>Signed by</b>Maria Alvarez</div>
+      <div><b>Date</b>July 12, 2026</div>
+      <div><b>Initials placed</b>17 sections</div>
+    </div>
+    <p class="lead">The family initialed each prefilled and consent section as they read; <b>one signature at Appendix E binds the whole handbook.</b> Below is every page that carries an initial, plus the signed acknowledgment page. The full 59-page handbook and the signing certificate are on file.</p>
+    <div class="grid">
+      <div class="pg"><img src="./hb-40.png" alt="Appendix A initialed"><div class="cap"><span class="l">Appendix A</span><span class="badge">Initialed</span></div></div>
+      <div class="pg"><img src="./hb-45.png" alt="Appendix B initialed"><div class="cap"><span class="l">Appendix B</span><span class="badge">Initialed</span></div></div>
+      <div class="pg"><img src="./hb-46.png" alt="Appendix B initialed"><div class="cap"><span class="l">Appendix B</span><span class="badge">Initialed &times;2</span></div></div>
+      <div class="pg"><img src="./hb-47.png" alt="Appendix B initialed"><div class="cap"><span class="l">Appendix B &middot; 4-7</span><span class="badge">Initialed &times;4</span></div></div>
+      <div class="pg"><img src="./hb-48.png" alt="Appendix B initialed"><div class="cap"><span class="l">Appendix B &middot; 8-11</span><span class="badge">Initialed &times;4</span></div></div>
+      <div class="pg"><img src="./hb-49.png" alt="Appendix B/C initialed"><div class="cap"><span class="l">Appendix B / C</span><span class="badge">Initialed &times;4</span></div></div>
+      <div class="pg"><img src="./hb-52.png" alt="Appendix C initialed"><div class="cap"><span class="l">Appendix C</span><span class="badge">Initialed</span></div></div>
+      <div class="pg signed"><img src="./hb-56.png" alt="Appendix E signed"><div class="cap"><span class="l">Appendix E &middot; Acknowledgment of Receipt and Review</span><span class="badge">Signed</span></div></div>
+    </div>
+    <div class="foot">
+      <div><b>Growing Mindfully</b> (Present Pathways, Inc.) &middot; 750 N Street, Sacramento CA 95814</div>
+      <div>Filed to <span class="path">Records / Students / Theo Alvarez /</span></div>
+    </div>
+  </section>
+
+  <!-- PAGE 2: certificate of signature -->
+  <section class="sheet">
+    <div class="head">
+      <div class="brand">
+        <svg viewBox="0 0 40 40"><path d="M20 35 C20 24 12 20 6 14 C15 12 20 15 20 22 C20 15 25 12 34 14 C28 20 20 24 20 35 Z" fill="none" stroke="#6F8F70" stroke-width="1.6" stroke-linejoin="round"/><path d="M20 34 L20 21" stroke="#3D8189" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span class="logo">growing<b>mindfully</b></span>
+      </div>
+      <div class="eyebrow">Electronic signature<br>Certificate of proof</div>
+    </div>
+    <h2 class="cert-h">Certificate of signature</h2>
+    <p class="cert-sub">This certificate is part of the signed record and travels with the document.</p>
+    <div class="crow"><div class="k">Document</div><div class="v">Parent Handbook v2.7 (revised July 3, 2026) - all appendices</div></div>
+    <div class="crow"><div class="k">Signer</div><div class="v"><span class="sig">Maria Alvarez</span> &nbsp; parent / guardian of Theo Alvarez</div></div>
+    <div class="crow"><div class="k">Email</div><div class="v">maria.alvarez@gmail.com (verified at signing)</div></div>
+    <div class="crow"><div class="k">Signed</div><div class="v">July 12, 2026 at 2:41:08 PM PDT</div></div>
+    <div class="crow"><div class="k">Method</div><div class="v">17 sections initialed + one binding signature at Appendix E</div></div>
+    <div class="crow"><div class="k">IP address</div><div class="v">73.15.204.118 &middot; Sacramento, CA, US</div></div>
+    <div class="crow"><div class="k">Device</div><div class="v">iPhone &middot; Safari 18 &middot; iOS 26</div></div>
+    <div class="crow"><div class="k">Document hash</div><div class="v mono">SHA-256 &nbsp; 9f2c1a77e4b83d0561ce90a4b7f5e2d8c34019ab6de7f1c2 8a45b90d3e1f7ac2</div></div>
+    <div class="crow"><div class="k">Certificate serial</div><div class="v mono">GM-HB-2.7-A5F1C9E0</div></div>
+    <div class="crow"><div class="k">Timestamp authority</div><div class="v">RFC 3161 &middot; sealed at signing</div></div>
+    <div class="seal">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="10" r="7" stroke="#3D8189" stroke-width="1.6"/><path d="M9 10l2 2 4-4" stroke="#3D8189" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 15.5L7 22l5-2.6L17 22l-1.5-6.5" stroke="#6F8F70" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <p><b>Executed electronically</b> under the federal ESIGN Act (15 U.S.C. ch. 96) and the California Uniform Electronic Transactions Act (Civ. Code &sect; 1633.1 et seq.). The signature above has the same legal effect as a handwritten signature. Any change to the document after signing invalidates this certificate.</p>
+    </div>
+    <div class="foot" style="margin-top:auto">
+      <div><b>Growing Mindfully</b> (Present Pathways, Inc.) &middot; 750 N Street, Sacramento CA 95814</div>
+      <div>Certificate <span class="path">GM-HB-2.7-A5F1C9E0</span></div>
+    </div>
+  </section>
+</body>
+</html>
