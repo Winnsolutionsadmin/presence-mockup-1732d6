@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.17 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.18 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -699,6 +699,15 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
   #s-handbook .growlabel { font-size: 11px; }
   #s-handbook .hbtools { margin: 0 0 8px; justify-content: center; }
   #s-handbook .nextsig { margin-left: 0; }
+  /* v8.18 (Jarred, stress-test): the fixed action bar was covering the bottom of every scrolling
+     screen (last field / closing lines hidden). Give the scroll room to clear it. The handbook uses
+     a sized fixed-card layout (inline padding-bottom:0) so it is exempt. */
+  .body { padding-bottom: 172px; }
+  /* the finale is a terminal screen with no form to scroll past - let its button flow in-page so
+     the closing lines ("...print, file, and confirm", "See you Monday") are never hidden. */
+  #s-finale .actionbar { position: static; transform: none; width: auto; max-width: 460px;
+    margin: 6px auto 0; padding: 0 20px 64px; background: none; }
+  #s-finale .body { padding-bottom: 0; }
 }
 
 /* ---- v6: real form documents (the confirm ceremony renders the actual form) ---- */
