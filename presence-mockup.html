@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.16 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.17 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -5608,11 +5608,27 @@ function hbCurrentHTML() {
   return document.getElementById('hbSource').innerHTML;
 }
 function downloadHandbook() {
-  var blob = new Blob([hbCurrentHTML()], { type: 'text/html' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'GM-Parent-Handbook-v2.7.html';
-  a.click();
+  /* v8.17 (Jarred): the signed handbook downloads as a PDF, never raw HTML. Production serves the
+     server-rendered signed PDF; in this static mockup we open the family's live signed copy (their
+     real signature + initials, preserved) in a print view and let the browser save it as a clean,
+     paginated, vector PDF. The document title becomes the suggested filename. */
+  var html = hbCurrentHTML().replace('</head>',
+    '<title>GM-Parent-Handbook-v2.7-signed</title>' +
+    '<style>@page{size:letter;margin:14mm}@media print{html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head>');
+  var w = window.open('', '_blank');
+  if (!w) { /* popup blocked: last-resort same-tab print of the handbook copy */
+    var f = document.createElement('iframe');
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
+    document.body.appendChild(f);
+    var d = f.contentWindow.document; d.open(); d.write(html); d.close();
+    setTimeout(function(){ try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) {} setTimeout(function(){ f.remove(); }, 1500); }, 500);
+    return;
+  }
+  w.document.open(); w.document.write(html); w.document.close();
+  try { w.document.title = 'GM-Parent-Handbook-v2.7-signed'; } catch (e) {}
+  var fire = function(){ try { w.focus(); w.print(); } catch (e) {} };
+  if (w.document.readyState === 'complete') setTimeout(fire, 500);
+  else { w.onload = function(){ setTimeout(fire, 300); }; setTimeout(fire, 1400); }
 }
 
 /* ---- v7 item 10: ORIGINAL CDSS form layouts, filled with the family's data.
