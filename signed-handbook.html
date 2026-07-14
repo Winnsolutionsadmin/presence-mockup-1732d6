@@ -50,6 +50,10 @@
   .seal svg{width:34px;height:34px;flex-shrink:0}
   .seal p{font-size:11.5px;color:var(--ink2);line-height:1.55}
   .seal b{color:var(--ink);font-weight:700}
+  .qrrow{margin-top:16px;display:flex;align-items:center;gap:16px;border:1px solid var(--line);border-radius:8px;padding:12px 16px;background:#fff}
+  .qrrow img{width:96px;height:96px;image-rendering:pixelated;display:block}
+  .qrrow b{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:3px}
+  .qrrow p{font-size:11px;color:var(--ink2);line-height:1.5;max-width:52ch}
   @page{size:letter;margin:0}
   @media print{body{background:#fff;padding:0}.sheet{box-shadow:none;margin:0;page-break-after:always}.sheet::before{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   @media(max-width:820px){.sheet{width:100%;min-height:auto;padding:24px 18px}.grid{grid-template-columns:repeat(2,1fr)}.pg.signed{grid-column:span 2}}
@@ -114,6 +118,13 @@
     <div class="seal">
       <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="10" r="7" stroke="#3D8189" stroke-width="1.6"/><path d="M9 10l2 2 4-4" stroke="#3D8189" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 15.5L7 22l5-2.6L17 22l-1.5-6.5" stroke="#6F8F70" stroke-width="1.6" stroke-linejoin="round"/></svg>
       <p><b>Executed electronically</b> under the federal ESIGN Act (15 U.S.C. ch. 96) and the California Uniform Electronic Transactions Act (Civ. Code &sect; 1633.1 et seq.). The signature above has the same legal effect as a handwritten signature. Any change to the document after signing invalidates this certificate.</p>
+    </div>
+    <div class="qrrow">
+      <a href="https://drive.google.com/drive/folders/1Eietf_YVDwAuCf0vXPvzaj_URV78M9n3" target="_blank" rel="noopener"><img src="./qr-theo.png" alt="QR code to the child's full file in Google Drive"></a>
+      <div>
+        <b>Full file in Google Drive</b>
+        <p>Scan to open every original signed document in this child's folder: the master file, the complete 59-page signed handbook, and each form.</p>
+      </div>
     </div>
     <div class="foot" style="margin-top:auto">
       <div><b>Growing Mindfully</b> (Present Pathways, Inc.) &middot; 750 N Street, Sacramento CA 95814</div>
