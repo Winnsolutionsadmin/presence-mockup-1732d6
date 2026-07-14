@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.19 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.20 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -6027,19 +6027,87 @@ function confirmDoc() {
   renderForm();
   window.scrollTo({ top: 0 });
 }
+/* v8.20 (Jarred, big fix): after signing, View/Download must show the FILLED + SIGNED document, not
+   the blank native form. The native CDSS PDFs are encrypted appearance-stream forms - pdf-lib chokes
+   on re-saving them, but pdf.js renders them cleanly (exactly what the signing review uses). So we
+   render the TRUE native form via the app's OWN already-loaded pdf.js into a new tab, overlaying the
+   family's data at the real field positions (fillEntriesFor) and their signature on the line - the
+   filed copy. Download auto-prints -> Save as PDF. Production fills the AcroForm server-side (pdf-lib);
+   this is the faithful client stand-in. */
+function filledShellHtml(title, barLabel) {
+  return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>' + title + '</title><style>' +
+    'html,body{margin:0;background:#e9e6df;font-family:Arial,Helvetica,sans-serif}#m{padding:12px 0}' +
+    '.pg{position:relative;margin:0 auto 12px;background:#fff;box-shadow:0 1px 8px rgba(0,0,0,.22)}.pg canvas{display:block}' +
+    '.fv{position:absolute;color:#101418;white-space:nowrap;overflow:hidden;z-index:1}.fv.wrap{white-space:normal}' +
+    '.ck{position:absolute;font:700 10px Arial,Helvetica,sans-serif;color:#101418;z-index:1}' +
+    '.sg{position:absolute;z-index:2;font-family:\'Snell Roundhand\',\'Segoe Script\',\'Bradley Hand\',cursive;color:#1f2a2e;font-weight:600}' +
+    '.bar{position:sticky;top:0;z-index:5;background:#3D8189;color:#fff;padding:9px 14px;font:600 13px Arial,Helvetica,sans-serif;display:flex;gap:12px;align-items:center;justify-content:center}' +
+    '.bar button{background:#fff;color:#3D8189;border:0;border-radius:6px;padding:6px 16px;font:600 13px Arial,Helvetica,sans-serif;cursor:pointer}' +
+    '@media print{html,body{background:#fff}.bar{display:none}.pg{box-shadow:none;margin:0 auto;page-break-after:always}#m{padding:0}}@page{size:letter;margin:0}' +
+    '</style></head><body><div class="bar">' + barLabel + ' <button onclick="window.print()">Save as PDF</button></div>' +
+    '<div id="m"><div style="text-align:center;padding:44px;color:#6F7F84">Loading the state form...</div></div></body></html>';
+}
+function fillNodePopup(doc, e, signed) {
+  var el;
+  if (e.k === 'x') { el = doc.createElement('span'); el.className = 'ck'; el.textContent = 'X'; el.style.left = e.x + 'px'; el.style.top = e.y + 'px'; return el; }
+  if (e.k === 'sig') { if (!signed) return null; el = doc.createElement('span'); el.className = 'sg'; el.textContent = sigName; el.style.left = (e.x + 3) + 'px'; el.style.top = (e.y - 2) + 'px'; el.style.fontSize = Math.min(16, (e.h || 16) * 1.05) + 'px'; return el; }
+  var val = e.k === 'date' ? (signed ? TODAY : '') : (e.v || '');
+  if (!val) return null;
+  el = doc.createElement('span'); el.className = 'fv' + (e.wrap ? ' wrap' : ''); el.textContent = val;
+  el.style.left = e.x + 'px'; el.style.top = e.y + 'px'; el.style.width = e.w + 'px';
+  var size = e.s || 9.6, est = String(val).length * size * 0.52;
+  if (!e.wrap && e.w && est > e.w) size = Math.max(6, size * e.w / est);
+  el.style.fontSize = size + 'px'; el.style.lineHeight = (e.wrap ? '1.35' : e.h + 'px');
+  return el;
+}
+function openFilledOrBlank(id, download) {
+  var geom = fillEntriesFor(id);
+  if (!NATIVE_PDFS[id] || !geom) { window.open(NATIVE_PDFS[id] || '', '_blank'); return; }
+  var w = window.open('', '_blank'); /* opened inside the click so the popup blocker allows it */
+  if (!w) return;
+  var signed = !!docState[id], kid = FRESH ? FRESHD.first : 'Theo', f = FORMS.filter(function(x){ return x.id === id; })[0];
+  var name = f ? f.name : id.toUpperCase();
+  w.document.open();
+  w.document.write(filledShellHtml(name + ' - ' + kid + (signed ? ' (signed)' : ''), name + (signed ? ' &middot; signed ' + TODAY : '')));
+  w.document.close();
+  var doc = w.document;
+  /* render with OUR pdf.js via the same getDocument(url) path the signing review uses - that path
+     resolves the form's fonts correctly (a {data:...} load renders labels as boxes). Draw straight
+     into the new tab's DOM. */
+  loadPdfJs().then(function(lib) {
+    return lib.getDocument(NATIVE_PDFS[id]).promise.then(function(pdf) {
+      var m = doc.getElementById('m'); if (!m) return; m.innerHTML = '';
+      function pg(n) {
+        if (n > pdf.numPages) { if (download) setTimeout(function(){ try { w.focus(); w.print(); } catch (e) {} }, 500); return; }
+        pdf.getPage(n).then(function(page) {
+          var v1 = page.getViewport({ scale: 1 }), vp = page.getViewport({ scale: 2 });
+          /* render into an OPENER canvas first, so pdf.js loads the form's fonts into OUR document
+             (fonts inject per-document; a canvas in the new tab would render the labels as boxes),
+             then copy the finished pixels into the new tab's canvas. */
+          var oc = document.createElement('canvas'); oc.width = vp.width; oc.height = vp.height;
+          page.render({ canvasContext: oc.getContext('2d'), viewport: vp }).promise.then(function() {
+            var box = doc.createElement('div'); box.className = 'pg'; box.style.width = v1.width + 'px'; box.style.height = v1.height + 'px';
+            var c = doc.createElement('canvas'); c.width = vp.width; c.height = vp.height; c.style.width = v1.width + 'px'; c.style.height = v1.height + 'px';
+            c.getContext('2d').drawImage(oc, 0, 0);
+            box.appendChild(c); m.appendChild(box);
+            (geom[n] || []).forEach(function(e) { var el = fillNodePopup(doc, e, signed); if (el) box.appendChild(el); });
+            pg(n + 1);
+          });
+        });
+      }
+      pg(1);
+    });
+  }).catch(function(err) { try { doc.getElementById('m').innerHTML = '<div style="text-align:center;padding:44px;color:#8A2E2E">Could not load the form.</div>'; } catch (e) {} });
+}
+
 function viewDoc(id) {
   if (id === 'hb') {
     var blob = new Blob([hbCurrentHTML()], { type: 'text/html' }); /* the handbook is genuinely our own document */
     window.open(URL.createObjectURL(blob), '_blank');
     return;
   }
-  /* v8.13 (Jarred, high-severity fix): View opens the TRUE native CDSS PDF, never our HTML
-     recreation. This is the same file that is signed and filed. The bug was that View still
-     called openPrintDoc(formDocHTML(...)) - our made-up facsimile - while Download already
-     served the native PDF. Now both serve the native document. The NSP draft has no native CDSS
-     form (the director completes it), so it alone opens its readable draft. */
-  var pdf = NATIVE_PDFS[id];
-  if (pdf) { window.open(pdf, '_blank'); return; }
+  /* the filled + signed native CDSS PDF (same file that is filed) */
+  if (NATIVE_PDFS[id]) { openFilledOrBlank(id, false); return; }
   var f = FORMS.filter(function(x){ return x.id === id; })[0];
   if (f) openPrintDoc(f.name, formDocHTML(f, docState[id]));
 }
@@ -6338,16 +6406,8 @@ function renderFilledPdf(f, mount) {
 }
 function downloadDoc(id) {
   if (id === 'hb') { downloadHandbook(); return; }
-  var f = FORMS.filter(function(x){ return x.id === id; })[0];
-  if (!f) return;
-  var pdf = NATIVE_PDFS[id];
-  if (pdf) {
-    var a = document.createElement('a');
-    a.href = pdf;
-    a.download = pdf;
-    a.click();
-    return;
-  }
+  /* v8.20: download the FILLED + SIGNED native CDSS PDF, not the blank form */
+  if (NATIVE_PDFS[id]) { openFilledOrBlank(id, true); return; }
   /* the NSP draft has no CDSS native form and never downloads as HTML; it opens
      to view only (renderDocs offers no Download on draft rows) */
   viewDoc(id);
