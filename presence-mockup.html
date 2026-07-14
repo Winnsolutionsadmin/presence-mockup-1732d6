@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Presence · Design mockup v8.21 · Growing Mindfully</title>
+<title>Presence · Design mockup v8.22 · Growing Mindfully</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Manrope:wght@400;500;600;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
@@ -1034,7 +1034,19 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
 .upright .upbtn.added { border-style: solid; border-color: var(--sage-deep);
   background: rgba(155,185,158,.16); color: var(--sage-deep); cursor: default; }
 .upright .upbtn .upname { display: block; font-size: 10px; font-weight: 600; color: var(--ink-mute);
-  max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+  max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+/* v8.22 (Jarred): the real staged upload. The green check appears ONLY after the file is confirmed
+   uploaded, filed to the folder, and tasked to the directors - never on file-select alone. */
+.upright .upbtn.uploading, .upright .upbtn.processing, .upright .upbtn.confirmed { width: 160px; cursor: default; }
+.upright .upbtn.uploading { border-style: solid; border-color: var(--sage); background: rgba(155,185,158,.08); }
+.upright .upbtn.processing { border-style: solid; border-color: var(--gold); background: rgba(201,168,106,.1); color: #8A6E38; }
+.upright .upbtn .uptitle { font-size: 11px; font-weight: 700; }
+.upright .upbtn .upsub { font-size: 9.5px; font-weight: 600; color: var(--ink-mute); line-height: 1.3; margin-top: 1px; }
+.upright .upbar { width: 100%; height: 5px; border-radius: 3px; background: rgba(111,143,112,.2); overflow: hidden; margin: 3px 0 1px; }
+.upright .upbar i { display: block; height: 100%; width: 0; background: var(--sage-deep); border-radius: 3px; transition: width .16s linear; }
+.upright .upspin { width: 15px; height: 15px; border: 2px solid rgba(201,168,106,.35); border-top-color: var(--gold); border-radius: 50%; animation: upspin .7s linear infinite; }
+@keyframes upspin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .upright .upspin { animation: none; } }
 
 /* v8.1: the calm attention banner when an unlocked edit empties a required field */
 .attnbanner { position: fixed; left: 50%; bottom: 84px;
@@ -2025,15 +2037,9 @@ input[type=text]:focus, input[type=tel]:focus { outline: none; border-color: var
         <div class="rowactions"><button class="raction" onclick="viewCert()">View</button><button class="raction" onclick="downloadCert()">Download</button></div>
       </div>
     </div>
-    <!-- v8.21 (Jarred): the paper-file master documents that go in the child's folder -->
-    <div class="docrow certrow step-in d3">
-      <svg class="minileafseal" viewBox="0 0 60 60"><rect x="14" y="9" width="32" height="42" rx="2" fill="none" stroke="#C9A86A" stroke-width="2.4"/><path d="M21 22h18M21 30h18M21 38h11" stroke="#C9A86A" stroke-width="2" stroke-linecap="round"/></svg>
-      <div class="rmain">
-        <div class="rname">Paper file - master documents</div>
-        <div class="rmeta">One file with every state form combined for printing, plus a print doc of only the signed pages with a certificate.</div>
-        <div class="rowactions"><button class="raction" onclick="buildMasterPdf('combined')">Master file (all forms)</button><button class="raction" onclick="buildMasterPdf('print')">Master print doc</button></div>
-      </div>
-    </div>
+    <!-- v8.22 (Jarred): the master documents are a DIRECTOR tool, not parent-facing. They live in
+         Kindred on the family's outstanding task as a "Download child file" button. buildMasterPdf()
+         stays in the code (Kindred reuses the same generator) but is NOT shown to parents here. -->
     </div>
     </div>
   </div>
@@ -4761,35 +4767,76 @@ function demoCompleteAll() { chState.forEach(function(c){ c.finished = true; });
    opens a real file picker (photo OR file: image or PDF) and only marks the item added once the
    family actually chooses a file. The chosen filename is shown so it is clearly a real upload. */
 function pickUpload(key) {
+  if (doctorState[key] || UPLOAD_STAGE[key]) return;
   var inp = document.createElement('input');
   inp.type = 'file';
   inp.accept = 'image/*,application/pdf';
   inp.style.display = 'none';
   inp.onchange = function() {
-    if (inp.files && inp.files.length) markUploaded(key, inp.files[0].name);
+    if (inp.files && inp.files.length) startUpload(key, inp.files[0].name);
     inp.remove();
   };
   document.body.appendChild(inp);
   inp.click();
 }
+/* v8.22 (Jarred): the upload runs a real, staged round trip and only shows the confirmed check at the
+   end - never on file-select. Stages: Uploading (progress) -> Filing to the folder + notifying the
+   directors (processing) -> Filed, directors have it (confirmed check). In production each stage
+   resolves on a real event: the server stores the file, files it into the child's Drive folder, and
+   creates the director task; only then does the item count as done. */
+var UPLOAD_STAGE = {};
+var UP_CHECK = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4.2 4L16 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function uploadEls(key) { return document.querySelectorAll('[data-upload="' + key + '"]'); }
+function upShort(fn) { return (fn ? (fn.length > 20 ? fn.slice(0, 17) + '...' : fn) : '').replace(/</g, '&lt;'); }
+function upRailCheck(key, label) {
+  var rail = document.getElementById(key === 'imm' ? 'r-imm' : 'r-701');
+  if (rail) { var st = rail.querySelector('.st'); if (st && !st.classList.contains('st-check')) st.outerHTML = CHECK_SVG; var sub = rail.querySelector('.rsub'); if (sub) sub.textContent = label; }
+}
+function startUpload(key, fileName) {
+  UPLOAD_STAGE[key] = 'uploading';
+  var short = upShort(fileName);
+  uploadEls(key).forEach(function(b) {
+    b.className = 'upbtn uploading'; b.onclick = null; b.removeAttribute('role'); b.removeAttribute('tabindex');
+    b.innerHTML = '<div class="uptitle">Uploading</div><div class="upbar"><i></i></div>' + (short ? '<div class="upname">' + short + '</div>' : '');
+  });
+  var p = 0;
+  var t = setInterval(function() {
+    p += 14 + Math.random() * 20;
+    uploadEls(key).forEach(function(b) { var bar = b.querySelector('.upbar i'); if (bar) bar.style.width = Math.min(100, p) + '%'; });
+    if (p >= 100) { clearInterval(t); setTimeout(function() { processUpload(key, short); }, 350); }
+  }, 170);
+}
+function processUpload(key, short) {
+  UPLOAD_STAGE[key] = 'processing';
+  uploadEls(key).forEach(function(b) {
+    b.className = 'upbtn processing';
+    b.innerHTML = '<div class="upspin"></div><div class="uptitle">Filing to the folder</div><div class="upsub">Notifying your directors</div>';
+  });
+  setTimeout(function() { confirmUploaded(key, short); }, 1700);
+}
+function confirmUploaded(key, short) {
+  UPLOAD_STAGE[key] = 'done';
+  doctorState[key] = true;
+  uploadEls(key).forEach(function(b) {
+    b.className = 'upbtn added confirmed'; b.onclick = null; b.removeAttribute('role'); b.removeAttribute('tabindex');
+    b.innerHTML = UP_CHECK + '<div class="uptitle">Filed &middot; directors have it</div>' + (short ? '<div class="upname">' + short + '</div>' : '');
+  });
+  upRailCheck(key, 'Filed');
+  sparkPending = true;
+  renderState();
+}
 /* v8.15: paint an upload as Added (shared by markUploaded + restoreProgress so a restored upload
    still shows Added on return). */
+/* restore path (a prior session confirmed this upload): paint the confirmed state directly. */
 function paintUploaded(key, fileName) {
-  var short = fileName ? (fileName.length > 22 ? fileName.slice(0, 19) + '...' : fileName) : '';
-  document.querySelectorAll('[data-upload="' + key + '"]').forEach(function(b) {
-    if (b.classList.contains('added')) return;
-    b.classList.add('added');
-    b.innerHTML = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4.2 4L16 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Added' +
-      (short ? '<span class="upname">' + short.replace(/</g, '&lt;') + '</span>' : '');
-    b.onclick = null;
-    b.removeAttribute('role');
-    b.removeAttribute('tabindex');
+  var short = upShort(fileName);
+  uploadEls(key).forEach(function(b) {
+    if (b.classList.contains('confirmed')) return;
+    b.className = 'upbtn added confirmed'; b.onclick = null; b.removeAttribute('role'); b.removeAttribute('tabindex');
+    b.innerHTML = UP_CHECK + '<div class="uptitle">Filed &middot; directors have it</div>' + (short ? '<div class="upname">' + short + '</div>' : '');
   });
-  var rail = document.getElementById(key === 'imm' ? 'r-imm' : 'r-701');
-  if (rail) {
-    var st = rail.querySelector('.st'); if (st && !st.classList.contains('st-check')) st.outerHTML = CHECK_SVG;
-    var sub = rail.querySelector('.rsub'); if (sub) sub.textContent = 'Added';
-  }
+  upRailCheck(key, 'Filed');
+  UPLOAD_STAGE[key] = 'done';
 }
 function markUploaded(key, fileName) {
   if (doctorState[key]) return;
